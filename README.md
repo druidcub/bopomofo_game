@@ -2,6 +2,12 @@
 
 給 5 歲孩子親子共玩的繁體中文網頁遊戲。原生 HTML/CSS/JavaScript，無第三方執行依賴、不需建置、不需登入。
 
+## 線上試玩
+
+https://druidcub.github.io/bopomofo_game/
+
+GitHub Pages 使用 main 分支根目錄發布；推送更新後自動部署。
+
 ## 啟動
 
 在此資料夾的終端機執行：

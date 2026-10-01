@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f8f5ec"><title>注音小花園 · 一起玩聲音</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="topbar"><a href="#" id="brand" class="brand"><span class="brand-icon">✿</span>注音小花園<span class="brand-sub">一起玩聲音</span></a><div class="tools"><button id="sound" aria-pressed="true">♫ 聲音開啟</button><button id="parent">⚙ 家長小幫手</button></div></header>
+<main id="app"></main>
+<footer>陪孩子聽一聽、說一說，讓每一次發現都開花。<span>適合親子共玩 · 無計時 · 無廣告</span></footer>
+<dialog id="settings"><div class="dialog-head"><h2>家長小幫手</h2><button id="close-settings" aria-label="關閉家長小幫手">✕</button></div><p>先陪孩子玩聲音，再慢慢認識注音。每回合 5 題，玩一兩回合就可以休息。</p><label for="scope">找符號的範圍</label><select id="scope"><option value="starter">初次見面：ㄅ ㄆ ㄇ ㄈ ㄚ ㄧ ㄨ ㄩ</option><option value="all">自由探索：全部 37 個符號</option></select><p class="note">聽詞語與拼音使用固定生活詞題庫，不受此設定影響。</p><label for="voice">中文朗讀聲音</label><select id="voice"></select><p class="note">詞語由裝置的中文語音朗讀，聲音品質因裝置而異。這不是經教師校音的單符號錄音；孩子可跟大人一起念。沒有中文語音時，請大人讀題。</p><h3>一起玩的方法</h3><p>① 看圖說出生活詞。② 聽一聽聲音。③ 點選注音，說說看自己的發現。不熟悉時可先玩「找找注音」。</p><p>聲調、易混淆符號與筆順可以等孩子有興趣再加入，不以背完符號或寫字為目標。</p><a href="RESEARCH.md" target="_blank" rel="noopener">閱讀學習設計與研究來源 ↗</a><button id="reset-progress" class="quiet">清除這台裝置的花朵紀錄</button><p id="storage-note" class="note"></p></dialog>
+<script src="data.js"></script><script src="app.js"></script>
+</body></html>

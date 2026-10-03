@@ -92,11 +92,11 @@ function home() {
     <p class="theme-note">主題用於聽詞、尋寶、拼音、修理站、聲調與拍手；押韻與同聲朋友來自整座花園。</p>
     <div class="game-cards">${modes.map((m, i) => `<button class="game-card ${m.color}" data-mode="${m.id}"><span class="card-top"><span class="level">${String(i + 1).padStart(2,'0')} · ${m.level}</span><span>↗</span></span><span class="card-art ${['match','build','memory','repair','bingo'].includes(m.id) ? 'train-art' : ''} ${['rhyme','initial'].includes(m.id) ? 'rhyme-art' : ''}">${m.art}</span><strong>${m.name}</strong><span class="card-desc">${m.desc}</span><span class="card-bottom">${m.id === 'memory' ? Math.min(prefs.memoryPairs,GardenData.symbolRange(prefs.scope,[...prefs.customSymbols]).length)+' 對小卡' : m.id==='adventure'?'5 個探險站':m.id==='bingo'?'集滿一排 3 個':'每回合 5 題'} <span>開始玩 →</span></span></button>`).join('')}</div></section>
     <section class="music-strip"><span>🎶</span><div><strong>讓小花園有一點音樂</strong><p id="home-music-status">${musicStatus()}</p></div><button id="home-music" class="quiet">${prefs.music ? '關閉音樂' : '播放背景音樂'} →</button></section>
-    <section class="parent-strip"><span>🌼</span><div><strong>每個孩子都有自己的步調。</strong><p>不倒數、不扣分。答錯就再試試，玩完一回合可以休息一下。</p></div><button id="tips">看看親子玩法 →</button></section>`;
+    <section class="parent-strip"><span>🌼</span><div><strong>每個孩子都有自己的步調。</strong><p>不倒數、不扣分。答錯就再試試，玩完一回合可以休息一下。</p></div><button id="tips">看看親子玩法 →</button></section><p id="offline-note" class="offline-note" role="status">${GardenOffline.status()}</p>`;
   document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => start(b.dataset.mode));
   document.querySelectorAll('[data-theme]').forEach(b => b.onclick = () => { const position = window.scrollY; prefs.category = b.dataset.theme; save(); effect('tap'); home(); window.scrollTo(0, position); });
   $('#invitation').onclick=()=>start(invitation.mode); $('#my-garden').onclick=()=>renderGarden(); $('#album').onclick=()=>renderAlbum();
-  $('#home-music').onclick = toggleMusic; $('#tips').onclick = openSettings; window.scrollTo(0, 0);
+  $('#home-music').onclick = toggleMusic; $('#tips').onclick = openSettings; GardenOffline.refresh();window.scrollTo(0, 0);
 }
 function start(mode) {
   stopSpeech(); effect('tap');
@@ -298,7 +298,7 @@ function openSettings() {
   $('#favorites-note').textContent=`圖鑑收藏了 ${progress.favorites.length} 個朋友。收藏可重複練習；主題或玩法可用的詞不足時，會加入其他朋友。設定用於下一回合。`;
   $('#progress-note').textContent=`已玩 ${progress.rounds} 回合，接觸 ${progress.journal.length} 個詞語；使用提示也會記錄參與，並非學習成績。`;
   $('#recent-words').textContent=progress.recent.length?'最近一起玩過：'+progress.recent.slice(-12).join('、'):'還沒有詞語紀錄，先陪孩子玩一回合吧。';
-  updateVoices(); soundLabels(); $('#storage-note').textContent = storageOK ? '設定、花朵與花園只保存在這台裝置，不上傳資料。' : '瀏覽器無法保存紀錄，仍可正常玩遊戲。'; $('#settings').showModal();
+  updateVoices(); soundLabels(); GardenOffline.refresh();$('#storage-note').textContent = storageOK ? '設定、花朵與花園只保存在這台裝置，不上傳資料。' : '瀏覽器無法保存紀錄，仍可正常玩遊戲。'; $('#settings').showModal();
 }
 function renderSymbolPicker(message='至少選 3 個；用於找找注音、翻翻卡、賓果與冒險的字形站。'){
   $('#symbol-picker').innerHTML=GardenData.symbols.map(s=>`<button data-symbol="${s}" aria-label="注音範圍 ${s}" aria-pressed="${prefs.customSymbols.includes(s)}">${s}</button>`).join('');
@@ -315,6 +315,7 @@ for (const id of ['scope', 'practice', 'buildLevel', 'track']) $('#' + id).oncha
 $('#memoryPairs').onchange=e=>{prefs.memoryPairs=Number(e.target.value);save();};
 for (const id of ['musicVolume', 'effectsVolume']) $('#' + id).oninput = e => { prefs[id] = Number(e.target.value); $('#' + id + '-value').textContent = prefs[id] + '%'; gardenAudio.configure(prefs); save(); };
 $('#preview-effects').onclick = () => effect('correct');
+$('#offline-update').onclick=()=>GardenOffline.update();
 $('#preview-music').onclick = async () => { prefs.music = true; gardenAudio.configure(prefs); save(); await gardenAudio.unlock(); soundLabels(); };
 $('#voice').onchange = e => { prefs.voice = e.target.value; save(); };
 $('#reset-progress').onclick = () => { if (!confirm('清除這台裝置的花朵、花園、徽章、收藏與詞語紀錄？')) return; progress = emptyProgress(); save(); $('#storage-note').textContent = '花園與紀錄已清除。'; $('#progress-note').textContent='已玩 0 回合，接觸 0 個詞語。'; $('#recent-words').textContent=''; $('#favorites-note').textContent='收藏已清空，會出整座花園的朋友。'; if (!game) home(); };

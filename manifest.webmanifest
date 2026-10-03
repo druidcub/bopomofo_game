@@ -1,0 +1,13 @@
+{
+  "id": "./",
+  "name": "注音小花園 · 一起玩聲音",
+  "short_name": "注音小花園",
+  "lang": "zh-Hant-TW",
+  "description": "和小兔玩聲音、找注音、布置花園。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f5ec",
+  "theme_color": "#f8f5ec",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}

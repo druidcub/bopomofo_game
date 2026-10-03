@@ -28,9 +28,14 @@
     {id:'bunny',emoji:'🐰',name:'小兔',at:4}, {id:'tree',emoji:'🌳',name:'大樹',at:5},
     {id:'pond',emoji:'🐸',name:'青蛙',at:7}, {id:'rainbow',emoji:'🌈',name:'彩虹',at:10}
   ];
+  const scenes=[
+    {id:'sunny',name:'晴天',emoji:'☀️',prompt:'晴天的花園，哪個朋友想曬太陽？指一指、說一說。'},
+    {id:'sunset',name:'夕陽',emoji:'🌅',prompt:'夕陽慢慢來了，和花園朋友說聲晚安吧。'},
+    {id:'night',name:'星夜',emoji:'🌙',prompt:'星星陪著花園，和大人一起說說誰住在這裡。'}
+  ];
   function earnedBadges(progress){return badges.filter(b=>b.rule(progress));}
   function availableDecorations(rounds){return decorations.filter(d=>d.at<=rounds);}
-  function emptyProgress(){return {flowers:0,rounds:0,modes:{},recent:[],journal:[],favorites:[],plots:['tulip','','tulip','','tulip','']};}
+  function emptyProgress(){return {flowers:0,rounds:0,modes:{},recent:[],journal:[],favorites:[],weather:'sunny',plots:['tulip','','tulip','','tulip','']};}
   function restoreProgress(recorded, validModes, vocabulary){
     const p=emptyProgress(), allowed=new Set(vocabulary);
     for(const key of ['flowers','rounds'])if(Number.isSafeInteger(recorded?.[key])&&recorded[key]>=0)p[key]=recorded[key];
@@ -38,6 +43,7 @@
     if(Array.isArray(recorded?.recent))p.recent=recorded.recent.filter(w=>allowed.has(w)).slice(-30);
     if(Array.isArray(recorded?.journal))p.journal=[...new Set(recorded.journal.filter(w=>allowed.has(w)))].slice(-vocabulary.length);
     if(Array.isArray(recorded?.favorites))p.favorites=[...new Set(recorded.favorites.filter(w=>allowed.has(w)))].slice(0,50);
+    if(scenes.some(scene=>scene.id===recorded?.weather))p.weather=recorded.weather;
     if(Array.isArray(recorded?.plots))p.plots=Array.from({length:6},(_,i)=>availableDecorations(p.rounds).some(d=>d.id===recorded.plots[i])?recorded.plots[i]:'');
     return p;
   }
@@ -63,6 +69,6 @@
     ];
     return invitations[progress.rounds%invitations.length];
   }
-  const play={checkTrain,nextHint,bingoLine,badges,decorations,earnedBadges,availableDecorations,emptyProgress,restoreProgress,rememberWord,toggleFavorite,nextInvitation};
+  const play={checkTrain,nextHint,bingoLine,badges,decorations,scenes,earnedBadges,availableDecorations,emptyProgress,restoreProgress,rememberWord,toggleFavorite,nextInvitation};
   root.GardenPlay=play;if(typeof module!=='undefined')module.exports=play;
 })(typeof window!=='undefined'?window:globalThis);

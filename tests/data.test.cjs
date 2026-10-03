@@ -1,9 +1,9 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const D = require('../data.js');
-test('37 symbols and 140 unique, categorised words have valid phonetic forms', () => {
+test('37 symbols and 160 unique, categorised words have valid phonetic forms', () => {
   assert.equal(D.symbols.length, 37); assert.equal(new Set(D.symbols).size, 37);
-  assert.equal(D.words.length, 140); assert.equal(new Set(D.words.map(w => w.word)).size, 140);
+  assert.equal(D.words.length, 160); assert.equal(new Set(D.words.map(w => w.word)).size, 160);
   D.words.forEach(w => {
     assert.ok(D.categories[w.category]); w.parts.forEach(p => assert.ok(D.symbols.includes(p)));
     assert.equal(w.initial, w.parts[0]); assert.equal(w.zhuyin, w.parts.join('') + (w.tone || ''));
@@ -51,8 +51,8 @@ test('all themes and levels produce five unique solvable questions', () => {
     }
   }
 });
-test('220 phrase entries have unique names and one valid pronunciation per syllable', () => {
-  assert.equal(D.phrases.length,220); assert.equal(new Set(D.phrases.map(p=>p.word)).size,220);
+test('240 phrase entries have unique names and one valid pronunciation per syllable', () => {
+  assert.equal(D.phrases.length,240); assert.equal(new Set(D.phrases.map(p=>p.word)).size,240);
   D.phrases.forEach(p=>{
     assert.equal([...p.word].length,p.count); assert.ok(p.count>=2 && p.count<=4);
     p.syllables.forEach(s=>assert.match(s,/^[ㄅ-ㄩ]+[ˊˇˋ]?$/));

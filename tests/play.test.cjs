@@ -53,3 +53,9 @@ test('favorite collections are bounded, reversible, and restored only from valid
   const restored=P.restoreProgress({favorites:['貓','貓','<img>','兔']},[],['貓','兔']);
   assert.deepEqual(restored.favorites,['貓','兔']);
 });
+test('garden weather preserves old progress and rejects unknown scene values',()=>{
+  const old=P.restoreProgress({flowers:28,rounds:6},[],[]);
+  assert.equal(old.weather,'sunny');assert.equal(old.flowers,28);assert.equal(old.rounds,6);
+  assert.equal(P.restoreProgress({weather:'night'},[],[]).weather,'night');
+  assert.equal(P.restoreProgress({weather:'<img>'},[],[]).weather,'sunny');
+});

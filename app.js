@@ -2,9 +2,9 @@
 const $ = s => document.querySelector(s);
 const { words, phrases, categories, makeRound, makeAdventure } = GardenData;
 const { checkTrain, nextHint, emptyProgress, restoreProgress, rememberWord, earnedBadges, availableDecorations, nextInvitation } = GardenPlay;
-const modeIDs=['match','listen','build','picture','rhyme','memory','initial','syllables','repair','tone','adventure','bingo'];
+const modeIDs=['match','listen','build','picture','rhyme','memory','initial','syllables','repair','tone','adventure','bingo','pack'];
 const vocabulary=[...words,...phrases];
-const defaults = { scope: 'starter', customSymbols:'ㄅㄆㄇㄚㄧ', category: 'all', practice:'fresh', buildLevel: 'easy', memoryPairs: 3, sound: true, voice: '', effects: true, music: false, track: 'garden', musicVolume: 18, effectsVolume: 40 };
+const defaults = { scope: 'starter', customSymbols:'ㄅㄆㄇㄚㄧ', category: 'all', practice:'fresh', buildLevel: 'easy', memoryPairs: 3, packSize:2, sound: true, voice: '', effects: true, music: false, track: 'garden', musicVolume: 18, effectsVolume: 40 };
 let prefs = { ...defaults }, progress = emptyProgress(), storageOK = true;
 try {
   const saved = JSON.parse(localStorage.getItem('garden-prefs') || '{}');
@@ -19,6 +19,7 @@ if (!Object.hasOwn(categories, prefs.category)) prefs.category = 'all';
 if(!['fresh','favorite'].includes(prefs.practice))prefs.practice='fresh';
 if (!['easy', 'grow'].includes(prefs.buildLevel)) prefs.buildLevel = 'easy';
 if (![3,4,6].includes(prefs.memoryPairs)) prefs.memoryPairs=3;
+if (![2,3].includes(prefs.packSize)) prefs.packSize=2;
 if (!Object.hasOwn(GardenSongs, prefs.track)) prefs.track = 'garden';
 prefs.musicVolume = Math.max(0, Math.min(50, prefs.musicVolume));
 prefs.effectsVolume = Math.max(0, Math.min(70, prefs.effectsVolume));
@@ -80,7 +81,8 @@ const modes = [
   { id: 'repair', name: '注音修理站', level: '找回缺少的符號', color: 'sky', art: '<i>ㄇ</i><span>🔧</span><i>？</i>', desc: '哪個注音不見了？幫它回到車廂。', title: '誰可以補上空空的車廂？', sub: '先聽詞語，再找一個注音補上空位。' },
   { id: 'tone', name: '聲調滑滑梯', level: '感覺聲音高低', color: 'peach', art: '🛝<span>♫</span>ˊ', desc: '聲音平平、往上，還是往下走？', title: '聲音走的是哪一條路？', sub: '聽詞語，和大人比手勢，再選聲音的路線。' },
   { id: 'adventure', name: '花園大冒險', level: '五站混合探索', color: 'lilac', art: '🐰<span>→</span>🏕️', desc: '小兔去旅行，每一站都有不同玩法！', title: '', sub: '' },
-  { id: 'bingo', name: '注音花朵賓果', level: '集滿一排朋友', color: 'rose', art: '<i>ㄅ</i><span>✿</span><i>ㄇ</i>', desc: '找到小兔喊的符號，連成一排開花！', title: '找到朋友，讓一排花開！', sub: '看小兔的注音卡，找到相同符號。連成一排 3 個，就賓果！' }
+  { id: 'bingo', name: '注音花朵賓果', level: '集滿一排朋友', color: 'rose', art: '<i>ㄅ</i><span>✿</span><i>ㄇ</i>', desc: '找到小兔喊的符號，連成一排開花！', title: '找到朋友，讓一排花開！', sub: '看小兔的注音卡，找到相同符號。連成一排 3 個，就賓果！' },
+  { id:'pack', name:'聲音小背包', level:'聽詞記順序', color:'butter', art:'🎒<span class="sound-bubble">♫</span>', desc:'聽小兔的清單，把圖片卡依序放進背包。', title:'小兔的背包先放誰？', sub:'聽小兔說完，依序放入圖片卡；放好才檢查。' }
 ];
 function home() {
   stopSpeech(); game = null;
@@ -88,8 +90,8 @@ function home() {
   $('#app').innerHTML = `<section class="hero"><div class="hero-copy"><div class="eyebrow"><span></span> 給小小探險家的聲音遊樂場</div><h1>聽見聲音，<br>讓注音<span class="accent">開花。</span></h1><p>和小兔一起找一找、聽一聽、拼一拼。<br>每天一點點，發現注音的樂趣。</p><div class="hero-tags"><span>🌱 ${words.length} 個生活字</span><span>👏 ${phrases.length} 個詞語</span><span>🎲 ${modes.length} 種小遊戲</span></div></div><div class="hero-art">${art}<span class="art-tag">今天想認識哪個朋友？</span></div></section>
     <section class="garden-hub"><div class="invitation"><span>${invitation.emoji}</span><div><strong>小兔的邀請</strong><p>${invitation.text}</p></div><button id="invitation" class="primary">一起玩 →</button></div><div class="explore-links"><button id="my-garden">🌷 我的花園<span>布置自己的小天地</span></button><button id="album">📖 聲音圖鑑<span>${vocabulary.length} 個字詞，想聽哪一個？</span></button></div>${badges.length ? `<div class="badge-shelf" aria-label="我的探險徽章">${badges.map(b=>`<span title="${b.name}">${b.emoji} ${b.name}</span>`).join('')}</div>` : '<p class="hub-note">玩完一回合，就會有新朋友來花園。隨時都可以休息。</p>'}</section>
     <section class="play-section"><div class="section-title"><div><span class="eyebrow">LET’S PLAY</span><h2>今天想玩什麼？</h2></div><span class="collection">✿ 已種下 <b>${progress.flowers}</b> 朵小花</span></div>
-    <div class="theme-picker" aria-label="生活詞主題">${Object.entries(categories).map(([id, name]) => `<button data-theme="${id}" aria-pressed="${prefs.category === id}">${name}${id === 'all' ? ' ' + words.length : ''}</button>`).join('')}</div>
-    <p class="theme-note">主題用於聽詞、尋寶、拼音、修理站、聲調與拍手；押韻與同聲朋友來自整座花園。</p>
+    <div class="theme-picker" aria-label="生活詞主題">${Object.entries(categories).map(([id, name]) => `<button data-theme="${id}" aria-pressed="${prefs.category === id}">${name}${id === 'all' ? ' ' + vocabulary.length : ''}</button>`).join('')}</div>
+    <p class="theme-note">主題用於聽詞、尋寶、拼音、修理站、聲調、拍手與背包；押韻與同聲朋友來自整座花園。</p>
     <div class="game-cards">${modes.map((m, i) => `<button class="game-card ${m.color}" data-mode="${m.id}"><span class="card-top"><span class="level">${String(i + 1).padStart(2,'0')} · ${m.level}</span><span>↗</span></span><span class="card-art ${['match','build','memory','repair','bingo'].includes(m.id) ? 'train-art' : ''} ${['rhyme','initial'].includes(m.id) ? 'rhyme-art' : ''}">${m.art}</span><strong>${m.name}</strong><span class="card-desc">${m.desc}</span><span class="card-bottom">${m.id === 'memory' ? Math.min(prefs.memoryPairs,GardenData.symbolRange(prefs.scope,[...prefs.customSymbols]).length)+' 對小卡' : m.id==='adventure'?'5 個探險站':m.id==='bingo'?'集滿一排 3 個':'每回合 5 題'} <span>開始玩 →</span></span></button>`).join('')}</div></section>
     <section class="music-strip"><span>🎶</span><div><strong>讓小花園有一點音樂</strong><p id="home-music-status">${musicStatus()}</p></div><button id="home-music" class="quiet">${prefs.music ? '關閉音樂' : '播放背景音樂'} →</button></section>
     <section class="parent-strip"><span>🌼</span><div><strong>每個孩子都有自己的步調。</strong><p>不倒數、不扣分。答錯就再試試，玩完一回合可以休息一下。</p></div><button id="tips">看看親子玩法 →</button></section><p id="offline-note" class="offline-note" role="status">${GardenOffline.status()}</p>`;
@@ -101,9 +103,10 @@ function home() {
 function start(mode) {
   stopSpeech(); effect('tap');
   const preferred=prefs.practice==='favorite'?progress.favorites:[];
-  const questions=mode==='adventure'?makeAdventure(prefs.scope,prefs.category,prefs.buildLevel,progress.recent,[...prefs.customSymbols],preferred):makeRound(mode,prefs.scope,prefs.category,prefs.buildLevel,progress.recent,prefs.memoryPairs,[...prefs.customSymbols],preferred);
+  const questions=mode==='pack'?GardenData.makePackRound(prefs.category,prefs.packSize,progress.recent,preferred):mode==='adventure'?makeAdventure(prefs.scope,prefs.category,prefs.buildLevel,progress.recent,[...prefs.customSymbols],preferred):makeRound(mode,prefs.scope,prefs.category,prefs.buildLevel,progress.recent,prefs.memoryPairs,[...prefs.customSymbols],preferred);
   game = { session:mode, mode:mode==='adventure'?questions[0].mode:mode, questions, index: 0, done: false, selected: [], used: [], matched: [], flipped: [], preview: false, locked: false, claps: 0, hints: 0 };
   if (mode === 'memory') { renderMemory(); window.scrollTo(0, 0); }
+  else if(mode==='pack')renderPack();
   else if(mode==='bingo'){game.calls=GardenData.shuffle(questions.map(c=>c.symbol));game.roundDone=false;renderBingo();window.scrollTo(0,0);}
   else renderGame();
 }
@@ -181,7 +184,47 @@ function retry(button, message) { effect('retry'); button.classList.remove('wigg
 function next() {
   if (!game.done) return; stopSpeech();
   if (game.index === 4) complete(5);
-  else { effect('tap'); game.index++; game.mode=game.questions[game.index].mode||game.session; game.done = false; game.selected = []; game.used = []; game.claps = 0; renderGame(); }
+  else { effect('tap'); game.index++; game.mode=game.questions[game.index].mode||game.session; game.done = false; game.selected = []; game.used = []; game.claps = 0; if(game.mode==='pack')renderPack();else renderGame(); }
+}
+function packSpeech(q){return q.sequence.map((w,i)=>(i===0?'首先':i===q.sequence.length-1?'最後':'接著')+'，'+w.word+'。').join('');}
+function renderPack(){
+  const q=game.questions[game.index], info=modes.find(m=>m.id==='pack');
+  $('#app').innerHTML=`<section class="game-panel pack-panel">${heading(info.name,game.index+1,5)}<div class="step-dots" aria-label="第 ${game.index+1} 題，共 5 題">${game.questions.map((_,i)=>`<span class="${i<game.index?'finished':i===game.index?'current':''}">${i<game.index?'✿':i+1}</span>`).join('')}</div><h1 class="question-title">${info.title}</h1><p class="question-sub">${info.sub}</p><div class="question-theme">${categories[q.category]} · ${q.sequence.length} 張圖片卡</div><div class="pack-mascot" aria-hidden="true">🐰 🎒</div><button id="pack-replay" class="replay">♫ 聽小兔的清單</button><p id="audio-note" class="audio-note">${audioNote()}</p><details class="caregiver-prompt" ${!prefs.sound||!voices.length?'open':''}><summary>大人讀題／看看順序</summary><p>請按順序讀：${q.sequence.map((w,i)=>`<b>${i+1}．${w.word}</b>`).join(' → ')}。</p></details><p class="train-note">點圖片卡放入背包；點已填位置可以取下。可以隨時重聽。</p><div class="pack-slots" aria-label="背包的圖片順序">${q.sequence.map((_,i)=>`<button data-pack-slot="${i}" aria-label="背包第 ${i+1} 個位置，空位"><small>${i+1}</small><span>？</span></button>`).join('')}</div><div class="pack-options">${q.options.map((w,i)=>`<div><button data-pack="${i}" class="pack-option" aria-label="放入 ${w.word}"><span aria-hidden="true">${visual(w)}</span><strong>${w.word}</strong></button><button data-pack-listen="${i}" class="word-replay" aria-label="聽圖片卡 ${w.word}">♫ 聽這張</button></div>`).join('')}</div><div id="feedback" class="feedback" role="status" aria-live="polite">先聽清單，再把朋友依序放好。</div><div class="game-actions"><button id="pack-reset" class="quiet">↶ 重新裝一次</button><button id="pack-hint" class="quiet">💡 幫我一小步</button><button id="pack-check" class="primary" disabled>🎒 裝好了，試試看！</button><button id="next" class="primary" hidden>${game.index===4?'看看我的小花園 ✿':'下一個背包 →'}</button></div></section>`;
+  $('#back').onclick=home;$('#next').onclick=next;
+  $('#pack-replay').onclick=()=>speak(packSpeech(q));
+  document.querySelectorAll('[data-pack-listen]').forEach(b=>b.onclick=()=>speak(q.options[Number(b.dataset.packListen)].word));
+  document.querySelectorAll('[data-pack]').forEach(b=>b.onclick=()=>{
+    const index=Number(b.dataset.pack);if(game.done||game.used.includes(index)||game.selected.length>=q.sequence.length)return;
+    game.selected.push(q.options[index].word);game.used.push(index);effect('place');updatePack('圖片卡放好了，可以繼續找下一張。');
+  });
+  document.querySelectorAll('[data-pack-slot]').forEach(b=>b.onclick=()=>{
+    const index=Number(b.dataset.packSlot);if(game.done||index>=game.selected.length)return;
+    game.selected.splice(index,1);game.used.splice(index,1);effect('tap');updatePack('圖片卡拿出來了，可以再換一張。');
+  });
+  $('#pack-reset').onclick=()=>{game.selected=[];game.used=[];effect('tap');updatePack('背包空好了，重聽清單再慢慢放。');};
+  $('#pack-hint').onclick=()=>{
+    const hint=nextHint(q.sequence.map(w=>w.word),game.selected);game.hints++;effect('tap');
+    $('#feedback').textContent=hint?`小兔幫你一小步：第 ${hint.position+1} 個位置試試「${hint.symbol}」。`:'圖片卡都放好了，按「裝好了」試試看！';
+  };
+  $('#pack-check').onclick=()=>{
+    const result=checkTrain(q.sequence.map(w=>w.word),game.selected);if(!result.ready)return;
+    if(!result.correct){retry($('#pack-check'),'順序還沒接起來。重聽清單，點圖片卡取下再試試。');return;}
+    game.done=true;effect('correct');q.sequence.forEach(w=>rememberWord(progress,w.word));save();
+    document.querySelectorAll('[data-pack], [data-pack-slot], #pack-reset, #pack-hint, #pack-check').forEach(b=>b.disabled=true);
+    $('#feedback').classList.add('success');$('#feedback').textContent='✿ 背包裝好了！'+q.sequence.map(w=>w.word+'（'+w.zhuyin+'）').join(' → ');
+    $('#next').hidden=false;$('#next').focus({preventScroll:true});
+  };
+  updatePack();window.scrollTo(0,0);
+}
+function updatePack(message){
+  const q=game.questions[game.index];
+  document.querySelectorAll('[data-pack-slot]').forEach((b,i)=>{
+    const w=q.options.find(w=>w.word===game.selected[i]);b.innerHTML=`<small>${i+1}</small><span>${w?visual(w):'？'}</span>`;
+    b.classList.toggle('filled',!!w);b.setAttribute('aria-label',`背包第 ${i+1} 個位置，${w?w.word+'，點一下取下':'空位'}`);
+  });
+  document.querySelectorAll('[data-pack]').forEach(b=>{const used=game.used.includes(Number(b.dataset.pack));b.disabled=used||game.selected.length===q.sequence.length;b.classList.toggle('onboard',used);});
+  $('#pack-check').disabled=game.selected.length!==q.sequence.length;
+  if(message)$('#feedback').textContent=message;
 }
 function renderMemory(message = '翻開兩張卡片，找找相同的朋友。') {
   const info = modes.find(m => m.id === 'memory');
@@ -239,7 +282,7 @@ function complete(flowers) {
 }
 function finish(flowers,newBadges=[],newDecor=[]) {
   const mode = game.session;
-  $('#app').innerHTML = `<section class="finish"><div class="eyebrow">每一次嘗試，都在長大</div><div class="finish-flowers">${Array.from({length:flowers},(_,i)=>i%2?'🌼':'🌷').join(' ')}</div><h1>小花園又開花了！</h1><p>${mode === 'memory' ? `你找到了 ${flowers} 對注音朋友。` : mode==='bingo'?`賓果！你找到 ${flowers} 個注音朋友，連成一排了！`:mode==='adventure'?'小兔完成五站旅行，謝謝你一起探險！':'你和 5 個聲音朋友一起玩過了。'}<br>伸個懶腰，和大人說說你最喜歡哪一個吧。</p><div class="finish-count">✿ 這次種下 ${flowers} 朵小花 · 累積 ${progress.flowers} 朵</div>${newBadges.length?`<div class="new-rewards">${newBadges.map(b=>`<span>${b.emoji} 新徽章：${b.name}</span>`).join('')}</div>`:''}${newDecor.length?`<p class="new-friend">${newDecor.map(d=>d.emoji+' '+d.name).join('、')}來花園了，可以去布置！</p>`:''}<div class="finish-actions"><button class="primary" id="rest">回到花園，休息一下</button><button class="quiet" id="decorate">🌷 布置我的花園</button><button class="quiet" id="again">再玩一回合 →</button></div><p class="note">花朵與徽章記錄參與，不代表精熟程度。</p></section>`;
+  $('#app').innerHTML = `<section class="finish"><div class="eyebrow">每一次嘗試，都在長大</div><div class="finish-flowers">${Array.from({length:flowers},(_,i)=>i%2?'🌼':'🌷').join(' ')}</div><h1>小花園又開花了！</h1><p>${mode === 'memory' ? `你找到了 ${flowers} 對注音朋友。` : mode==='bingo'?`賓果！你找到 ${flowers} 個注音朋友，連成一排了！`:mode==='adventure'?'小兔完成五站旅行，謝謝你一起探險！':mode==='pack'?'你依順序裝好了 5 個小背包，謝謝你幫小兔準備！':'你和 5 個聲音朋友一起玩過了。'}<br>伸個懶腰，和大人說說你最喜歡哪一個吧。</p><div class="finish-count">✿ 這次種下 ${flowers} 朵小花 · 累積 ${progress.flowers} 朵</div>${newBadges.length?`<div class="new-rewards">${newBadges.map(b=>`<span>${b.emoji} 新徽章：${b.name}</span>`).join('')}</div>`:''}${newDecor.length?`<p class="new-friend">${newDecor.map(d=>d.emoji+' '+d.name).join('、')}來花園了，可以去布置！</p>`:''}<div class="finish-actions"><button class="primary" id="rest">回到花園，休息一下</button><button class="quiet" id="decorate">🌷 布置我的花園</button><button class="quiet" id="again">再玩一回合 →</button></div><p class="note">花朵與徽章記錄參與，不代表精熟程度。</p></section>`;
   $('#rest').onclick = home; $('#again').onclick = () => start(mode); $('#decorate').onclick=()=>renderGarden(); window.scrollTo(0, 0);
 }
 function renderGarden(selected='tulip', message='先選朋友，再點花圃，布置你的小花園。') {
@@ -292,7 +335,7 @@ async function toggleMusic() {
   if (prefs.music && !await gardenAudio.unlock()) { const el = $('#music-status') || $('#home-music-status'); if (el) el.textContent = '聲音未能啟動，請再點一次音樂開關。'; }
 }
 function openSettings() {
-  for (const id of ['scope', 'practice', 'buildLevel', 'memoryPairs', 'track', 'musicVolume', 'effectsVolume']) $('#' + id).value = prefs[id];
+  for (const id of ['scope', 'practice', 'buildLevel', 'memoryPairs', 'packSize', 'track', 'musicVolume', 'effectsVolume']) $('#' + id).value = prefs[id];
   $('#musicVolume-value').textContent = prefs.musicVolume + '%'; $('#effectsVolume-value').textContent = prefs.effectsVolume + '%';
   renderSymbolPicker();
   $('#favorites-note').textContent=`圖鑑收藏了 ${progress.favorites.length} 個朋友。收藏可重複練習；主題或玩法可用的詞不足時，會加入其他朋友。設定用於下一回合。`;
@@ -313,6 +356,7 @@ function renderSymbolPicker(message='至少選 3 個；用於找找注音、翻�
 $('#brand').onclick = e => { e.preventDefault(); home(); }; $('#parent').onclick = openSettings; $('#close-settings').onclick = () => {$('#settings').close();if($('.game-cards')){const position=window.scrollY;home();window.scrollTo(0,position);}};
 for (const id of ['scope', 'practice', 'buildLevel', 'track']) $('#' + id).onchange = e => { prefs[id] = e.target.value; gardenAudio.configure(prefs); save(); };
 $('#memoryPairs').onchange=e=>{prefs.memoryPairs=Number(e.target.value);save();};
+$('#packSize').onchange=e=>{prefs.packSize=Number(e.target.value);save();};
 for (const id of ['musicVolume', 'effectsVolume']) $('#' + id).oninput = e => { prefs[id] = Number(e.target.value); $('#' + id + '-value').textContent = prefs[id] + '%'; gardenAudio.configure(prefs); save(); };
 $('#preview-effects').onclick = () => effect('correct');
 $('#offline-update').onclick=()=>GardenOffline.update();

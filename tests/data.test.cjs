@@ -51,8 +51,8 @@ test('all themes and levels produce five unique solvable questions', () => {
     }
   }
 });
-test('160 phrase entries have unique names and one valid pronunciation per syllable', () => {
-  assert.equal(D.phrases.length,160); assert.equal(new Set(D.phrases.map(p=>p.word)).size,160);
+test('220 phrase entries have unique names and one valid pronunciation per syllable', () => {
+  assert.equal(D.phrases.length,220); assert.equal(new Set(D.phrases.map(p=>p.word)).size,220);
   D.phrases.forEach(p=>{
     assert.equal([...p.word].length,p.count); assert.ok(p.count>=2 && p.count<=4);
     p.syllables.forEach(s=>assert.match(s,/^[ㄅ-ㄩ]+[ˊˇˋ]?$/));
@@ -60,6 +60,20 @@ test('160 phrase entries have unique names and one valid pronunciation per sylla
   });
   const r=D.makeRound('syllables'); assert.deepEqual([...new Set(r.map(q=>q.count))].sort(),[1,2,3,4]);
   assert.equal(D.phrases.find(p=>p.word==='烏龜').zhuyin,'ㄨ ㄍㄨㄟ');
+  assert.equal(D.phrases.find(p=>p.word==='螃蟹').zhuyin,'ㄆㄤˊ ㄒㄧㄝˋ');
+  assert.equal(D.phrases.find(p=>p.word==='鸚鵡').zhuyin,'ㄧㄥ ㄨˇ');
+  assert.equal(D.phrases.find(p=>p.word==='披薩').zhuyin,'ㄆㄧ ㄙㄚˋ');
+});
+test('vocabulary syllables follow symbol order and reuse known character readings consistently',()=>{
+  const readings=new Map(D.words.map(w=>[w.word,w.zhuyin]));
+  for(const word of [...D.words,...D.phrases]){
+    const syllables=word.syllables||[word.zhuyin];
+    syllables.forEach((s,i)=>{
+      assert.match(s,/^[ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙ]?[ㄧㄨㄩ]?[ㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ]?[ˊˇˋ]?$/,word.word);
+      assert.ok(!/^[ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒ][ˊˇˋ]?$/.test(s),word.word);
+      if(readings.has(word.word[i]))assert.equal(s,readings.get(word.word[i]),word.word);
+    });
+  }
 });
 test('bingo boards contain 3, 6 or 9 distinct available symbols',()=>{
   for(const [scope,custom,count] of [['starter',[],6],['all',[],9],['custom',['ㄅ','ㄇ','ㄚ'],3]])for(let i=0;i<30;i++){
@@ -121,4 +135,28 @@ test('medial vowels remain part of the rhyme, and tones do not change rhyme grou
   assert.equal(get('貓'), get('桃')); assert.equal(get('手'), get('口'));
   assert.notEqual(get('貓'), get('鳥')); assert.notEqual(get('馬'), get('鴨'));
   assert.equal(get('花'), get('瓜'));
+});
+test('backpack lists have distinct pictures, same-theme distractors and exactly one correct order',()=>{
+  for(const category of Object.keys(D.categories))for(const size of [2,3])for(let i=0;i<30;i++){
+    const round=D.makePackRound(category,size);
+    assert.equal(round.length,5);
+    for(const q of round){
+      assert.equal(q.sequence.length,size);assert.equal(q.options.length,size+2);
+      assert.equal(new Set(q.options.map(w=>w.word)).size,size+2);
+      assert.equal(new Set(q.options.map(w=>w.emoji)).size,size+2);
+      assert.ok(q.sequence.every(w=>q.options.some(o=>o.word===w.word)));
+      assert.ok(q.options.every(w=>w.category===q.category));
+      assert.ok(category==='all'||q.category===category);
+    }
+  }
+});
+test('backpack targets avoid recent words when enough pictures exist and honor favorites',()=>{
+  for(let i=0;i<30;i++){
+    const first=D.makePackRound('animals',3),recent=first.flatMap(q=>q.sequence.map(w=>w.word));
+    assert.ok(D.makePackRound('animals',3,recent).every(q=>q.sequence.every(w=>!recent.includes(w.word))));
+    const favorite=D.makePackRound('animals',2,['貓'],['貓']);
+    assert.equal(favorite[0].sequence[0].word,'貓');
+    assert.ok(D.makePackRound('all',2,['貓'],['貓']).every(q=>q.category==='animals'&&q.sequence[0].word==='貓'));
+  }
+  assert.equal(D.makePackRound('not-a-theme',100)[0].sequence.length,2);
 });

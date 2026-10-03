@@ -58,7 +58,8 @@
       {mode:'build',emoji:'🚂',text:'小兔要去旅行：讓注音朋友坐上火車。'},
       {mode:'initial',emoji:'🐱',text:'小兔要交朋友：找出開頭一樣的聲音。'},
       {mode:'memory',emoji:'🃏',text:'小兔想捉迷藏：翻卡片，找到注音朋友。'},
-      {mode:'rhyme',emoji:'♫',text:'小兔想唱歌：找找押韻的聲音朋友。'}
+      {mode:'rhyme',emoji:'♫',text:'小兔想唱歌：找找押韻的聲音朋友。'},
+      {mode:'pack',emoji:'🎒',text:'小兔要出門：聽清單，依序裝好小背包。'}
     ];
     return invitations[progress.rounds%invitations.length];
   }

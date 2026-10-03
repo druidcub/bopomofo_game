@@ -93,3 +93,9 @@
 離線保存讓親子可在沒有網路的場景繼續玩，不增加時數或每日要求。配樂、音效、題庫及圖片為本機資源；中文朗讀依裝置語音服務，不能保證每台裝置可離線朗讀。家長仍可讀題。遊戲不錄音、不推播，不把參與紀錄傳到伺服器。
 
 離線資源的安裝、版本更新及範圍參考 [MDN Service Worker 文件](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)，網頁圖示參考 [MDN manifest icons](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference/icons)。更新不自動重載孩子正在玩的回合；家長在準備好時選擇更新。
+
+聲音小背包讓孩子依序聽兩或三個生活詞，再放入圖片卡；所有卡片來自同一主題，含兩張干擾卡，避免只靠主題猜答案。順序在主動播放時以「首先／接著／最後」朗讀；重聽不受限，答錯不指出整份清單，主動求助只提示一個位置。大人讀題提示可自行展開。玩法練習聽詞、記順序與親子對話，不當作工作記憶測驗或診斷工具。
+
+題庫共 140 個生活字與 220 個詞語、短語。新增的常見物件用於尋寶、拍手、圖鑑與背包，不要求孩子認字；蝌蚪、風車、李、棗、毛巾以原創 SVG 補足 emoji 的物件差異。抽題避免同一題出現相同 emoji，描述性短語仍以主要物件為圖示。
+
+此輪查核的讀音包含教育部《國語辭典簡編本》的 [螃蟹](https://dict.concised.moe.edu.tw/dictView.jsp?ID=2864&powerMode=1)、[鸚鵡](https://dict.concised.moe.edu.tw/dictView.jsp?ID=42442&la=0&powerMode=0)、[披薩](https://dict.concised.moe.edu.tw/dictView.jsp?ID=2969&la=0&powerMode=0)，以及《重編國語辭典修訂本》的 [壽司](https://dict.revised.moe.edu.tw/dictView.jsp?ID=130544&la=0&powerMode=0)。保留聲調的字典讀音用於展示，朗讀時的變調仍依語流而異。

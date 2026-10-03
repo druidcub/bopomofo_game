@@ -2,8 +2,8 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f8f5ec"><meta name="description" content="140 個生活字、160 個詞語與短語、12 種親子注音小遊戲。陪孩子聽聲音、找符號、玩拼音。">
-  <title>注音小花園 · 一起玩聲音</title><link rel="stylesheet" href="style.css?v=5"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#f8f5ec"><meta name="description" content="140 個生活字、220 個詞語與短語、13 種親子注音小遊戲。陪孩子聽聲音、找符號、玩拼音。">
+  <title>注音小花園 · 一起玩聲音</title><link rel="stylesheet" href="style.css?v=8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
 </head>
 <body>
 <header class="topbar">
@@ -19,6 +19,7 @@
   <details class="symbol-settings"><summary>自選孩子正在認識的注音</summary><div id="symbol-picker" aria-label="自選注音朋友"></div><p id="symbol-note" class="note" role="status"></p></details>
   <label for="buildLevel">小火車與修理站</label><select id="buildLevel"><option value="easy">小小火車：兩個符號</option><option value="grow">長長火車：兩個或三個符號</option></select>
   <label for="memoryPairs">翻翻卡的朋友數量</label><select id="memoryPairs"><option value="3">先試試：3 對（6 張）</option><option value="4">多找一點：4 對（8 張）</option><option value="6">大花園：6 對（12 張）</option></select><p class="note">自選符號較少時，卡片對數會配合減少。</p>
+  <label for="packSize">聲音小背包的清單</label><select id="packSize"><option value="2">小小背包：2 張圖片卡</option><option value="3">多帶一位：3 張圖片卡</option></select><p class="note">先聽兩個詞，再嘗試三個。可重聽，也可請大人讀出清單。</p>
   <p class="note">主題在首頁選擇。部分主題的兩符號詞較少時，拼音會加入其他主題的朋友，畫面會標示。</p>
   <label for="practice">詞語題的玩法</label><select id="practice"><option value="fresh">認識新朋友：避開最近玩過的詞</option><option value="favorite">多玩喜歡的朋友：優先圖鑑收藏</option></select><p id="favorites-note" class="note"></p>
   <h3>聲音小天地</h3><p class="note">上方的朗讀、音效、音樂開關可分別控制。背景音樂預設關閉，點選後開始；離開分頁會暫停。</p>
@@ -30,12 +31,13 @@
   <p class="note">詞語由裝置的中文語音朗讀，品質因裝置而異。這不是經教師校音的單符號錄音；沒有中文語音時，請大人讀題。</p>
   <h3>一起玩的方法</h3><p>看圖說詞、聽詞找圖、配對注音，再試拼音。小火車先聽詞語、自己排車廂，按出發才檢查；點車廂可取下，「幫我一小步」一次提示一個位置。</p>
   <p>拍手小樂隊：一個字拍一下；同聲與押韻遊戲：慢慢念兩個詞，比較開頭或尾巴。聲調滑滑梯適合大人帶著比手勢，三聲線條是完整聲調的示意，實際語流常有變化。</p>
+  <p>聲音小背包：依序聽清單，再放入圖片卡；點已填位置可取下。先自己試，按「裝好了」才檢查，求助一次只提示一個位置。</p>
   <p>新手先玩找符號、尋寶與拍手，其他玩法等孩子有興趣再試。不以背完符號或寫字為目標。</p>
   <h3>我們一起玩過</h3><p id="progress-note"></p><p id="recent-words" class="note"></p>
   <h3>把花園帶著走</h3><p id="offline-settings" class="note"></p><p class="note">第一次連線保存完成後，可離線玩。若瀏覽器提供加入主畫面功能，也可以將花園放到主畫面。更新前先完成目前回合。</p><button id="offline-update" class="replay" hidden>新朋友來了，更新遊戲</button>
   <a href="RESEARCH.md" target="_blank" rel="noopener">閱讀學習設計與研究來源 ↗</a>
   <button id="reset-progress" class="quiet">清除這台裝置的花園與紀錄</button><p id="storage-note" class="note"></p>
 </dialog>
-<script src="data.js?v=5"></script><script src="play.js?v=5"></script><script src="audio.js?v=5"></script><script src="art.js?v=5"></script><script src="offline.js?v=5"></script><script src="app.js?v=5"></script>
+<script src="data.js?v=8"></script><script src="play.js?v=8"></script><script src="audio.js?v=8"></script><script src="art.js?v=8"></script><script src="offline.js?v=8"></script><script src="app.js?v=8"></script>
 </body>
 </html>

@@ -164,7 +164,37 @@
     ['冰涼牛奶','🥛','ㄅㄧㄥ ㄌㄧㄤˊ ㄋㄧㄡˊ ㄋㄞˇ','food'],
     ['美麗雪花','❄️','ㄇㄟˇ ㄌㄧˋ ㄒㄩㄝˇ ㄏㄨㄚ','nature'], ['美麗星光','⭐','ㄇㄟˇ ㄌㄧˋ ㄒㄧㄥ ㄍㄨㄤ','nature'],
     ['小小雪花','❄️','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄒㄩㄝˇ ㄏㄨㄚ','nature'], ['小小雨水','🌧️','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄩˇ ㄕㄨㄟˇ','nature'],
-    ['小小森林','🌳','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄙㄣ ㄌㄧㄣˊ','nature'], ['小小火山','🌋','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄏㄨㄛˇ ㄕㄢ','nature']
+    ['小小森林','🌳','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄙㄣ ㄌㄧㄣˊ','nature'], ['小小火山','🌋','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄏㄨㄛˇ ㄕㄢ','nature'],
+    ['老鷹','🦅','ㄌㄠˇ ㄧㄥ','animals'], ['孔雀','🦚','ㄎㄨㄥˇ ㄑㄩㄝˋ','animals'],
+    ['鸚鵡','🦜','ㄧㄥ ㄨˇ','animals'], ['蜘蛛','🕷️','ㄓ ㄓㄨ','animals'],
+    ['蝸牛','🐌','ㄍㄨㄚ ㄋㄧㄡˊ','animals'], ['螞蟻','🐜','ㄇㄚˇ ㄧˇ','animals'],
+    ['鯨魚','🐋','ㄐㄧㄥ ㄩˊ','animals'], ['金魚','🐠','ㄐㄧㄣ ㄩˊ','animals'],
+    ['貝殼','🐚','ㄅㄟˋ ㄎㄜˊ','animals'], ['螃蟹','🦀','ㄆㄤˊ ㄒㄧㄝˋ','animals'],
+    ['龍蝦','🦞','ㄌㄨㄥˊ ㄒㄧㄚ','animals'], ['河蝦','🦐','ㄏㄜˊ ㄒㄧㄚ','animals'],
+    ['袋鼠','🦘','ㄉㄞˋ ㄕㄨˇ','animals'], ['刺蝟','🦔','ㄘˋ ㄨㄟˋ','animals'],
+    ['芒果','🥭','ㄇㄤˊ ㄍㄨㄛˇ','food'], ['鳳梨','🍍','ㄈㄥˋ ㄌㄧˊ','food'],
+    ['檸檬','🍋','ㄋㄧㄥˊ ㄇㄥˊ','food'], ['櫻桃','🍒','ㄧㄥ ㄊㄠˊ','food'],
+    ['花生','🥜','ㄏㄨㄚ ㄕㄥ','food'], ['蜂蜜','🍯','ㄈㄥ ㄇㄧˋ','food'],
+    ['香菇','🍄','ㄒㄧㄤ ㄍㄨ','food'], ['紅豆','🫘','ㄏㄨㄥˊ ㄉㄡˋ','food'],
+    ['麵條','🍜','ㄇㄧㄢˋ ㄊㄧㄠˊ','food'], ['水餃','🥟','ㄕㄨㄟˇ ㄐㄧㄠˇ','food'],
+    ['壽司','🍣','ㄕㄡˋ ㄙ','food'], ['漢堡','🍔','ㄏㄢˋ ㄅㄠˇ','food'],
+    ['披薩','🍕','ㄆㄧ ㄙㄚˋ','food'], ['熱狗','🌭','ㄖㄜˋ ㄍㄡˇ','food'],
+    ['薯條','🍟','ㄕㄨˇ ㄊㄧㄠˊ','food'], ['鬆餅','🥞','ㄙㄨㄥ ㄅㄧㄥˇ','food'],
+    ['蛋糕','🍰','ㄉㄢˋ ㄍㄠ','food'], ['青椒','🫑','ㄑㄧㄥ ㄐㄧㄠ','food'],
+    ['辣椒','🌶️','ㄌㄚˋ ㄐㄧㄠ','food'], ['番茄','🍅','ㄈㄢ ㄑㄧㄝˊ','food'],
+    ['剪刀','✂️','ㄐㄧㄢˇ ㄉㄠ','things'], ['籃球','🏀','ㄌㄢˊ ㄑㄧㄡˊ','things'],
+    ['網球','🎾','ㄨㄤˇ ㄑㄧㄡˊ','things'], ['棒球','⚾','ㄅㄤˋ ㄑㄧㄡˊ','things'],
+    ['排球','🏐','ㄆㄞˊ ㄑㄧㄡˊ','things'], ['手套','🧤','ㄕㄡˇ ㄊㄠˋ','things'],
+    ['圍巾','🧣','ㄨㄟˊ ㄐㄧㄣ','things'], ['短褲','🩳','ㄉㄨㄢˇ ㄎㄨˋ','things'],
+    ['長褲','👖','ㄔㄤˊ ㄎㄨˋ','things'], ['洋裝','👗','ㄧㄤˊ ㄓㄨㄤ','things'],
+    ['拖鞋','🩴','ㄊㄨㄛ ㄒㄧㄝˊ','things'], ['眼鏡','👓','ㄧㄢˇ ㄐㄧㄥˋ','things'],
+    ['手錶','⌚','ㄕㄡˇ ㄅㄧㄠˇ','things'], ['相機','📷','ㄒㄧㄤˋ ㄐㄧ','things'],
+    ['電腦','💻','ㄉㄧㄢˋ ㄋㄠˇ','things'], ['電池','🔋','ㄉㄧㄢˋ ㄔˊ','things'],
+    ['信封','✉️','ㄒㄧㄣˋ ㄈㄥ','things'], ['公車','🚌','ㄍㄨㄥ ㄔㄜ','things'],
+    ['沙灘','🏖️','ㄕㄚ ㄊㄢ','nature'], ['山谷','🏞️','ㄕㄢ ㄍㄨˇ','nature'],
+    ['落葉','🍂','ㄌㄨㄛˋ ㄧㄝˋ','nature'], ['花朵','🌺','ㄏㄨㄚ ㄉㄨㄛˇ','nature'],
+    ['櫻花','🌸','ㄧㄥ ㄏㄨㄚ','nature'], ['向日葵','🌻','ㄒㄧㄤˋ ㄖˋ ㄎㄨㄟˊ','nature'],
+    ['荷花','🪷','ㄏㄜˊ ㄏㄨㄚ','nature'], ['幼苗','🌱','ㄧㄡˋ ㄇㄧㄠˊ','nature']
   ];
   const phrases = phraseRows.map(([word, emoji, zhuyin, category]) => ({ word, emoji, zhuyin, category, syllables: zhuyin.split(' '), count: zhuyin.split(' ').length }));
   const confusables = [['ㄅ','ㄆ','ㄇ','ㄈ'],['ㄉ','ㄊ','ㄋ','ㄌ'],['ㄍ','ㄎ','ㄏ'],['ㄐ','ㄑ','ㄒ'],['ㄓ','ㄔ','ㄕ','ㄖ','ㄗ','ㄘ','ㄙ'],['ㄚ','ㄛ','ㄜ','ㄝ'],['ㄞ','ㄟ','ㄠ','ㄡ'],['ㄢ','ㄣ','ㄤ','ㄥ'],['ㄧ','ㄨ','ㄩ']];
@@ -252,7 +282,26 @@
       return {...q,mode};
     });
   }
-  const data = { symbols, starter, words, phrases, categories, tones, shuffle, choices, makeRound, makeAdventure, symbolRange };
+  function makePackRound(category='all', size=2, recent=[], preferred=[]) {
+    const count=size===3?3:2, source=[...words,...phrases], history=[...recent];
+    if(!Object.hasOwn(categories,category))category='all';
+    const favoredThemes=[...new Set(source.filter(w=>preferred.includes(w.word)).map(w=>w.category))];
+    return Array.from({length:5},()=>{
+      const theme=category==='all'?shuffle(favoredThemes.length?favoredThemes:Object.keys(categories).filter(c=>c!=='all'))[0]:category;
+      const pool=source.filter(w=>w.category===theme), seen=new Set();
+      const sequence=chooseTargets(pool,history,pool.length,preferred).filter(w=>{
+        if(seen.has(w.emoji))return false;seen.add(w.emoji);return true;
+      }).slice(0,count);
+      // Select distractors against the chosen pictures, not every candidate in the pool.
+      const pictures=new Set(sequence.map(w=>w.emoji));
+      const distractors=shuffle(pool).filter(w=>{
+        if(pictures.has(w.emoji))return false;pictures.add(w.emoji);return true;
+      }).slice(0,2);
+      history.push(...sequence.map(w=>w.word));
+      return {category:theme,sequence,options:shuffle([...sequence,...distractors])};
+    });
+  }
+  const data = { symbols, starter, words, phrases, categories, tones, shuffle, choices, makeRound, makeAdventure, makePackRound, symbolRange };
   root.GardenData = data;
   if (typeof module !== 'undefined') module.exports = data;
 })(typeof window !== 'undefined' ? window : globalThis);

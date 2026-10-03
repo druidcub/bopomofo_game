@@ -44,3 +44,12 @@ test('bingo requires a full row, with columns and diagonals only on a nine-card 
   assert.equal(P.bingoLine(board.slice(0,6),['A','D']),null);
   assert.deepEqual(P.bingoLine(board.slice(0,6),['D','E','F']),[3,4,5]);
 });
+test('favorite collections are bounded, reversible, and restored only from valid vocabulary',()=>{
+  const p=P.emptyProgress();
+  for(let i=0;i<50;i++)assert.equal(P.toggleFavorite(p,'詞'+i),true);
+  assert.equal(P.toggleFavorite(p,'多一個'),false);assert.equal(p.favorites.length,50);
+  assert.equal(P.toggleFavorite(p,'詞3'),true);assert.ok(!p.favorites.includes('詞3'));
+  assert.equal(P.toggleFavorite(p,'多一個'),true);
+  const restored=P.restoreProgress({favorites:['貓','貓','<img>','兔']},[],['貓','兔']);
+  assert.deepEqual(restored.favorites,['貓','兔']);
+});

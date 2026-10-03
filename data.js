@@ -132,7 +132,39 @@
     ['游泳','🏊','ㄧㄡˊ ㄩㄥˇ','actions'], ['走路','🚶','ㄗㄡˇ ㄌㄨˋ','actions'],
     ['紅色','🔴','ㄏㄨㄥˊ ㄙㄜˋ','colors'], ['黃色','🟡','ㄏㄨㄤˊ ㄙㄜˋ','colors'],
     ['藍色','🔵','ㄌㄢˊ ㄙㄜˋ','colors'], ['綠色','🟢','ㄌㄩˋ ㄙㄜˋ','colors'],
-    ['白色','⚪','ㄅㄞˊ ㄙㄜˋ','colors'], ['紫色','🟣','ㄗˇ ㄙㄜˋ','colors']
+    ['白色','⚪','ㄅㄞˊ ㄙㄜˋ','colors'], ['紫色','🟣','ㄗˇ ㄙㄜˋ','colors'],
+    ['小海豚','🐬','ㄒㄧㄠˇ ㄏㄞˇ ㄊㄨㄣˊ','animals'], ['小海龜','🐢','ㄒㄧㄠˇ ㄏㄞˇ ㄍㄨㄟ','animals'],
+    ['小河馬','🦛','ㄒㄧㄠˇ ㄏㄜˊ ㄇㄚˇ','animals'], ['小蜜蜂','🐝','ㄒㄧㄠˇ ㄇㄧˋ ㄈㄥ','animals'],
+    ['小蝴蝶','🦋','ㄒㄧㄠˇ ㄏㄨˊ ㄉㄧㄝˊ','animals'], ['小松鼠','🐿️','ㄒㄧㄠˇ ㄙㄨㄥ ㄕㄨˇ','animals'],
+    ['小烏龜','🐢','ㄒㄧㄠˇ ㄨ ㄍㄨㄟ','animals'], ['小企鵝','🐧','ㄒㄧㄠˇ ㄑㄧˋ ㄜˊ','animals'],
+    ['小章魚','🐙','ㄒㄧㄠˇ ㄓㄤ ㄩˊ','animals'], ['小毛蟲','🐛','ㄒㄧㄠˇ ㄇㄠˊ ㄔㄨㄥˊ','animals'],
+    ['大恐龍','🦕','ㄉㄚˋ ㄎㄨㄥˇ ㄌㄨㄥˊ','animals'], ['大河馬','🦛','ㄉㄚˋ ㄏㄜˊ ㄇㄚˇ','animals'],
+    ['小鱷魚','🐊','ㄒㄧㄠˇ ㄜˋ ㄩˊ','animals'],
+    ['小蘋果','🍎','ㄒㄧㄠˇ ㄆㄧㄥˊ ㄍㄨㄛˇ','food'], ['大蘋果','🍎','ㄉㄚˋ ㄆㄧㄥˊ ㄍㄨㄛˇ','food'],
+    ['小西瓜','🍉','ㄒㄧㄠˇ ㄒㄧ ㄍㄨㄚ','food'], ['小香蕉','🍌','ㄒㄧㄠˇ ㄒㄧㄤ ㄐㄧㄠ','food'],
+    ['小草莓','🍓','ㄒㄧㄠˇ ㄘㄠˇ ㄇㄟˊ','food'], ['小葡萄','🍇','ㄒㄧㄠˇ ㄆㄨˊ ㄊㄠˊ','food'],
+    ['小餅乾','🍪','ㄒㄧㄠˇ ㄅㄧㄥˇ ㄍㄢ','food'], ['小麵包','🍞','ㄒㄧㄠˇ ㄇㄧㄢˋ ㄅㄠ','food'],
+    ['小雞蛋','🥚','ㄒㄧㄠˇ ㄐㄧ ㄉㄢˋ','food'], ['小玉米','🌽','ㄒㄧㄠˇ ㄩˋ ㄇㄧˇ','food'],
+    ['小火車','🚂','ㄒㄧㄠˇ ㄏㄨㄛˇ ㄔㄜ','things'], ['小飛機','✈️','ㄒㄧㄠˇ ㄈㄟ ㄐㄧ','things'],
+    ['大雨傘','☂️','ㄉㄚˋ ㄩˇ ㄙㄢˇ','things'], ['小書包','🎒','ㄒㄧㄠˇ ㄕㄨ ㄅㄠ','things'],
+    ['小皮球','🏀','ㄒㄧㄠˇ ㄆㄧˊ ㄑㄧㄡˊ','things'], ['小毛巾','🧺','ㄒㄧㄠˇ ㄇㄠˊ ㄐㄧㄣ','things'],
+    ['小鬧鐘','⏰','ㄒㄧㄠˇ ㄋㄠˋ ㄓㄨㄥ','things'],
+    ['黑白熊貓','🐼','ㄏㄟ ㄅㄞˊ ㄒㄩㄥˊ ㄇㄠ','animals'], ['可愛貓咪','🐱','ㄎㄜˇ ㄞˋ ㄇㄠ ㄇㄧ','animals'],
+    ['可愛小兔','🐰','ㄎㄜˇ ㄞˋ ㄒㄧㄠˇ ㄊㄨˋ','animals'], ['可愛小狗','🐶','ㄎㄜˇ ㄞˋ ㄒㄧㄠˇ ㄍㄡˇ','animals'],
+    ['快樂小馬','🐴','ㄎㄨㄞˋ ㄌㄜˋ ㄒㄧㄠˇ ㄇㄚˇ','animals'], ['快樂小牛','🐮','ㄎㄨㄞˋ ㄌㄜˋ ㄒㄧㄠˇ ㄋㄧㄡˊ','animals'],
+    ['快樂小羊','🐑','ㄎㄨㄞˋ ㄌㄜˋ ㄒㄧㄠˇ ㄧㄤˊ','animals'], ['美麗蝴蝶','🦋','ㄇㄟˇ ㄌㄧˋ ㄏㄨˊ ㄉㄧㄝˊ','animals'],
+    ['忙碌蜜蜂','🐝','ㄇㄤˊ ㄌㄨˋ ㄇㄧˋ ㄈㄥ','animals'], ['小小蝌蚪','🐸','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄎㄜ ㄉㄡˇ','animals'],
+    ['小小章魚','🐙','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄓㄤ ㄩˊ','animals'], ['小小松鼠','🐿️','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄙㄨㄥ ㄕㄨˇ','animals'],
+    ['小小烏龜','🐢','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄨ ㄍㄨㄟ','animals'], ['小小海豚','🐬','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄏㄞˇ ㄊㄨㄣˊ','animals'],
+    ['小小企鵝','🐧','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄑㄧˋ ㄜˊ','animals'],
+    ['香甜蘋果','🍎','ㄒㄧㄤ ㄊㄧㄢˊ ㄆㄧㄥˊ ㄍㄨㄛˇ','food'], ['香甜香蕉','🍌','ㄒㄧㄤ ㄊㄧㄢˊ ㄒㄧㄤ ㄐㄧㄠ','food'],
+    ['香甜西瓜','🍉','ㄒㄧㄤ ㄊㄧㄢˊ ㄒㄧ ㄍㄨㄚ','food'], ['香甜草莓','🍓','ㄒㄧㄤ ㄊㄧㄢˊ ㄘㄠˇ ㄇㄟˊ','food'],
+    ['香甜葡萄','🍇','ㄒㄧㄤ ㄊㄧㄢˊ ㄆㄨˊ ㄊㄠˊ','food'], ['香脆餅乾','🍪','ㄒㄧㄤ ㄘㄨㄟˋ ㄅㄧㄥˇ ㄍㄢ','food'],
+    ['香香麵包','🍞','ㄒㄧㄤ ㄒㄧㄤ ㄇㄧㄢˋ ㄅㄠ','food'], ['熱熱白飯','🍚','ㄖㄜˋ ㄖㄜˋ ㄅㄞˊ ㄈㄢˋ','food'],
+    ['冰涼牛奶','🥛','ㄅㄧㄥ ㄌㄧㄤˊ ㄋㄧㄡˊ ㄋㄞˇ','food'],
+    ['美麗雪花','❄️','ㄇㄟˇ ㄌㄧˋ ㄒㄩㄝˇ ㄏㄨㄚ','nature'], ['美麗星光','⭐','ㄇㄟˇ ㄌㄧˋ ㄒㄧㄥ ㄍㄨㄤ','nature'],
+    ['小小雪花','❄️','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄒㄩㄝˇ ㄏㄨㄚ','nature'], ['小小雨水','🌧️','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄩˇ ㄕㄨㄟˇ','nature'],
+    ['小小森林','🌳','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄙㄣ ㄌㄧㄣˊ','nature'], ['小小火山','🌋','ㄒㄧㄠˇ ㄒㄧㄠˇ ㄏㄨㄛˇ ㄕㄢ','nature']
   ];
   const phrases = phraseRows.map(([word, emoji, zhuyin, category]) => ({ word, emoji, zhuyin, category, syllables: zhuyin.split(' '), count: zhuyin.split(' ').length }));
   const confusables = [['ㄅ','ㄆ','ㄇ','ㄈ'],['ㄉ','ㄊ','ㄋ','ㄌ'],['ㄍ','ㄎ','ㄏ'],['ㄐ','ㄑ','ㄒ'],['ㄓ','ㄔ','ㄕ','ㄖ','ㄗ','ㄘ','ㄙ'],['ㄚ','ㄛ','ㄜ','ㄝ'],['ㄞ','ㄟ','ㄠ','ㄡ'],['ㄢ','ㄣ','ㄤ','ㄥ'],['ㄧ','ㄨ','ㄩ']];
@@ -150,15 +182,16 @@
   function choices(answer, pool, count = 3) {
     return shuffle([answer, ...shuffle([...new Set(pool)].filter(s => s !== answer)).slice(0, count - 1)]);
   }
-  function chooseTargets(pool, recent = []) {
-    const history = new Set(recent);
-    return [...shuffle(pool.filter(w => !history.has(w.word))), ...shuffle(pool.filter(w => history.has(w.word)))].slice(0, 5);
+  function chooseTargets(pool, recent = [], count=5, preferred=[]) {
+    const history = new Set(recent), favorites=new Set(preferred);
+    if(favorites.size) return [...shuffle(pool.filter(w=>favorites.has(w.word)&&!history.has(w.word))),...shuffle(pool.filter(w=>favorites.has(w.word)&&history.has(w.word))),...shuffle(pool.filter(w=>!favorites.has(w.word)&&!history.has(w.word))),...shuffle(pool.filter(w=>!favorites.has(w.word)&&history.has(w.word)))].slice(0,count);
+    return [...shuffle(pool.filter(w => !history.has(w.word))), ...shuffle(pool.filter(w => history.has(w.word)))].slice(0, count);
   }
   function symbolRange(scope, custom=[]){
     const selected=[...new Set(custom)].filter(s=>symbols.includes(s));
     return scope==='custom'&&selected.length>=3?selected:scope==='all'?symbols:starter;
   }
-  function makeRound(mode, scope = 'starter', category = 'all', level = 'easy', recent = [], memoryPairs = 3, customSymbols = []) {
+  function makeRound(mode, scope = 'starter', category = 'all', level = 'easy', recent = [], memoryPairs = 3, customSymbols = [], preferred = []) {
     const symbolPool = symbolRange(scope,customSymbols);
     if(mode==='bingo') return shuffle(symbolPool).slice(0,symbolPool.length>=9?9:symbolPool.length>=6?6:3).map((s,i)=>({id:i,symbol:s}));
     if (mode === 'match') {
@@ -174,7 +207,7 @@
       // Keep the whole garden available: some themes have too few rhyming pairs.
       const key = mode === 'rhyme' ? 'rhyme' : 'initial';
       const eligible = words.filter(w => w[key] && words.some(x => x.word !== w.word && x[key] === w[key]));
-      return chooseTargets(eligible, recent).map(w => {
+      return chooseTargets(eligible, recent,5,preferred).map(w => {
         const friend = shuffle(words.filter(x => x.word !== w.word && x[key] === w[key]))[0];
         const others = shuffle(words.filter(x => x[key] !== w[key] && x.word !== w.word)).slice(0, 2);
         return { ...w, answer: friend.word, options: shuffle([friend, ...others]) };
@@ -189,8 +222,8 @@
       pool = [...pool, ...shuffle(extra).slice(0, 5 - pool.length)];
     }
     // Hearing different lengths in one round is more useful than five equally long words.
-    if (mode === 'syllables' && category === 'all') pool = [...shuffle(pool.filter(w=>w.count===1)).slice(0,1), ...shuffle(pool.filter(w=>w.count===2)).slice(0,2), ...shuffle(pool.filter(w=>w.count===3)).slice(0,1), ...shuffle(pool.filter(w=>w.count===4)).slice(0,1)];
-    return chooseTargets(pool, recent).map(w => {
+    if (mode === 'syllables' && category === 'all') pool = [...chooseTargets(pool.filter(w=>w.count===1),recent,1,preferred), ...chooseTargets(pool.filter(w=>w.count===2),recent,2,preferred), ...chooseTargets(pool.filter(w=>w.count===3),recent,1,preferred), ...chooseTargets(pool.filter(w=>w.count===4),recent,1,preferred)];
+    return chooseTargets(pool, recent,5,preferred).map(w => {
       if (mode === 'listen') return { ...w, answer: w.initial, options: choices(w.initial, words.map(x => x.initial)) };
       if (mode === 'picture') {
         const seen = new Set([w.emoji]);
@@ -208,12 +241,14 @@
       return { ...w, options: shuffle([...w.parts, ...extra]) };
     });
   }
-  function makeAdventure(scope='starter', category='all', level='easy', recent=[], customSymbols=[]) {
+  function makeAdventure(scope='starter', category='all', level='easy', recent=[], customSymbols=[], preferred=[]) {
     const route = shuffle(['match','picture','syllables','listen',level === 'grow' ? 'repair' : 'build']);
-    const used = [...recent];
+    const used = [...recent], stationWords=[];
     return route.map(mode=>{
-      const q=makeRound(mode,scope,category,level,used,3,customSymbols)[0];
-      if(q.word)used.push(q.word);
+      // Avoid using the same preferred word at multiple stations within this adventure.
+      const availableFavorites=preferred.filter(w=>!stationWords.includes(w));
+      const q=makeRound(mode,scope,category,level,used,3,customSymbols,availableFavorites)[0];
+      if(q.word){used.push(q.word);stationWords.push(q.word);}
       return {...q,mode};
     });
   }

@@ -2,8 +2,8 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f8f5ec"><meta name="description" content="140 個生活字、100 個詞語、12 種親子注音小遊戲。陪孩子聽聲音、找符號、玩拼音。">
-  <title>注音小花園 · 一起玩聲音</title><link rel="stylesheet" href="style.css?v=3">
+  <meta name="theme-color" content="#f8f5ec"><meta name="description" content="140 個生活字、160 個詞語與短語、12 種親子注音小遊戲。陪孩子聽聲音、找符號、玩拼音。">
+  <title>注音小花園 · 一起玩聲音</title><link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 <header class="topbar">
@@ -20,6 +20,7 @@
   <label for="buildLevel">小火車與修理站</label><select id="buildLevel"><option value="easy">小小火車：兩個符號</option><option value="grow">長長火車：兩個或三個符號</option></select>
   <label for="memoryPairs">翻翻卡的朋友數量</label><select id="memoryPairs"><option value="3">先試試：3 對（6 張）</option><option value="4">多找一點：4 對（8 張）</option><option value="6">大花園：6 對（12 張）</option></select><p class="note">自選符號較少時，卡片對數會配合減少。</p>
   <p class="note">主題在首頁選擇。部分主題的兩符號詞較少時，拼音會加入其他主題的朋友，畫面會標示。</p>
+  <label for="practice">詞語題的玩法</label><select id="practice"><option value="fresh">認識新朋友：避開最近玩過的詞</option><option value="favorite">多玩喜歡的朋友：優先圖鑑收藏</option></select><p id="favorites-note" class="note"></p>
   <h3>聲音小天地</h3><p class="note">上方的朗讀、音效、音樂開關可分別控制。背景音樂預設關閉，點選後開始；離開分頁會暫停。</p>
   <label for="track">背景音樂</label><select id="track"><option value="garden">🌷 花園散步</option><option value="stars">⭐ 星星搖籃</option><option value="picnic">🌳 森林野餐</option><option value="raindrops">🌧️ 雨滴小圓舞</option><option value="rainbow">🌈 彩虹慢慢走</option></select>
   <label for="musicVolume">配樂音量 <output id="musicVolume-value">18%</output></label><input id="musicVolume" type="range" min="0" max="50" step="1">
@@ -34,6 +35,6 @@
   <a href="RESEARCH.md" target="_blank" rel="noopener">閱讀學習設計與研究來源 ↗</a>
   <button id="reset-progress" class="quiet">清除這台裝置的花園與紀錄</button><p id="storage-note" class="note"></p>
 </dialog>
-<script src="data.js?v=3"></script><script src="play.js?v=3"></script><script src="audio.js?v=3"></script><script src="art.js?v=3"></script><script src="app.js?v=3"></script>
+<script src="data.js?v=4"></script><script src="play.js?v=4"></script><script src="audio.js?v=4"></script><script src="art.js?v=4"></script><script src="app.js?v=4"></script>
 </body>
 </html>

@@ -51,8 +51,8 @@ test('all themes and levels produce five unique solvable questions', () => {
     }
   }
 });
-test('100 phrase entries have unique names and one valid pronunciation per syllable', () => {
-  assert.equal(D.phrases.length,100); assert.equal(new Set(D.phrases.map(p=>p.word)).size,100);
+test('160 phrase entries have unique names and one valid pronunciation per syllable', () => {
+  assert.equal(D.phrases.length,160); assert.equal(new Set(D.phrases.map(p=>p.word)).size,160);
   D.phrases.forEach(p=>{
     assert.equal([...p.word].length,p.count); assert.ok(p.count>=2 && p.count<=4);
     p.syllables.forEach(s=>assert.match(s,/^[ㄅ-ㄩ]+[ˊˇˋ]?$/));
@@ -71,6 +71,25 @@ test('bingo boards contain 3, 6 or 9 distinct available symbols',()=>{
 test('recently played vocabulary is avoided when enough alternatives exist', () => {
   const previous=D.makeRound('build').map(q=>q.word);
   for(let n=0;n<20;n++) assert.ok(D.makeRound('build','starter','all','easy',previous).every(q=>!previous.includes(q.word)));
+});
+test('balanced syllable rounds avoid recent words within every length group',()=>{
+  let recent=[];
+  for(let n=0;n<25;n++){
+    const round=D.makeRound('syllables','starter','all','easy',recent);
+    assert.ok(round.every(q=>!recent.includes(q.word)));
+    assert.deepEqual([...new Set(round.map(q=>q.count))].sort(),[1,2,3,4]);
+    recent=[...recent,...round.map(q=>q.word)].slice(-30);
+  }
+});
+test('favorite practice revisits selected words and still produces complete valid rounds',()=>{
+  for(let n=0;n<20;n++){
+    const r=D.makeRound('listen','starter','all','easy',['貓'],3,[],['貓']);
+    assert.equal(r[0].word,'貓');assert.equal(r.length,5);
+    const build=D.makeRound('build','starter','all','easy',[],3,[],['貓','狗','兔','馬','魚']);
+    assert.ok(['貓','狗','兔','馬'].every(w=>build.some(q=>q.word===w)));
+    const adventure=D.makeAdventure('starter','all','easy',[],[],['貓','狗','兔']);
+    assert.equal(new Set(adventure.filter(q=>q.word).map(q=>q.word)).size,4);
+  }
 });
 test('memory boards have 3, 4 or 6 distinct pairs and stable card IDs', () => {
   for (const scope of ['starter', 'all']) for (const pairs of [3,4,6]) for (let n = 0; n < 40; n++) {

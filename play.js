@@ -30,13 +30,14 @@
   ];
   function earnedBadges(progress){return badges.filter(b=>b.rule(progress));}
   function availableDecorations(rounds){return decorations.filter(d=>d.at<=rounds);}
-  function emptyProgress(){return {flowers:0,rounds:0,modes:{},recent:[],journal:[],plots:['tulip','','tulip','','tulip','']};}
+  function emptyProgress(){return {flowers:0,rounds:0,modes:{},recent:[],journal:[],favorites:[],plots:['tulip','','tulip','','tulip','']};}
   function restoreProgress(recorded, validModes, vocabulary){
     const p=emptyProgress(), allowed=new Set(vocabulary);
     for(const key of ['flowers','rounds'])if(Number.isSafeInteger(recorded?.[key])&&recorded[key]>=0)p[key]=recorded[key];
     for(const mode of validModes)if(Number.isSafeInteger(recorded?.modes?.[mode])&&recorded.modes[mode]>0)p.modes[mode]=recorded.modes[mode];
     if(Array.isArray(recorded?.recent))p.recent=recorded.recent.filter(w=>allowed.has(w)).slice(-30);
     if(Array.isArray(recorded?.journal))p.journal=[...new Set(recorded.journal.filter(w=>allowed.has(w)))].slice(-vocabulary.length);
+    if(Array.isArray(recorded?.favorites))p.favorites=[...new Set(recorded.favorites.filter(w=>allowed.has(w)))].slice(0,50);
     if(Array.isArray(recorded?.plots))p.plots=Array.from({length:6},(_,i)=>availableDecorations(p.rounds).some(d=>d.id===recorded.plots[i])?recorded.plots[i]:'');
     return p;
   }
@@ -44,6 +45,11 @@
     if(!word)return;
     progress.recent=[...progress.recent.filter(w=>w!==word),word].slice(-30);
     progress.journal=[...new Set([...progress.journal,word])];
+  }
+  function toggleFavorite(progress,word){
+    if(progress.favorites.includes(word)){progress.favorites=progress.favorites.filter(w=>w!==word);return true;}
+    if(progress.favorites.length>=50)return false;
+    progress.favorites.push(word);return true;
   }
   function nextInvitation(progress){
     const invitations=[
@@ -56,6 +62,6 @@
     ];
     return invitations[progress.rounds%invitations.length];
   }
-  const play={checkTrain,nextHint,bingoLine,badges,decorations,earnedBadges,availableDecorations,emptyProgress,restoreProgress,rememberWord,nextInvitation};
+  const play={checkTrain,nextHint,bingoLine,badges,decorations,earnedBadges,availableDecorations,emptyProgress,restoreProgress,rememberWord,toggleFavorite,nextInvitation};
   root.GardenPlay=play;if(typeof module!=='undefined')module.exports=play;
 })(typeof window!=='undefined'?window:globalThis);

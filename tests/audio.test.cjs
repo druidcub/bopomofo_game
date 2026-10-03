@@ -8,8 +8,8 @@ class MockContext {
   createGain() { return { gain: { value: 0, setTargetAtTime(v) { this.value = v; }, setValueAtTime(v) { this.value = v; }, exponentialRampToValueAtTime(v) { this.value = v; } }, connect() {}, disconnect() {} }; }
   createOscillator() { const ctx = this; return { frequency: {value: 0}, connect() {}, disconnect() {}, start(t) { ctx.started.push(t); }, stop(t) { ctx.stopped.push(t); } }; }
 }
-test('three original music loops have valid notes and bass arrangements', () => {
-  assert.equal(Object.keys(songs).length, 3);
+test('five original music loops have valid notes and bass arrangements', () => {
+  assert.equal(Object.keys(songs).length, 5);
   Object.values(songs).forEach(s => { assert.equal(s.notes.length, 32); assert.equal(s.bass.length, 4); assert.ok(s.beat >= .4); assert.ok(s.notes.every(n => n === 0 || n >= 60 && n <= 84)); });
 });
 test('audio requires unlock; controls, speech ducking and page suspension are independent', async () => {

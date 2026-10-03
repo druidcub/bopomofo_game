@@ -3,7 +3,9 @@
   const songs = {
     garden: { name: '花園散步', beat: .48, notes: [72,76,79,76,74,0,72,0,76,79,81,79,76,0,74,0,72,74,76,79,76,74,72,0,67,72,74,76,74,0,72,0], bass: [48,53,55,48] },
     stars: { name: '星星搖籃', beat: .6, notes: [79,0,81,79,76,0,74,0,76,79,84,0,81,79,76,0,74,0,76,74,72,0,67,0,72,76,79,0,76,74,72,0], bass: [48,57,53,55] },
-    picnic: { name: '森林野餐', beat: .4, notes: [72,74,76,0,79,76,74,0,76,79,81,0,79,76,74,0,72,76,79,76,74,72,67,0,67,72,74,76,79,74,72,0], bass: [48,53,48,55] }
+    picnic: { name: '森林野餐', beat: .4, notes: [72,74,76,0,79,76,74,0,76,79,81,0,79,76,74,0,72,76,79,76,74,72,67,0,67,72,74,76,79,74,72,0], bass: [48,53,48,55] },
+    raindrops: { name: '雨滴小圓舞', beat: .54, notes: [76,79,0,74,77,0,72,76,0,67,72,0,74,77,0,76,79,0,77,81,0,76,79,0,74,77,0,72,76,0,72,0], bass: [48,53,55,48] },
+    rainbow: { name: '彩虹慢慢走', beat: .5, notes: [72,0,74,76,79,0,81,0,79,76,74,0,72,0,67,0,76,0,79,81,84,0,81,0,79,76,74,0,76,74,72,0], bass: [48,55,57,53] }
   };
   class GardenAudio {
     constructor() {
@@ -59,13 +61,13 @@
     }
     effect(name) {
       if (!this.options.effects || !this.context || this.context.state !== 'running') return;
-      const sequences = { tap: [76], flip: [72,79], retry: [64,62], correct: [72,76,79], place: [79,84], finish: [72,76,79,84,79,84] };
+      const sequences = { tap: [76], flip: [72,79], retry: [64,62], correct: [72,76,79], place: [79,84], clap: [60], blossom: [76,81,84], finish: [72,76,79,84,79,84] };
       const notes = sequences[name] || sequences.tap;
       const time = this.context.currentTime;
       // Limit rapid tapping so overlapping envelopes never accumulate into a loud burst.
       if (this.lastEffect && time - this.lastEffect < .055) return;
       this.lastEffect = time;
-      notes.forEach((n, i) => this.tone(n, time + i * .12, .18, this.effectsBus, name === 'retry' ? .08 : .14));
+      notes.forEach((n, i) => this.tone(n, time + i * .12, name==='clap'?.09:.18, this.effectsBus, name === 'retry' ? .08 : .14, name==='clap'?'triangle':'sine'));
     }
     syncMusic() {
       if (!this.context || !this.unlocked || !this.options.music || (root.document && root.document.hidden)) { this.stopMusic(); return; }

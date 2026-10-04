@@ -1,8 +1,8 @@
 'use strict';
 const scopeURL=new URL(self.registration.scope);
 const prefix='bopomofo:'+scopeURL.pathname+':';
-const cacheName=prefix+'19';
-const files=['./','./index.html','./style.css?v=19','./data.js?v=19','./play.js?v=19','./challenges.js?v=19','./discovery.js?v=19','./audio.js?v=19','./art.js?v=19','./sound-memory.js?v=19','./sound-memory-ui.js?v=19','./app.js?v=19','./extensions.js?v=19','./extensions-ui.js?v=19','./offline.js?v=19','./manifest.webmanifest','./icon.svg','./RESEARCH.md'];
+const cacheName=prefix+'20';
+const files=['./','./index.html','./style.css?v=20','./data.js?v=20','./play.js?v=20','./challenges.js?v=20','./discovery.js?v=20','./audio.js?v=20','./art.js?v=20','./sound-memory.js?v=20','./sound-memory-ui.js?v=20','./app.js?v=20','./extensions.js?v=20','./extensions-ui.js?v=20','./offline.js?v=20','./manifest.webmanifest','./icon.svg','./RESEARCH.md'];
 const paths=new Set(files.map(file=>new URL(file,scopeURL).pathname));
 
 self.addEventListener('install',event=>{

@@ -5,6 +5,26 @@ const vm=require('node:vm');
 const D=require('../data.js');
 const M=require('../sound-memory.js');
 
+test('word length limits are independent of pair counts and keep every theme playable',()=>{
+  for(const wordSize of [2,3,4])for(const category of Object.keys(D.categories))for(const size of [2,3,4]){
+    const deck=M.makeDeck(category,size,[],[],wordSize);
+    assert.equal(deck.length,size*2);
+    assert.ok(deck.every(c=>(c.target.count||1)<=wordSize));
+  }
+  assert.ok(M.makeDeck('all',4,[],[],999).every(c=>(c.target.count||1)<=3));
+});
+
+test('an invited four syllable phrase appears only when the round allows its length',()=>{
+  const word=D.phrases.find(w=>w.count===4&&w.category==='animals');
+  assert.ok(word);
+  const invited=Object.freeze([word.word]);
+  for(let n=0;n<20;n++){
+    assert.ok(M.makeDeck('animals',2,[],invited,4).some(c=>c.target.word===word.word));
+    assert.ok(M.makeDeck('animals',2,[],invited,2).every(c=>(c.target.count||1)<=2));
+  }
+  assert.deepEqual(invited,[word.word]);
+});
+
 test('every theme and size has one picture and one audio card per distinct pictured word',()=>{
   for(const category of Object.keys(D.categories))for(const size of [2,3,4])for(let n=0;n<20;n++){
     const deck=M.makeDeck(category,size);

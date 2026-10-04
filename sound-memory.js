@@ -1,9 +1,10 @@
 (function(root){
   'use strict';
   const D=typeof module!=='undefined'&&module.exports?require('./data.js'):root.GardenData;
-  function makeDeck(category='all',size=2,recent=[],preferred=[]){
+  function makeDeck(category='all',size=2,recent=[],preferred=[],wordSize=3){
     const count=[2,3,4].includes(size)?size:2,history=new Set(recent),favorites=new Set(preferred);
-    const bank=[...D.words,...D.phrases.filter(w=>w.count<=3)];
+    const maxCount=[2,3,4].includes(wordSize)?wordSize:3;
+    const bank=[...D.words,...D.phrases.filter(w=>w.count<=maxCount)];
     const theme=bank.filter(w=>category==='all'||w.category===category);
     const score=w=>(favorites.has(w.word)?1000:0)+(history.has(w.word)?0:10);
     const order=pool=>D.shuffle(pool).sort((a,b)=>score(b)-score(a));

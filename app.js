@@ -6,7 +6,7 @@ const modeIDs=['match','listen','build','picture','rhyme','memory','initial','sy
 const vocabulary=[...words,...phrases];
 const playGroups={all:{name:'全部玩法',note:'想玩什麼就選什麼，也可以先看圖、先聽聲音。'},shapes:{name:'看字形',note:'從找相同符號開始，不需要先會讀注音。',ids:['match','memory','bingo']},sounds:{name:'看圖與聽音',note:'重聽整個生活詞，找圖片、比開頭，或拍拍聲音。',ids:['picture','rhyme','initial','syllables','odd','balance','soundMemory']},phonics:{name:'和大人拼音',note:'成人陪同認識聲音與符號；拼詞是進階活動，可以慢慢來。',ids:['listen','build','repair','tone','workshop']},tasks:{name:'聽音小任務',note:'送信、裝背包、走五站。可以重聽，不用趕時間。',ids:['adventure','pack','mail']}};
 let playGroup='all';
-const defaults = { scope: 'starter', customSymbols:'ㄅㄆㄇㄚㄧ', category: 'all', practice:'fresh', oddSound:'initial', buildLevel: 'easy', memoryPairs: 3, packSize:2, mailHouses:2, workshopSize:2, balanceSize:2, soundPairs:2, sound: true, voice: '', effects: true, music: false, track: 'garden', musicVolume: 18, effectsVolume: 40 };
+const defaults = { scope: 'starter', customSymbols:'ㄅㄆㄇㄚㄧ', category: 'all', practice:'fresh', oddSound:'initial', buildLevel: 'easy', memoryPairs: 3, packSize:2, mailHouses:2, workshopSize:2, balanceSize:2, soundPairs:2, soundWordSize:3, sound: true, voice: '', effects: true, music: false, track: 'garden', musicVolume: 18, effectsVolume: 40 };
 let prefs = { ...defaults }, progress = emptyProgress(), storageOK = true;
 try {
   const saved = JSON.parse(localStorage.getItem('garden-prefs') || '{}');
@@ -24,7 +24,7 @@ if (!['easy', 'grow'].includes(prefs.buildLevel)) prefs.buildLevel = 'easy';
 if (![3,4,6].includes(prefs.memoryPairs)) prefs.memoryPairs=3;
 if (![2,3].includes(prefs.packSize)) prefs.packSize=2;
 if (![2,3].includes(prefs.mailHouses)) prefs.mailHouses=2;
-for(const key of ['workshopSize','balanceSize','soundPairs'])if(![2,3,4].includes(prefs[key]))prefs[key]=2;
+for(const key of ['workshopSize','balanceSize','soundPairs','soundWordSize'])if(![2,3,4].includes(prefs[key]))prefs[key]=2;
 if (!Object.hasOwn(GardenSongs, prefs.track)) prefs.track = 'garden';
 prefs.musicVolume = Math.max(0, Math.min(50, prefs.musicVolume));
 prefs.effectsVolume = Math.max(0, Math.min(70, prefs.effectsVolume));
@@ -133,7 +133,7 @@ function start(mode, invited=null, options={}) {
     adventure:()=>makeAdventure(prefs.scope,prefs.category,prefs.buildLevel,progress.recent,[...prefs.customSymbols],preferred),
     workshop:()=>GardenExtensions.makeWorkshopRound(prefs.category,options.workshopSize||prefs.workshopSize,progress.recent,preferred),
     balance:()=>GardenExtensions.makeBalanceRound(prefs.category,prefs.balanceSize,progress.recent,preferred),
-    soundMemory:()=>GardenSoundMemory.makeDeck(prefs.category,prefs.soundPairs,progress.recent,preferred)
+    soundMemory:()=>GardenSoundMemory.makeDeck(prefs.category,prefs.soundPairs,progress.recent,preferred,options.soundWordSize||prefs.soundWordSize)
   };
   const questions=generators[mode]?generators[mode]():makeRound(mode,prefs.scope,prefs.category,prefs.buildLevel,progress.recent,prefs.memoryPairs,[...prefs.customSymbols],preferred);
   game = { session:mode, mode:mode==='adventure'?questions[0].mode:mode, questions, index: 0, done: false, selected: [], used: [], matched: [], flipped: [], preview: false, locked: false, claps: 0, hints: 0 };
@@ -402,7 +402,7 @@ function renderAlbum(page=0, selection=null, onlyRecent=false, onlyFavorites=fal
   const pool=GardenDiscovery.filterWords(vocabulary,{category:prefs.category,query,seenOnly:onlyRecent,favoritesOnly:onlyFavorites},progress);
   const pages=Math.max(1,Math.ceil(pool.length/12));page=Math.max(0,Math.min(pages-1,page));
   const visible=pool.slice(page*12,page*12+12), chosen=visible.find(w=>w.word===selection)||null;
-  const story=chosen?`<div class="word-story"><span class="story-emoji" role="img" aria-label="${chosen.word}">${visual(chosen)}</span><div><h2 id="story-title" tabindex="-1">${chosen.word}</h2><div class="story-zhuyin">${chosen.zhuyin.split(' ').map(s=>`<span>${s}</span>`).join('')}</div><p>${categories[chosen.category]} · ${chosen.count||1} 個聲音</p><div class="story-actions"><button id="story-replay" class="replay">♫ 再聽「${chosen.word}」</button><button id="story-favorite" class="quiet" aria-pressed="${progress.favorites.includes(chosen.word)}">${progress.favorites.includes(chosen.word)?'♥ 喜歡的朋友':'♡ 我喜歡這個朋友'}</button><button id="story-play" class="quiet">🔍 和這個朋友玩尋寶</button>${chosen.count>1?'<button id="story-workshop" class="quiet">🧩 和大人一起拼這個詞</button>':''}</div></div></div>`:'<p class="album-invite">點一張卡片，或請小兔挑一位新朋友。</p>';
+  const story=chosen?`<div class="word-story"><span class="story-emoji" role="img" aria-label="${chosen.word}">${visual(chosen)}</span><div><h2 id="story-title" tabindex="-1">${chosen.word}</h2><div class="story-zhuyin">${chosen.zhuyin.split(' ').map(s=>`<span>${s}</span>`).join('')}</div><p>${categories[chosen.category]} · ${chosen.count||1} 個聲音</p><div class="story-actions"><button id="story-replay" class="replay">♫ 再聽「${chosen.word}」</button><button id="story-favorite" class="quiet" aria-pressed="${progress.favorites.includes(chosen.word)}">${progress.favorites.includes(chosen.word)?'♥ 喜歡的朋友':'♡ 我喜歡這個朋友'}</button><button id="story-play" class="quiet">🔍 和這個朋友玩尋寶</button><button id="story-sound-memory" class="quiet">🃏 和這個朋友玩聽音翻卡</button>${chosen.count>1?'<button id="story-workshop" class="quiet">🧩 和大人一起拼這個詞</button>':''}</div></div></div>`:'<p class="album-invite">點一張卡片，或請小兔挑一位新朋友。</p>';
   const cards=visible.map((w,i)=>`<button data-word="${i}" aria-label="認識 ${w.word}" aria-pressed="${w===chosen}"><span>${visual(w)}</span><strong>${w.word}</strong><small>${categories[w.category]}${progress.favorites.includes(w.word)?' · ♥':''}</small></button>`).join('');
   const stats=GardenDiscovery.topicStats(vocabulary,progress);
   $('#app').innerHTML=`<section class="album-page">${heading('聲音圖鑑',pool.length,'個字詞')}<div class="eyebrow">LISTEN & DISCOVER</div><h1>今天想聽哪個朋友？</h1><p>這裡可以看圖、聽詞、看看注音，沒有題目，也不用答對。</p><form id="album-search" class="album-search"><label for="word-search">找詞語或注音</label><div><input id="word-search" type="search" maxlength="64" placeholder="例如：西瓜、ㄒㄧ" autocomplete="off"><button class="primary" type="submit">找朋友</button></div><button id="search-clear" type="button" class="quiet" ${query?'':'hidden'}>清除搜尋</button></form><div class="album-filters"><label for="album-theme">主題</label><select id="album-theme">${Object.entries(categories).map(([id,name])=>`<option value="${id}" ${prefs.category===id?'selected':''}>${name}</option>`).join('')}</select><button id="album-recent" class="quiet" aria-pressed="${onlyRecent}">${onlyRecent?'顯示全部朋友':'看我玩過的詞'}</button><button id="album-favorites" class="quiet" aria-pressed="${onlyFavorites}">${onlyFavorites?'顯示全部朋友':'♥ 我喜歡的詞 '+progress.favorites.length}</button><button id="album-surprise" class="replay" ${pool.length?'':'disabled'}>🎲 小兔幫我挑一個</button></div>${story}<p id="audio-note" class="audio-note">${audioNote()}</p><p id="album-note" class="note" role="status">小兔優先挑目前範圍裡還沒玩過的詞。點愛心可以收藏，帶去下一回合。</p><div class="album-grid">${cards||'<p>還沒找到朋友。試試清除搜尋，或換一個主題吧。</p>'}</div><div class="album-pages"><button id="album-prev" class="quiet" ${page===0?'disabled':''}>← 上一頁</button><span>${page+1} / ${pages}</span><button id="album-next" class="quiet" ${page===pages-1?'disabled':''}>下一頁 →</button></div><details class="album-passport"><summary>🧭 我的探險足跡 · ${progress.journal.length} 位朋友</summary><p>記下玩遊戲時遇過的詞，不是測驗成績。點一個主題，看看還有哪些朋友。</p><div>${stats.map(s=>`<button data-album-topic="${s.category}"><strong>${categories[s.category]}</strong><span>遇過 ${s.seen} / ${s.total}</span></button>`).join('')}</div></details></section>`;
@@ -421,6 +421,7 @@ function renderAlbum(page=0, selection=null, onlyRecent=false, onlyFavorites=fal
   document.querySelectorAll('[data-album-topic]').forEach(b=>b.onclick=()=>{prefs.category=b.dataset.albumTopic;save();effect('tap');renderAlbum();$('#album-theme').focus({preventScroll:true});});
   if($('#story-replay'))$('#story-replay').onclick=()=>speak(chosen.word);
   if($('#story-play'))$('#story-play').onclick=()=>start('picture',[chosen.word]);
+  if($('#story-sound-memory'))$('#story-sound-memory').onclick=()=>start('soundMemory',[chosen.word],{soundWordSize:Math.max(prefs.soundWordSize,chosen.count||1)});
   if($('#story-workshop'))$('#story-workshop').onclick=()=>start('workshop',[chosen.word],{workshopSize:chosen.count});
   if($('#story-favorite'))$('#story-favorite').onclick=()=>{
     if(!GardenPlay.toggleFavorite(progress,chosen.word)){$('#album-note').textContent='可以收藏 50 個朋友；先取消一個，再邀請新朋友。';return;}
@@ -447,7 +448,7 @@ async function toggleMusic() {
   if (prefs.music && !await gardenAudio.unlock()) { const el = $('#music-status') || $('#home-music-status'); if (el) el.textContent = '聲音未能啟動，請再點一次音樂開關。'; }
 }
 function openSettings() {
-  for (const id of ['scope', 'practice', 'oddSound', 'buildLevel', 'memoryPairs', 'packSize', 'mailHouses', 'workshopSize', 'balanceSize', 'soundPairs', 'track', 'musicVolume', 'effectsVolume']) $('#' + id).value = prefs[id];
+  for (const id of ['scope', 'practice', 'oddSound', 'buildLevel', 'memoryPairs', 'packSize', 'mailHouses', 'workshopSize', 'balanceSize', 'soundPairs', 'soundWordSize', 'track', 'musicVolume', 'effectsVolume']) $('#' + id).value = prefs[id];
   $('#musicVolume-value').textContent = prefs.musicVolume + '%'; $('#effectsVolume-value').textContent = prefs.effectsVolume + '%';
   renderSymbolPicker();
   $('#favorites-note').textContent=`圖鑑收藏了 ${progress.favorites.length} 個朋友。收藏可重複練習；主題或玩法可用的詞不足時，會加入其他朋友。設定用於下一回合。`;
@@ -471,7 +472,7 @@ for (const id of ['scope', 'practice', 'oddSound', 'buildLevel', 'track']) $('#'
 $('#memoryPairs').onchange=e=>{prefs.memoryPairs=Number(e.target.value);save();};
 $('#packSize').onchange=e=>{prefs.packSize=Number(e.target.value);save();};
 $('#mailHouses').onchange=e=>{prefs.mailHouses=Number(e.target.value);save();};
-for(const id of ['workshopSize','balanceSize','soundPairs'])$('#'+id).onchange=e=>{prefs[id]=Number(e.target.value);save();};
+for(const id of ['workshopSize','balanceSize','soundPairs','soundWordSize'])$('#'+id).onchange=e=>{prefs[id]=Number(e.target.value);save();};
 for (const id of ['musicVolume', 'effectsVolume']) $('#' + id).oninput = e => { prefs[id] = Number(e.target.value); $('#' + id + '-value').textContent = prefs[id] + '%'; gardenAudio.configure(prefs); save(); };
 $('#preview-effects').onclick = () => effect('correct');
 $('#offline-update').onclick=()=>GardenOffline.update();

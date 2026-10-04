@@ -51,8 +51,8 @@ test('all themes and levels produce five unique solvable questions', () => {
     }
   }
 });
-test('542 phrase entries have unique names and one valid pronunciation per syllable', () => {
-  assert.equal(D.phrases.length,542); assert.equal(new Set(D.phrases.map(p=>p.word)).size,542);
+test('590 phrase entries have unique names and one valid pronunciation per syllable', () => {
+  assert.equal(D.phrases.length,590); assert.equal(new Set(D.phrases.map(p=>p.word)).size,590);
   D.phrases.forEach(p=>{
     assert.equal([...p.word].length,p.count); assert.ok(p.count>=2 && p.count<=4);
     p.syllables.forEach(s=>assert.match(s,/^[ㄅ-ㄩ]+[ˊˇˋ]?$/));
@@ -64,6 +64,7 @@ test('542 phrase entries have unique names and one valid pronunciation per sylla
   assert.equal(D.phrases.find(p=>p.word==='螃蟹').zhuyin,'ㄆㄤˊ ㄒㄧㄝˋ');
   assert.equal(D.phrases.find(p=>p.word==='鸚鵡').zhuyin,'ㄧㄥ ㄨˇ');
   assert.equal(D.phrases.find(p=>p.word==='披薩').zhuyin,'ㄆㄧ ㄙㄚˋ');
+  for(const [word,zhuyin] of [['芭樂','ㄅㄚ ㄌㄜˋ'],['釋迦','ㄕˋ ㄐㄧㄚ'],['蓮霧','ㄌㄧㄢˊ ㄨˋ'],['遊樂園','ㄧㄡˊ ㄌㄜˋ ㄩㄢˊ'],['銀行','ㄧㄣˊ ㄏㄤˊ']])assert.equal(D.phrases.find(p=>p.word===word).zhuyin,zhuyin,word);
   for(const [word,zhuyin] of [['菠菜','ㄅㄛ ㄘㄞˋ'],['豆腐','ㄉㄡˋ ㄈㄨˇ'],['鞦韆','ㄑㄧㄡ ㄑㄧㄢ'],['盪鞦韆','ㄉㄤˋ ㄑㄧㄡ ㄑㄧㄢ']])assert.equal(D.phrases.find(p=>p.word===word).zhuyin,zhuyin,word);
   for(const [word,zhuyin] of [['浣熊','ㄨㄢˇ ㄒㄩㄥˊ'],['駱駝','ㄌㄨㄛˋ ㄊㄨㄛˊ'],['蝙蝠','ㄅㄧㄢ ㄈㄨˊ'],['吐司','ㄊㄨˇ ㄙ'],['咖哩飯','ㄎㄚ ㄌㄧˇ ㄈㄢˋ'],['酪梨','ㄌㄨㄛˋ ㄌㄧˊ'],['乳酪','ㄖㄨˇ ㄌㄨㄛˋ'],['夕陽','ㄒㄧˋ ㄧㄤˊ']]) {
     assert.equal(D.phrases.find(p=>p.word===word).zhuyin,zhuyin,word);

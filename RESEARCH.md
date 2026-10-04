@@ -154,3 +154,10 @@
 本輪易混讀音查核教育部《國語辭典簡編本》：[糙米](https://dict.concised.moe.edu.tw/dictView.jsp?ID=38055&la=0&powerMode=1) ㄘㄠ ㄇㄧˇ、[量杯](https://dict.concised.moe.edu.tw/dictView.jsp?ID=14984&la=0&powerMode=0) ㄌㄧㄤˊ ㄅㄟ、[豆干](https://dict.concised.moe.edu.tw/dictView.jsp?ID=7812&la=0&powerMode=0) ㄉㄡˋ ㄍㄢ、[芝麻](https://dict.concised.moe.edu.tw/dictView.jsp?ID=28883&la=0&powerMode=0) ㄓ ㄇㄚˊ。[菇](https://dict.concised.moe.edu.tw/dictView.jsp?ID=16635&la=0&powerMode=0) 基本讀法 ㄍㄨ；蘑菇採 ㄇㄛˊ ㄍㄨ，另有輕聲變讀。新題暫不加入只收輕聲讀法的茄子、饅頭。
 第二批再加入 32 個生活動作短語，達 732 筆（190 字、542 詞語／短語）：穿鞋、綁鞋帶、擦手、澆水、剪紙、聽故事等。成人可先示範或實際指認；抽象動作的圖片只提供情境，不視為完整定義。螳螂、羚羊、飛蛾另畫原創圖，避免用蟋蟀、鹿、蝴蝶圖混淆；澆水、拖地、撕紙與扣鈕扣也補圖。第 18 種玩法加入完成回合後的小兔邀請。
 易混字音：[擲](https://dict.mini.moe.edu.tw/SearchIndex/searchResult?dictSearchField=%E6%93%B2&searchType=one)採臺灣讀法 ㄓˊ；[揉](https://dict.concised.moe.edu.tw/dictView.jsp?ID=36004&la=0&powerMode=0) ㄖㄡˊ。摺衣服、故事等沿用字典本調，裝置語流可能讀輕聲。
+## 聲音花圃與 780 筆字詞（2026-10）
+新增 48 個詞語，總計 190 字、590 詞語／短語。場所包含幼兒園、圖書館、郵局、超市等；文具與樂器可以搭配家中實物指認。場所圖像表示情境，不代表建築一定有固定外觀。六種水果、口琴、木琴、白板、黑板補原創 SVG，避免以相似 emoji 代替。
+
+「聲音花圃」將聽詞、分音節與分類串成一個可動手完成的活動。先點圖片聽整詞，再一字拍一下，點拍數相同的花圃。預設只比較 1、2 拍共四張圖；家長可加到 3 或 4 拍，各兩張圖。錯誤不移動卡片、不扣分、不自動跳題；可以重聽、重拍、改選圖片。提示只陪聽目前或一張尚未種好的詞，不公布分類答案。拍手計數只保存孩子自己按的次數，分類判定不由該計數自動代答。
+
+查核教育部《國語辭典簡編本》：[芭樂](https://dict.concised.moe.edu.tw/dictView.jsp?ID=35&la=0&powerMode=0) ㄅㄚ ㄌㄜˋ、[釋迦](https://dict.concised.moe.edu.tw/dictView.jsp?ID=33774&la=0&powerMode=0) ㄕˋ ㄐㄧㄚ、[蓮霧](https://dict.concised.moe.edu.tw/dictView.jsp?ID=14693&la=0&powerMode=0) ㄌㄧㄢˊ ㄨˋ；[遊樂](https://dict.concised.moe.edu.tw/dictView.jsp?ID=41349&la=0&powerMode=0) 採 ㄧㄡˊ ㄌㄜˋ，遊樂園的「樂」不讀音樂的 ㄩㄝˋ。
+格式、詞長分布與分類邏輯通過測試，並實際試玩手機與離線。尚未進行親子試驗，不把參與花朵當作能力或教學成效評分。

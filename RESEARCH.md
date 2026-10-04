@@ -122,3 +122,22 @@
 「誰的開頭不一樣」每題提供三個圖詞，其中兩個第一個注音相同，另一個不同。可逐詞重聽、整組朗讀或請大人陪讀；求助先說一個詞的開頭，答對後才完整比較。這些都是親子聽音活動，並非語音能力測驗。
 
 圖鑑增加中文字與注音搜尋、按目前範圍隨機探索，以及八主題的參與足跡。搜尋不要求標聲調；隨機探索優先挑尚未在遊戲紀錄中出現的詞，不建立速度、排名或每日完成壓力。從圖鑑開始尋寶只暫時優先所選詞，不改寫家長收藏設定。
+
+## 2026-10-04 整詞拼接與聲音數量比較
+
+再新增 10 個生活字、90 個詞語，合計 190 個生活字、410 個詞語／短語，共 600 筆。內容包含身體部位、手勢、遊戲活動、生活用品、自然與食物。圖片是主題線索，並非精確動作教學：成人可以指自己的肩膀、比揮手、找水壺等真實物品，幫助孩子理解詞義。
+
+「詞語拼拼樂」把一個字的完整拼音當成一塊積木，讓成人陪孩子從完整生活詞辨認音節順序。它比單字小火車更進階，家長可限制 2、3、4 字；不是所有 5 歲孩子都需要完成。重複字音保留多塊實體積木，例如「小小火車」需要兩塊 ㄒㄧㄠˇ。先自行排、再按完成檢查，主動提示只幫第一個未解位置，不預先公布完整序列。
+
+「聲音小天平」比較兩個詞的音節數量，而不是朗讀長短或速度。孩子可各自重聽、按拍手或重新拍，再選左多、右多或一樣多；五題包含兩題左多、兩題右多、一題相同。畫面不先填正確拍數，求助只陪數左邊，答對後用圓點顯示兩邊數量。
+
+首頁增加四類玩法篩選，降低一次面對 17 張卡片的選擇負擔，不用解鎖或遵循固定順序。圖鑑的多字詞能邀請孩子開始拼詞，暫時配合該詞長，不改變家長既有設定。
+
+這輪查核教育部《國語辭典簡編本》，字音採基本讀法，另有輕聲或語流變調時，裝置 TTS 可能讀不同形式：
+
+- 身體詞：[眉毛](https://dict.concised.moe.edu.tw/dictView.jsp?ID=3883&la=1&powerMode=0)、[眼睛](https://dict.concised.moe.edu.tw/dictView.jsp?ID=41818&la=0&powerMode=0)、[肩膀](https://dict.concised.moe.edu.tw/dictView.jsp?ID=22766&la=0&powerMode=0)；[耳朵](https://dict.concised.moe.edu.tw/dictView.jsp?ID=39899&la=0&powerMode=0) 取 ㄦˇ ㄉㄨㄛˇ，辭典也收錄輕聲變讀。
+- 活動與物品：[溜冰](https://dict.concised.moe.edu.tw/dictView.jsp?ID=14441&la=0&powerMode=0) 取 ㄌㄧㄡ ㄅㄧㄥ，[掃帚](https://dict.concised.moe.edu.tw/dictView.jsp?ID=38817&la=0&powerMode=0) 取 ㄙㄠˋ ㄓㄡˇ。
+- 自然與動物：[玫瑰](https://dict.concised.moe.edu.tw/dictView.jsp?ID=3876&la=0&powerMode=0)、[蟋蟀](https://dict.concised.moe.edu.tw/dictView.jsp?ID=26302&la=0&powerMode=0)、[蚯蚓](https://dict.concised.moe.edu.tw/dictView.jsp?ID=24952&la=0&powerMode=0)、[水獺](https://dict.concised.moe.edu.tw/dictView.jsp?ID=35617&la=0&powerMode=0)。
+- 食物：[便當](https://dict.concised.moe.edu.tw/dictView.jsp?ID=1621&la=0&powerMode=0) 採飯盒義的 ㄅㄧㄢˋ ㄉㄤ，避免混用其他詞義的輕聲讀法。
+
+格式與出題測試驗證可操作性；教學適切性、圖詞理解與裝置朗讀仍需要成人陪玩確認。

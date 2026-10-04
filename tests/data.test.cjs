@@ -1,9 +1,9 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const D = require('../data.js');
-test('37 symbols and 180 unique, categorised words have valid phonetic forms', () => {
+test('37 symbols and 190 unique, categorised words have valid phonetic forms', () => {
   assert.equal(D.symbols.length, 37); assert.equal(new Set(D.symbols).size, 37);
-  assert.equal(D.words.length, 180); assert.equal(new Set(D.words.map(w => w.word)).size, 180);
+  assert.equal(D.words.length, 190); assert.equal(new Set(D.words.map(w => w.word)).size, 190);
   D.words.forEach(w => {
     assert.ok(D.categories[w.category]); w.parts.forEach(p => assert.ok(D.symbols.includes(p)));
     assert.equal(w.initial, w.parts[0]); assert.equal(w.zhuyin, w.parts.join('') + (w.tone || ''));
@@ -51,8 +51,8 @@ test('all themes and levels produce five unique solvable questions', () => {
     }
   }
 });
-test('320 phrase entries have unique names and one valid pronunciation per syllable', () => {
-  assert.equal(D.phrases.length,320); assert.equal(new Set(D.phrases.map(p=>p.word)).size,320);
+test('410 phrase entries have unique names and one valid pronunciation per syllable', () => {
+  assert.equal(D.phrases.length,410); assert.equal(new Set(D.phrases.map(p=>p.word)).size,410);
   D.phrases.forEach(p=>{
     assert.equal([...p.word].length,p.count); assert.ok(p.count>=2 && p.count<=4);
     p.syllables.forEach(s=>assert.match(s,/^[ㄅ-ㄩ]+[ˊˇˋ]?$/));
@@ -66,6 +66,7 @@ test('320 phrase entries have unique names and one valid pronunciation per sylla
   for(const [word,zhuyin] of [['浣熊','ㄨㄢˇ ㄒㄩㄥˊ'],['駱駝','ㄌㄨㄛˋ ㄊㄨㄛˊ'],['蝙蝠','ㄅㄧㄢ ㄈㄨˊ'],['吐司','ㄊㄨˇ ㄙ'],['咖哩飯','ㄎㄚ ㄌㄧˇ ㄈㄢˋ'],['酪梨','ㄌㄨㄛˋ ㄌㄧˊ'],['乳酪','ㄖㄨˇ ㄌㄨㄛˋ'],['夕陽','ㄒㄧˋ ㄧㄤˊ']]) {
     assert.equal(D.phrases.find(p=>p.word===word).zhuyin,zhuyin,word);
   }
+  for(const [word,zhuyin] of [['眉毛','ㄇㄟˊ ㄇㄠˊ'],['眼睛','ㄧㄢˇ ㄐㄧㄥ'],['耳朵','ㄦˇ ㄉㄨㄛˇ'],['肩膀','ㄐㄧㄢ ㄅㄤˇ'],['掃帚','ㄙㄠˋ ㄓㄡˇ'],['溜冰','ㄌㄧㄡ ㄅㄧㄥ'],['蟋蟀','ㄒㄧ ㄕㄨㄞˋ'],['蚯蚓','ㄑㄧㄡ ㄧㄣˇ'],['便當','ㄅㄧㄢˋ ㄉㄤ'],['玫瑰','ㄇㄟˊ ㄍㄨㄟ']])assert.equal(D.phrases.find(p=>p.word===word).zhuyin,zhuyin,word);
 });
 test('vocabulary syllables follow symbol order and reuse known character readings consistently',()=>{
   const readings=new Map(D.words.map(w=>[w.word,w.zhuyin]));

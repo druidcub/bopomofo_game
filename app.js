@@ -2,9 +2,11 @@
 const $ = s => document.querySelector(s);
 const { words, phrases, categories, makeRound, makeAdventure } = GardenData;
 const { checkTrain, nextHint, emptyProgress, restoreProgress, rememberWord, earnedBadges, availableDecorations, nextInvitation } = GardenPlay;
-const modeIDs=['match','listen','build','picture','rhyme','memory','initial','syllables','repair','tone','adventure','bingo','pack','mail','odd'];
+const modeIDs=['match','listen','build','picture','rhyme','memory','initial','syllables','repair','tone','adventure','bingo','pack','mail','odd','workshop','balance'];
 const vocabulary=[...words,...phrases];
-const defaults = { scope: 'starter', customSymbols:'ㄅㄆㄇㄚㄧ', category: 'all', practice:'fresh', buildLevel: 'easy', memoryPairs: 3, packSize:2, mailHouses:2, sound: true, voice: '', effects: true, music: false, track: 'garden', musicVolume: 18, effectsVolume: 40 };
+const playGroups={all:{name:'全部玩法',note:'想玩什麼就選什麼，也可以先看圖、先聽聲音。'},shapes:{name:'看字形',note:'從找相同符號開始，不需要先會讀注音。',ids:['match','memory','bingo']},sounds:{name:'看圖與聽音',note:'重聽整個生活詞，找圖片、比開頭，或拍拍聲音。',ids:['picture','rhyme','initial','syllables','odd','balance']},phonics:{name:'和大人拼音',note:'成人陪同認識聲音與符號；拼詞是進階活動，可以慢慢來。',ids:['listen','build','repair','tone','workshop']},tasks:{name:'聽音小任務',note:'送信、裝背包、走五站。可以重聽，不用趕時間。',ids:['adventure','pack','mail']}};
+let playGroup='all';
+const defaults = { scope: 'starter', customSymbols:'ㄅㄆㄇㄚㄧ', category: 'all', practice:'fresh', buildLevel: 'easy', memoryPairs: 3, packSize:2, mailHouses:2, workshopSize:2, balanceSize:2, sound: true, voice: '', effects: true, music: false, track: 'garden', musicVolume: 18, effectsVolume: 40 };
 let prefs = { ...defaults }, progress = emptyProgress(), storageOK = true;
 try {
   const saved = JSON.parse(localStorage.getItem('garden-prefs') || '{}');
@@ -21,6 +23,7 @@ if (!['easy', 'grow'].includes(prefs.buildLevel)) prefs.buildLevel = 'easy';
 if (![3,4,6].includes(prefs.memoryPairs)) prefs.memoryPairs=3;
 if (![2,3].includes(prefs.packSize)) prefs.packSize=2;
 if (![2,3].includes(prefs.mailHouses)) prefs.mailHouses=2;
+for(const key of ['workshopSize','balanceSize'])if(![2,3,4].includes(prefs[key]))prefs[key]=2;
 if (!Object.hasOwn(GardenSongs, prefs.track)) prefs.track = 'garden';
 prefs.musicVolume = Math.max(0, Math.min(50, prefs.musicVolume));
 prefs.effectsVolume = Math.max(0, Math.min(70, prefs.effectsVolume));
@@ -66,7 +69,7 @@ function updateVoices() {
 }
 function audioNote() { return !prefs.sound ? '朗讀已關閉，請大人陪你念題目。' : voices.length ? '可以重聽，也可以跟著大人說一遍。' : '這台裝置沒有中文朗讀，請大人念題目。'; }
 function visual(word){
-  const colors={'紅':'#df6b63','黃':'#f2ce62','藍':'#73a5d4','綠':'#8ab277','黑':'#454b49','白':'#fff','紫':'#a18ac1','灰':'#a6aaa7'};
+  const colors={'紅':'#df6b63','黃':'#f2ce62','藍':'#73a5d4','綠':'#8ab277','黑':'#454b49','白':'#fff','紫':'#a18ac1','灰':'#a6aaa7','橘':'#e3a15a','粉':'#e3a5bc','棕':'#947657','金':'#c5a34d'};
   const illustration=Object.keys(wordArt).sort((a,b)=>b.length-a.length).find(key=>word.word.endsWith(key));
   return word.category==='colors'&&colors[word.word[0]]?`<span class="color-dot" style="--swatch:${colors[word.word[0]]}" aria-hidden="true"></span>`:wordArt[illustration]||word.emoji;
 }
@@ -85,7 +88,9 @@ const modes = [
   { id: 'bingo', name: '注音花朵賓果', level: '集滿一排朋友', color: 'rose', art: '<i>ㄅ</i><span>✿</span><i>ㄇ</i>', desc: '找到小兔喊的符號，連成一排開花！', title: '找到朋友，讓一排花開！', sub: '看小兔的注音卡，找到相同符號。連成一排 3 個，就賓果！' },
   { id:'pack', name:'聲音小背包', level:'聽詞記順序', color:'butter', art:'🎒<span class="sound-bubble">♫</span>', desc:'聽小兔的清單，把圖片卡依序放進背包。', title:'小兔的背包先放誰？', sub:'聽小兔說完，依序放入圖片卡；放好才檢查。' },
   { id:'mail', name:'聲音郵差', level:'開頭聲音分類', color:'sky', art:'✉️<span>→</span>🏡', desc:'拿起圖片信，把它送到開頭一樣的家。', title:'幫小兔送圖片信', sub:'先點一封信，再點開頭聲音相同的家。可以聽聽每個家的朋友。' },
-  { id:'odd', name:'誰的開頭不一樣', level:'比較三個聲音', color:'mint', art:'🐱<span>🐴</span>🐶', desc:'三位朋友，誰的開頭聲音不一樣？', title:'誰的開頭聲音不一樣？', sub:'兩個朋友的開頭一樣，找出另一個。每張卡片都能重聽。' }
+  { id:'odd', name:'誰的開頭不一樣', level:'比較三個聲音', color:'mint', art:'🐱<span>🐴</span>🐶', desc:'三位朋友，誰的開頭聲音不一樣？', title:'誰的開頭聲音不一樣？', sub:'兩個朋友的開頭一樣，找出另一個。每張卡片都能重聽。' },
+  { id:'workshop', name:'詞語拼拼樂', level:'進階 · 和大人拼詞', color:'lilac', art:'🧩<span>＋</span>🧩', desc:'一塊積木一個聲音，排出整個生活詞。', title:'把詞語的聲音排起來', sub:'先聽整個詞，一個字一塊積木。和大人一起排好，再按「拼好了」。' },
+  { id:'balance', name:'聲音小天平', level:'比較聲音的數量', color:'butter', art:'👏<span>⚖️</span>👏', desc:'一字拍一下，哪邊的聲音比較多？', title:'哪邊的詞語聲音比較多？', sub:'慢慢念，一個字拍一下。比較兩個詞，也可能一樣多喔！' }
 ];
 function home() {
   stopSpeech(); game = null;
@@ -94,23 +99,44 @@ function home() {
     <section class="garden-hub"><div class="invitation"><span>${invitation.emoji}</span><div><strong>小兔的邀請</strong><p>${invitation.text}</p></div><button id="invitation" class="primary">一起玩 →</button></div><div class="explore-links"><button id="my-garden">🌷 我的花園<span>布置自己的小天地</span></button><button id="album">📖 聲音圖鑑<span>${vocabulary.length} 個字詞，想聽哪一個？</span></button></div>${badges.length ? `<div class="badge-shelf" aria-label="我的探險徽章">${badges.map(b=>`<span title="${b.name}">${b.emoji} ${b.name}</span>`).join('')}</div>` : '<p class="hub-note">玩完一回合，就會有新朋友來花園。隨時都可以休息。</p>'}</section>
     <section class="play-section"><div class="section-title"><div><span class="eyebrow">LET’S PLAY</span><h2>今天想玩什麼？</h2></div><span class="collection">✿ 已種下 <b>${progress.flowers}</b> 朵小花</span></div>
     <div class="theme-picker" aria-label="生活詞主題">${Object.entries(categories).map(([id, name]) => `<button data-theme="${id}" aria-pressed="${prefs.category === id}">${name}${id === 'all' ? ' ' + vocabulary.length : ''}</button>`).join('')}</div>
-    <p class="theme-note">主題用於聽詞、尋寶、拼音、修理站、聲調、拍手與背包；押韻、同聲、郵差與開頭比較的朋友來自整座花園。</p>
+    <p class="theme-note">主題用於聽詞、尋寶、拼音、修理站、聲調、拍手、背包、拼詞與小天平；押韻、同聲、郵差與開頭比較的朋友來自整座花園。</p>
     <div class="game-cards">${modes.map((m, i) => `<button class="game-card ${m.color}" data-mode="${m.id}"><span class="card-top"><span class="level">${String(i + 1).padStart(2,'0')} · ${m.level}</span><span>↗</span></span><span class="card-art ${['match','build','memory','repair','bingo'].includes(m.id) ? 'train-art' : ''} ${['rhyme','initial'].includes(m.id) ? 'rhyme-art' : ''}">${m.art}</span><strong>${m.name}</strong><span class="card-desc">${m.desc}</span><span class="card-bottom">${m.id === 'memory' ? Math.min(prefs.memoryPairs,GardenData.symbolRange(prefs.scope,[...prefs.customSymbols]).length)+' 對小卡' : m.id==='adventure'?'5 個探險站':m.id==='bingo'?'集滿一排 3 個':m.id==='mail'?prefs.mailHouses+' 個家 · '+prefs.mailHouses*2+' 封信':'每回合 5 題'} <span>開始玩 →</span></span></button>`).join('')}</div></section>
     <section class="music-strip"><span>🎶</span><div><strong>讓小花園有一點音樂</strong><p id="home-music-status">${musicStatus()}</p></div><button id="home-music" class="quiet">${prefs.music ? '關閉音樂' : '播放背景音樂'} →</button></section>
     <section class="parent-strip"><span>🌼</span><div><strong>每個孩子都有自己的步調。</strong><p>不倒數、不扣分。答錯就再試試，玩完一回合可以休息一下。</p></div><button id="tips">看看親子玩法 →</button></section><p id="offline-note" class="offline-note" role="status">${GardenOffline.status()}</p>`;
   document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => start(b.dataset.mode));
   document.querySelectorAll('[data-theme]').forEach(b => b.onclick = () => { const position = window.scrollY; prefs.category = b.dataset.theme; save(); effect('tap'); home(); window.scrollTo(0, position); });
+  const picker=document.createElement('div');picker.className='play-picker';picker.setAttribute('aria-label','選擇玩法類型');
+  picker.innerHTML=Object.entries(playGroups).map(([id,group])=>`<button data-play-group="${id}" aria-pressed="${playGroup===id}">${group.name}</button>`).join('');
+  $('.game-cards').before(picker);
+  const groupNote=document.createElement('p');groupNote.id='play-group-note';groupNote.className='theme-note';groupNote.setAttribute('role','status');picker.after(groupNote);
+  const applyGroup=()=>{
+    const group=playGroups[playGroup];let count=0;
+    document.querySelectorAll('[data-mode]').forEach(card=>{card.hidden=!!group.ids&&!group.ids.includes(card.dataset.mode);if(!card.hidden)count++;});
+    document.querySelectorAll('[data-play-group]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.playGroup===playGroup)));
+    groupNote.textContent=`${group.name} · ${count} 種玩法。${group.note}`;
+  };
+  picker.querySelectorAll('button').forEach(button=>button.onclick=()=>{playGroup=button.dataset.playGroup;effect('tap');applyGroup();});applyGroup();
   $('#invitation').onclick=()=>start(invitation.mode); $('#my-garden').onclick=()=>renderGarden(); $('#album').onclick=()=>renderAlbum();
   $('#home-music').onclick = toggleMusic; $('#tips').onclick = openSettings; GardenOffline.refresh();window.scrollTo(0, 0);
 }
-function start(mode, invited=null) {
+function start(mode, invited=null, options={}) {
   stopSpeech(); effect('tap');
   const preferred=invited||(prefs.practice==='favorite'?progress.favorites:[]);
-  const questions=mode==='mail'?GardenChallenges.makeMailRound(progress.recent,preferred,prefs.mailHouses):mode==='odd'?GardenChallenges.makeOddRound(progress.recent,preferred):mode==='pack'?GardenData.makePackRound(prefs.category,prefs.packSize,progress.recent,preferred):mode==='adventure'?makeAdventure(prefs.scope,prefs.category,prefs.buildLevel,progress.recent,[...prefs.customSymbols],preferred):makeRound(mode,prefs.scope,prefs.category,prefs.buildLevel,progress.recent,prefs.memoryPairs,[...prefs.customSymbols],preferred);
+  const generators={
+    mail:()=>GardenChallenges.makeMailRound(progress.recent,preferred,prefs.mailHouses),
+    odd:()=>GardenChallenges.makeOddRound(progress.recent,preferred),
+    pack:()=>GardenData.makePackRound(prefs.category,prefs.packSize,progress.recent,preferred),
+    adventure:()=>makeAdventure(prefs.scope,prefs.category,prefs.buildLevel,progress.recent,[...prefs.customSymbols],preferred),
+    workshop:()=>GardenExtensions.makeWorkshopRound(prefs.category,options.workshopSize||prefs.workshopSize,progress.recent,preferred),
+    balance:()=>GardenExtensions.makeBalanceRound(prefs.category,prefs.balanceSize,progress.recent,preferred)
+  };
+  const questions=generators[mode]?generators[mode]():makeRound(mode,prefs.scope,prefs.category,prefs.buildLevel,progress.recent,prefs.memoryPairs,[...prefs.customSymbols],preferred);
   game = { session:mode, mode:mode==='adventure'?questions[0].mode:mode, questions, index: 0, done: false, selected: [], used: [], matched: [], flipped: [], preview: false, locked: false, claps: 0, hints: 0 };
   if (mode === 'memory') { renderMemory(); window.scrollTo(0, 0); }
   else if(mode==='mail'){game.delivered=[];game.mailSelected='';renderMail();}
   else if(mode==='odd')renderOdd();
+  else if(mode==='workshop')renderWorkshop();
+  else if(mode==='balance'){game.balanceClaps={left:0,right:0};renderBalance();}
   else if(mode==='pack')renderPack();
   else if(mode==='bingo'){game.calls=GardenData.shuffle(questions.map(c=>c.symbol));game.roundDone=false;renderBingo();window.scrollTo(0,0);}
   else renderGame();
@@ -189,7 +215,7 @@ function retry(button, message) { effect('retry'); button.classList.remove('wigg
 function next() {
   if (!game.done) return; stopSpeech();
   if (game.index === 4) complete(5);
-  else { effect('tap'); game.index++; game.mode=game.questions[game.index].mode||game.session; game.done = false; game.selected = []; game.used = []; game.claps = 0; if(game.mode==='pack')renderPack();else if(game.mode==='odd')renderOdd();else renderGame(); }
+  else { effect('tap'); game.index++; game.mode=game.questions[game.index].mode||game.session; game.done = false; game.selected = []; game.used = []; game.claps = 0; if(game.mode==='pack')renderPack();else if(game.mode==='odd')renderOdd();else if(game.mode==='workshop')renderWorkshop();else if(game.mode==='balance'){game.balanceClaps={left:0,right:0};renderBalance();}else renderGame(); }
 }
 function renderMail(){
   const round=game.questions, info=modes.find(m=>m.id==='mail');
@@ -368,7 +394,7 @@ function renderAlbum(page=0, selection=null, onlyRecent=false, onlyFavorites=fal
   const pool=GardenDiscovery.filterWords(vocabulary,{category:prefs.category,query,seenOnly:onlyRecent,favoritesOnly:onlyFavorites},progress);
   const pages=Math.max(1,Math.ceil(pool.length/12));page=Math.max(0,Math.min(pages-1,page));
   const visible=pool.slice(page*12,page*12+12), chosen=visible.find(w=>w.word===selection)||null;
-  const story=chosen?`<div class="word-story"><span class="story-emoji" role="img" aria-label="${chosen.word}">${visual(chosen)}</span><div><h2 id="story-title" tabindex="-1">${chosen.word}</h2><div class="story-zhuyin">${chosen.zhuyin.split(' ').map(s=>`<span>${s}</span>`).join('')}</div><p>${categories[chosen.category]} · ${chosen.count||1} 個聲音</p><div class="story-actions"><button id="story-replay" class="replay">♫ 再聽「${chosen.word}」</button><button id="story-favorite" class="quiet" aria-pressed="${progress.favorites.includes(chosen.word)}">${progress.favorites.includes(chosen.word)?'♥ 喜歡的朋友':'♡ 我喜歡這個朋友'}</button><button id="story-play" class="quiet">🔍 和這個朋友玩尋寶</button></div></div></div>`:'<p class="album-invite">點一張卡片，或請小兔挑一位新朋友。</p>';
+  const story=chosen?`<div class="word-story"><span class="story-emoji" role="img" aria-label="${chosen.word}">${visual(chosen)}</span><div><h2 id="story-title" tabindex="-1">${chosen.word}</h2><div class="story-zhuyin">${chosen.zhuyin.split(' ').map(s=>`<span>${s}</span>`).join('')}</div><p>${categories[chosen.category]} · ${chosen.count||1} 個聲音</p><div class="story-actions"><button id="story-replay" class="replay">♫ 再聽「${chosen.word}」</button><button id="story-favorite" class="quiet" aria-pressed="${progress.favorites.includes(chosen.word)}">${progress.favorites.includes(chosen.word)?'♥ 喜歡的朋友':'♡ 我喜歡這個朋友'}</button><button id="story-play" class="quiet">🔍 和這個朋友玩尋寶</button>${chosen.count>1?'<button id="story-workshop" class="quiet">🧩 和大人一起拼這個詞</button>':''}</div></div></div>`:'<p class="album-invite">點一張卡片，或請小兔挑一位新朋友。</p>';
   const cards=visible.map((w,i)=>`<button data-word="${i}" aria-label="認識 ${w.word}" aria-pressed="${w===chosen}"><span>${visual(w)}</span><strong>${w.word}</strong><small>${categories[w.category]}${progress.favorites.includes(w.word)?' · ♥':''}</small></button>`).join('');
   const stats=GardenDiscovery.topicStats(vocabulary,progress);
   $('#app').innerHTML=`<section class="album-page">${heading('聲音圖鑑',pool.length,'個字詞')}<div class="eyebrow">LISTEN & DISCOVER</div><h1>今天想聽哪個朋友？</h1><p>這裡可以看圖、聽詞、看看注音，沒有題目，也不用答對。</p><form id="album-search" class="album-search"><label for="word-search">找詞語或注音</label><div><input id="word-search" type="search" maxlength="64" placeholder="例如：西瓜、ㄒㄧ" autocomplete="off"><button class="primary" type="submit">找朋友</button></div><button id="search-clear" type="button" class="quiet" ${query?'':'hidden'}>清除搜尋</button></form><div class="album-filters"><label for="album-theme">主題</label><select id="album-theme">${Object.entries(categories).map(([id,name])=>`<option value="${id}" ${prefs.category===id?'selected':''}>${name}</option>`).join('')}</select><button id="album-recent" class="quiet" aria-pressed="${onlyRecent}">${onlyRecent?'顯示全部朋友':'看我玩過的詞'}</button><button id="album-favorites" class="quiet" aria-pressed="${onlyFavorites}">${onlyFavorites?'顯示全部朋友':'♥ 我喜歡的詞 '+progress.favorites.length}</button><button id="album-surprise" class="replay" ${pool.length?'':'disabled'}>🎲 小兔幫我挑一個</button></div>${story}<p id="audio-note" class="audio-note">${audioNote()}</p><p id="album-note" class="note" role="status">小兔優先挑目前範圍裡還沒玩過的詞。點愛心可以收藏，帶去下一回合。</p><div class="album-grid">${cards||'<p>還沒找到朋友。試試清除搜尋，或換一個主題吧。</p>'}</div><div class="album-pages"><button id="album-prev" class="quiet" ${page===0?'disabled':''}>← 上一頁</button><span>${page+1} / ${pages}</span><button id="album-next" class="quiet" ${page===pages-1?'disabled':''}>下一頁 →</button></div><details class="album-passport"><summary>🧭 我的探險足跡 · ${progress.journal.length} 位朋友</summary><p>記下玩遊戲時遇過的詞，不是測驗成績。點一個主題，看看還有哪些朋友。</p><div>${stats.map(s=>`<button data-album-topic="${s.category}"><strong>${categories[s.category]}</strong><span>遇過 ${s.seen} / ${s.total}</span></button>`).join('')}</div></details></section>`;
@@ -387,6 +413,7 @@ function renderAlbum(page=0, selection=null, onlyRecent=false, onlyFavorites=fal
   document.querySelectorAll('[data-album-topic]').forEach(b=>b.onclick=()=>{prefs.category=b.dataset.albumTopic;save();effect('tap');renderAlbum();$('#album-theme').focus({preventScroll:true});});
   if($('#story-replay'))$('#story-replay').onclick=()=>speak(chosen.word);
   if($('#story-play'))$('#story-play').onclick=()=>start('picture',[chosen.word]);
+  if($('#story-workshop'))$('#story-workshop').onclick=()=>start('workshop',[chosen.word],{workshopSize:chosen.count});
   if($('#story-favorite'))$('#story-favorite').onclick=()=>{
     if(!GardenPlay.toggleFavorite(progress,chosen.word)){$('#album-note').textContent='可以收藏 50 個朋友；先取消一個，再邀請新朋友。';return;}
     save();effect('tap');renderAlbum(page,chosen.word,onlyRecent,onlyFavorites,query,true);($('#story-favorite')||$('#album-favorites')).focus({preventScroll:true});
@@ -412,7 +439,7 @@ async function toggleMusic() {
   if (prefs.music && !await gardenAudio.unlock()) { const el = $('#music-status') || $('#home-music-status'); if (el) el.textContent = '聲音未能啟動，請再點一次音樂開關。'; }
 }
 function openSettings() {
-  for (const id of ['scope', 'practice', 'buildLevel', 'memoryPairs', 'packSize', 'mailHouses', 'track', 'musicVolume', 'effectsVolume']) $('#' + id).value = prefs[id];
+  for (const id of ['scope', 'practice', 'buildLevel', 'memoryPairs', 'packSize', 'mailHouses', 'workshopSize', 'balanceSize', 'track', 'musicVolume', 'effectsVolume']) $('#' + id).value = prefs[id];
   $('#musicVolume-value').textContent = prefs.musicVolume + '%'; $('#effectsVolume-value').textContent = prefs.effectsVolume + '%';
   renderSymbolPicker();
   $('#favorites-note').textContent=`圖鑑收藏了 ${progress.favorites.length} 個朋友。收藏可重複練習；主題或玩法可用的詞不足時，會加入其他朋友。設定用於下一回合。`;
@@ -436,6 +463,7 @@ for (const id of ['scope', 'practice', 'buildLevel', 'track']) $('#' + id).oncha
 $('#memoryPairs').onchange=e=>{prefs.memoryPairs=Number(e.target.value);save();};
 $('#packSize').onchange=e=>{prefs.packSize=Number(e.target.value);save();};
 $('#mailHouses').onchange=e=>{prefs.mailHouses=Number(e.target.value);save();};
+for(const id of ['workshopSize','balanceSize'])$('#'+id).onchange=e=>{prefs[id]=Number(e.target.value);save();};
 for (const id of ['musicVolume', 'effectsVolume']) $('#' + id).oninput = e => { prefs[id] = Number(e.target.value); $('#' + id + '-value').textContent = prefs[id] + '%'; gardenAudio.configure(prefs); save(); };
 $('#preview-effects').onclick = () => effect('correct');
 $('#offline-update').onclick=()=>GardenOffline.update();

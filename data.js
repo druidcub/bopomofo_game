@@ -83,7 +83,17 @@
     ['針','🪡','ㄓㄣ','things'], ['桌','🪑','ㄓㄨㄛ','things'],
     ['木','🪵','ㄇㄨˋ','nature'], ['竹','🎋','ㄓㄨˊ','nature'],
     ['苗','🌱','ㄇㄧㄠˊ','nature'],
-    ['蜜','🍯','ㄇㄧˋ','food'], ['莓','🍓','ㄇㄟˊ','food'], ['蕉','🍌','ㄐㄧㄠ','food']
+    ['蜜','🍯','ㄇㄧˋ','food'], ['莓','🍓','ㄇㄟˊ','food'], ['蕉','🍌','ㄐㄧㄠ','food'],
+    ['象','🐘','ㄒㄧㄤˋ','animals'], ['狼','🐺','ㄌㄤˊ','animals'],
+    ['豹','🐆','ㄅㄠˋ','animals'], ['鯊','🦈','ㄕㄚ','animals'],
+    ['鵝','🪿','ㄜˊ','animals'], ['蚊','🦟','ㄨㄣˊ','animals'],
+    ['茄','🍆','ㄑㄧㄝˊ','food'], ['蒜','🧄','ㄙㄨㄢˋ','food'],
+    ['薑','🫚','ㄐㄧㄤ','food'], ['糕','🍰','ㄍㄠ','food'],
+    ['浪','🌊','ㄌㄤˋ','nature'], ['霧','🌫️','ㄨˋ','nature'],
+    ['島','🏝️','ㄉㄠˇ','nature'], ['河','🏞️','ㄏㄜˊ','nature'],
+    ['扇','🪭','ㄕㄢˋ','things'], ['磚','🧱','ㄓㄨㄢ','things'],
+    ['箱','📦','ㄒㄧㄤ','things'], ['輪','🛞','ㄌㄨㄣˊ','things'],
+    ['哭','😢','ㄎㄨ','actions'], ['抱','🫂','ㄅㄠˋ','actions']
   ];
   const consonants = new Set([...'ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙ']);
   const words = rows.map(([word, emoji, zhuyin, category]) => {
@@ -214,7 +224,47 @@
     ['湯匙','🥄','ㄊㄤ ㄔˊ','things'], ['餐盤','🍽️','ㄘㄢ ㄆㄢˊ','things'],
     ['米飯','🍚','ㄇㄧˇ ㄈㄢˋ','food'], ['豆漿','🥛','ㄉㄡˋ ㄐㄧㄤ','food'],
     ['布丁','🍮','ㄅㄨˋ ㄉㄧㄥ','food'], ['爆米花','🍿','ㄅㄠˋ ㄇㄧˇ ㄏㄨㄚ','food'],
-    ['番薯','🍠','ㄈㄢ ㄕㄨˇ','food'], ['冰棒','🍦','ㄅㄧㄥ ㄅㄤˋ','food']
+    ['番薯','🍠','ㄈㄢ ㄕㄨˇ','food'], ['冰棒','🍦','ㄅㄧㄥ ㄅㄤˋ','food'],
+    ['無尾熊','🐨','ㄨˊ ㄨㄟˇ ㄒㄩㄥˊ','animals'], ['貓頭鷹','🦉','ㄇㄠ ㄊㄡˊ ㄧㄥ','animals'],
+    ['北極熊','🐻‍❄️','ㄅㄟˇ ㄐㄧˊ ㄒㄩㄥˊ','animals'], ['樹懶','🦥','ㄕㄨˋ ㄌㄢˇ','animals'],
+    ['海豹','🦭','ㄏㄞˇ ㄅㄠˋ','animals'], ['斑馬','🦓','ㄅㄢ ㄇㄚˇ','animals'],
+    ['駱駝','🐫','ㄌㄨㄛˋ ㄊㄨㄛˊ','animals'], ['白鵝','🪿','ㄅㄞˊ ㄜˊ','animals'],
+    ['野狼','🐺','ㄧㄝˇ ㄌㄤˊ','animals'], ['花豹','🐆','ㄏㄨㄚ ㄅㄠˋ','animals'],
+    ['鯊魚','🦈','ㄕㄚ ㄩˊ','animals'], ['水母','🪼','ㄕㄨㄟˇ ㄇㄨˇ','animals'],
+    ['蝙蝠','🦇','ㄅㄧㄢ ㄈㄨˊ','animals'], ['烏鴉','🐦‍⬛','ㄨ ㄧㄚ','animals'],
+    ['浣熊','🦝','ㄨㄢˇ ㄒㄩㄥˊ','animals'], ['公雞','🐓','ㄍㄨㄥ ㄐㄧ','animals'],
+    ['母雞','🐔','ㄇㄨˇ ㄐㄧ','animals'], ['乳牛','🐄','ㄖㄨˇ ㄋㄧㄡˊ','animals'],
+    ['水牛','🐃','ㄕㄨㄟˇ ㄋㄧㄡˊ','animals'], ['梅花鹿','🦌','ㄇㄟˊ ㄏㄨㄚ ㄌㄨˋ','animals'],
+    ['奇異果','🥝','ㄑㄧˊ ㄧˋ ㄍㄨㄛˇ','food'], ['哈密瓜','🍈','ㄏㄚ ㄇㄧˋ ㄍㄨㄚ','food'],
+    ['酪梨','🥑','ㄌㄨㄛˋ ㄌㄧˊ','food'], ['小黃瓜','🥒','ㄒㄧㄠˇ ㄏㄨㄤˊ ㄍㄨㄚ','food'],
+    ['花椰菜','🥦','ㄏㄨㄚ ㄧㄝˊ ㄘㄞˋ','food'], ['馬鈴薯','🥔','ㄇㄚˇ ㄌㄧㄥˊ ㄕㄨˇ','food'],
+    ['大蒜','🧄','ㄉㄚˋ ㄙㄨㄢˋ','food'], ['生薑','🫚','ㄕㄥ ㄐㄧㄤ','food'],
+    ['沙拉','🥗','ㄕㄚ ㄌㄚ','food'], ['煎蛋','🍳','ㄐㄧㄢ ㄉㄢˋ','food'],
+    ['飯糰','🍙','ㄈㄢˋ ㄊㄨㄢˊ','food'], ['咖哩飯','🍛','ㄎㄚ ㄌㄧˇ ㄈㄢˋ','food'],
+    ['三明治','🥪','ㄙㄢ ㄇㄧㄥˊ ㄓˋ','food'], ['可頌','🥐','ㄎㄜˇ ㄙㄨㄥˋ','food'],
+    ['吐司','🍞','ㄊㄨˇ ㄙ','food'], ['月餅','🥮','ㄩㄝˋ ㄅㄧㄥˇ','food'],
+    ['乳酪','🧀','ㄖㄨˇ ㄌㄨㄛˋ','food'], ['果汁','🧃','ㄍㄨㄛˇ ㄓ','food'],
+    ['生日蛋糕','🎂','ㄕㄥ ㄖˋ ㄉㄢˋ ㄍㄠ','food'], ['煎餅','🥞','ㄐㄧㄢ ㄅㄧㄥˇ','food'],
+    ['滑板','🛹','ㄏㄨㄚˊ ㄅㄢˇ','things'], ['滑板車','🛴','ㄏㄨㄚˊ ㄅㄢˇ ㄔㄜ','things'],
+    ['計程車','🚕','ㄐㄧˋ ㄔㄥˊ ㄔㄜ','things'], ['校車','🚌','ㄒㄧㄠˋ ㄔㄜ','things'],
+    ['卡車','🚚','ㄎㄚˇ ㄔㄜ','things'], ['火箭','🚀','ㄏㄨㄛˇ ㄐㄧㄢˋ','things'],
+    ['單車','🚲','ㄉㄢ ㄔㄜ','things'], ['輪胎','🛞','ㄌㄨㄣˊ ㄊㄞ','things'],
+    ['帳篷','⛺','ㄓㄤˋ ㄆㄥˊ','things'], ['風箏','🪁','ㄈㄥ ㄓㄥ','things'],
+    ['手電筒','🔦','ㄕㄡˇ ㄉㄧㄢˋ ㄊㄨㄥˇ','things'], ['放大鏡','🔍','ㄈㄤˋ ㄉㄚˋ ㄐㄧㄥˋ','things'],
+    ['望遠鏡','🔭','ㄨㄤˋ ㄩㄢˇ ㄐㄧㄥˋ','things'], ['降落傘','🪂','ㄐㄧㄤˋ ㄌㄨㄛˋ ㄙㄢˇ','things'],
+    ['外套','🧥','ㄨㄞˋ ㄊㄠˋ','things'], ['信箱','📬','ㄒㄧㄣˋ ㄒㄧㄤ','things'],
+    ['紙箱','📦','ㄓˇ ㄒㄧㄤ','things'], ['蠟燭','🕯️','ㄌㄚˋ ㄓㄨˊ','things'],
+    ['吉他','🎸','ㄐㄧˊ ㄊㄚ','things'], ['鋼琴','🎹','ㄍㄤ ㄑㄧㄣˊ','things'],
+    ['海浪','🌊','ㄏㄞˇ ㄌㄤˋ','nature'], ['河流','🏞️','ㄏㄜˊ ㄌㄧㄡˊ','nature'],
+    ['小島','🏝️','ㄒㄧㄠˇ ㄉㄠˇ','nature'], ['日出','🌅','ㄖˋ ㄔㄨ','nature'],
+    ['日落','🌇','ㄖˋ ㄌㄨㄛˋ','nature'], ['夕陽','🌇','ㄒㄧˋ ㄧㄤˊ','nature'],
+    ['滿月','🌕','ㄇㄢˇ ㄩㄝˋ','nature'], ['月牙','🌙','ㄩㄝˋ ㄧㄚˊ','nature'],
+    ['流星','🌠','ㄌㄧㄡˊ ㄒㄧㄥ','nature'], ['閃電','⚡','ㄕㄢˇ ㄉㄧㄢˋ','nature'],
+    ['讀書','📖','ㄉㄨˊ ㄕㄨ','actions'], ['寫字','✍️','ㄒㄧㄝˇ ㄗˋ','actions'],
+    ['騎車','🚴','ㄑㄧˊ ㄔㄜ','actions'], ['划船','🚣','ㄏㄨㄚˊ ㄔㄨㄢˊ','actions'],
+    ['爬山','🧗','ㄆㄚˊ ㄕㄢ','actions'], ['露營','🏕️','ㄌㄨˋ ㄧㄥˊ','actions'],
+    ['釣魚','🎣','ㄉㄧㄠˋ ㄩˊ','actions'], ['洗澡','🛁','ㄒㄧˇ ㄗㄠˇ','actions'],
+    ['掃地','🧹','ㄙㄠˇ ㄉㄧˋ','actions'], ['擁抱','🫂','ㄩㄥˇ ㄅㄠˋ','actions']
   ];
   const phrases = phraseRows.map(([word, emoji, zhuyin, category]) => ({ word, emoji, zhuyin, category, syllables: zhuyin.split(' '), count: zhuyin.split(' ').length }));
   const confusables = [['ㄅ','ㄆ','ㄇ','ㄈ'],['ㄉ','ㄊ','ㄋ','ㄌ'],['ㄍ','ㄎ','ㄏ'],['ㄐ','ㄑ','ㄒ'],['ㄓ','ㄔ','ㄕ','ㄖ','ㄗ','ㄘ','ㄙ'],['ㄚ','ㄛ','ㄜ','ㄝ'],['ㄞ','ㄟ','ㄠ','ㄡ'],['ㄢ','ㄣ','ㄤ','ㄥ'],['ㄧ','ㄨ','ㄩ']];
@@ -295,9 +345,12 @@
     const route = shuffle(['match','picture','syllables','listen',level === 'grow' ? 'repair' : 'build']);
     const used = [...recent], stationWords=[];
     return route.map(mode=>{
-      // Avoid using the same preferred word at multiple stations within this adventure.
+      // Each generated round has five distinct word targets, so one is always
+      // available after at most three earlier word stations. Recency alone is
+      // not enough: a well-explored theme may have every word in its history.
       const availableFavorites=preferred.filter(w=>!stationWords.includes(w));
-      const q=makeRound(mode,scope,category,level,used,3,customSymbols,availableFavorites)[0];
+      const candidates=makeRound(mode,scope,category,level,used,3,customSymbols,availableFavorites);
+      const q=candidates.find(candidate=>!candidate.word||!stationWords.includes(candidate.word));
       if(q.word){used.push(q.word);stationWords.push(q.word);}
       return {...q,mode};
     });

@@ -96,10 +96,29 @@
 
 聲音小背包讓孩子依序聽兩或三個生活詞，再放入圖片卡；所有卡片來自同一主題，含兩張干擾卡，避免只靠主題猜答案。順序在主動播放時以「首先／接著／最後」朗讀；重聽不受限，答錯不指出整份清單，主動求助只提示一個位置。大人讀題提示可自行展開。玩法練習聽詞、記順序與親子對話，不當作工作記憶測驗或診斷工具。
 
-題庫共 160 個生活字與 240 個詞語、短語。新增的常見物件用於尋寶、拍手、圖鑑與背包，不要求孩子認字；蝌蚪、風車、李、棗、毛巾、桌、笛、冰棒以原創 SVG 補足 emoji 的物件差異。抽題避免同一題出現相同 emoji，描述性短語仍以主要物件為圖示。
+前一版題庫為 160 個生活字與 240 個詞語、短語。新增的常見物件用於尋寶、拍手、圖鑑與背包，不要求孩子認字；蝌蚪、風車、李、棗、毛巾、桌、笛、冰棒以原創 SVG 補足 emoji 的物件差異。抽題避免同一題出現相同 emoji，描述性短語仍以主要物件為圖示。
 
 此輪查核的讀音包含教育部《國語辭典簡編本》的 [螃蟹](https://dict.concised.moe.edu.tw/dictView.jsp?ID=2864&powerMode=1)、[鸚鵡](https://dict.concised.moe.edu.tw/dictView.jsp?ID=42442&la=0&powerMode=0)、[披薩](https://dict.concised.moe.edu.tw/dictView.jsp?ID=2969&la=0&powerMode=0)，以及《重編國語辭典修訂本》的 [壽司](https://dict.revised.moe.edu.tw/dictView.jsp?ID=130544&la=0&powerMode=0)。保留聲調的字典讀音用於展示，朗讀時的變調仍依語流而異。
 
 生活物品另參考《國語辭典簡編本》的 [垃圾桶](https://dict.concised.moe.edu.tw/dictView.jsp?ID=13234&la=0&powerMode=0) 與 [湯匙](https://dict.concised.moe.edu.tw/dictView.jsp?ID=10587&la=0&powerMode=0)，採臺灣的 ㄌㄜˋ ㄙㄜˋ ㄊㄨㄥˇ 與 ㄊㄤ ㄔˊ。
 
 花園可自行切換晴天、夕陽、星夜，場景與布置同樣保存在本機，不跟現實日期或時間綁定。不同場景給一個親子對話邀請，鼓勵孩子指一指、說一說花園朋友；不因開啟時間、布置完成度或場景選擇加減花朵。
+
+## 2026-10-04 題庫擴充與讀音查核
+
+新增 20 個生活字、80 個常見詞語與活動，合計 180 個單字、320 個詞語／短語，共 500 筆。新增內容以實際物件和活動為主，例如無尾熊、貓頭鷹、滑板車、手電筒、生日蛋糕、騎車、划船、掃地，不增加必須學完的清單。圖像仍作為生活詞語的線索，成人可配合真實物品、動作和對話；不用圖片辨識結果判定語音能力。
+
+本輪對容易與其他地區讀音混淆的字詞查核教育部辭典，並將代表性讀音加入回歸測試。顯示採字典本調，連續朗讀的變調依裝置語音而異；未加入輕聲字詞或用相同字形混合不同讀音的單字題。
+
+- 《國語辭典簡編本》：[浣熊](https://dict.concised.moe.edu.tw/dictView.jsp?ID=43721&la=0&powerMode=0) 為 ㄨㄢˇ ㄒㄩㄥˊ；[駱駝](https://dict.concised.moe.edu.tw/dictView.jsp?ID=15507&la=0&powerMode=0) 為 ㄌㄨㄛˋ ㄊㄨㄛˊ；[蝙蝠](https://dict.concised.moe.edu.tw/dictView.jsp?ID=1543&la=0&powerMode=0) 為 ㄅㄧㄢ ㄈㄨˊ。
+- 《國語辭典簡編本》：[吐司](https://dict.concised.moe.edu.tw/dictView.jsp?ID=45602&la=0&powerMode=0) 為 ㄊㄨˇ ㄙ；[咖哩](https://dict.concised.moe.edu.tw/dictView.jsp?ID=17914&la=0&powerMode=1) 為 ㄎㄚ ㄌㄧˇ；[乳酪](https://dict.concised.moe.edu.tw/dictView.jsp?ID=36400&la=0&powerMode=0) 為 ㄖㄨˇ ㄌㄨㄛˋ。《重編國語辭典修訂本》的 [酪梨](https://dict.revised.moe.edu.tw/dictView.jsp?ID=66624&la=0&powerMode=0) 為 ㄌㄨㄛˋ ㄌㄧˊ。
+- 《國語辭典簡編本》：[夕陽](https://dict.concised.moe.edu.tw/dictView.jsp?ID=26452&la=0&powerMode=0) 為 ㄒㄧˋ ㄧㄤˊ；[風箏](https://dict.concised.moe.edu.tw/dictView.jsp?ID=6146&la=0&powerMode=0) 為 ㄈㄥ ㄓㄥ；[帳篷](https://dict.concised.moe.edu.tw/dictView.jsp?ID=30205&la=0&powerMode=0) 為 ㄓㄤˋ ㄆㄥˊ；[哈密瓜](https://dict.concised.moe.edu.tw/dictView.jsp?ID=18994&la=0&powerMode=0) 為 ㄏㄚ ㄇㄧˋ ㄍㄨㄚ。
+- 《國語辭典簡編本》的 [無尾熊](https://dict.concised.moe.edu.tw/dictView.jsp?ID=42879&la=1&powerMode=0) 與 [水母](https://dict.concised.moe.edu.tw/dictView.jsp?ID=35606&la=0&powerMode=0) 另作動物詞的讀音核對。
+
+上述為這輪實際查核的來源，格式與抽題測試不能取代全題庫的中文教學者試讀。水母、薑、鵝、扇與企鵝以原創 SVG 呈現，降低新 emoji 在舊字型缺字的問題；先匹配較長詞名，避免把企鵝畫成白鵝。
+
+聲音郵差將圖片信依第一個注音分到兩或三個家，各家兩封。房屋例詞與待送卡片不同，孩子可比較完整詞語的開頭，不需要閱讀拼音串或操作拖曳。每次選一封再點家，錯誤不扣分、不公布整批答案；主動求助只揭露一封信的去處。
+
+「誰的開頭不一樣」每題提供三個圖詞，其中兩個第一個注音相同，另一個不同。可逐詞重聽、整組朗讀或請大人陪讀；求助先說一個詞的開頭，答對後才完整比較。這些都是親子聽音活動，並非語音能力測驗。
+
+圖鑑增加中文字與注音搜尋、按目前範圍隨機探索，以及八主題的參與足跡。搜尋不要求標聲調；隨機探索優先挑尚未在遊戲紀錄中出現的詞，不建立速度、排名或每日完成壓力。從圖鑑開始尋寶只暫時優先所選詞，不改寫家長收藏設定。

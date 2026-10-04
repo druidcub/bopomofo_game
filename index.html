@@ -2,8 +2,8 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f8f5ec"><meta name="description" content="190 個生活字、442 個詞語與短語、17 種親子注音小遊戲。陪孩子聽聲音、找符號、玩拼音。">
-  <title>注音小花園 · 一起玩聲音</title><link rel="stylesheet" href="style.css?v=15"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#f8f5ec"><meta name="description" content="190 個生活字、542 個詞語與短語、18 種親子注音小遊戲。陪孩子聽聲音、找符號、玩拼音。">
+  <title>注音小花園 · 一起玩聲音</title><link rel="stylesheet" href="style.css?v=19"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
 </head>
 <body>
 <header class="topbar">
@@ -14,11 +14,12 @@
 <footer>陪孩子聽一聽、說一說，讓每一次發現都開花。<span>適合親子共玩 · 無計時 · 無廣告</span></footer>
 <dialog id="settings">
   <div class="dialog-head"><h2>家長小幫手</h2><button id="close-settings" aria-label="關閉家長小幫手">✕</button></div>
-  <p>先陪孩子玩聲音，再慢慢認識注音。一般遊戲每回合 5 題；翻翻卡可選 3、4 或 6 對，賓果連滿一排就完成，玩一兩回合可以休息。</p>
+  <p>先陪孩子玩聲音，再慢慢認識注音。一般遊戲每回合 5 題；注音翻卡可選 3、4 或 6 對，聽音翻卡可選 2、3 或 4 對，賓果連滿一排就完成，玩一兩回合可以休息。</p>
   <label for="scope">找符號、翻翻卡與賓果的範圍</label><select id="scope"><option value="starter">初次見面：ㄅ ㄆ ㄇ ㄈ ㄚ ㄧ ㄨ ㄩ</option><option value="all">自由探索：全部 37 個符號</option><option value="custom">我的注音朋友：使用下方自選符號</option></select>
   <details class="symbol-settings"><summary>自選孩子正在認識的注音</summary><div id="symbol-picker" aria-label="自選注音朋友"></div><p id="symbol-note" class="note" role="status"></p></details>
   <label for="buildLevel">小火車與修理站</label><select id="buildLevel"><option value="easy">小小火車：兩個符號</option><option value="grow">長長火車：兩個或三個符號</option></select>
   <label for="memoryPairs">翻翻卡的朋友數量</label><select id="memoryPairs"><option value="3">先試試：3 對（6 張）</option><option value="4">多找一點：4 對（8 張）</option><option value="6">大花園：6 對（12 張）</option></select><p class="note">自選符號較少時，卡片對數會配合減少。</p>
+  <label for="soundPairs">聽音翻翻卡的朋友數量</label><select id="soundPairs"><option value="2">先聽兩個詞：2 對（4 張）</option><option value="3">多一個朋友：3 對（6 張）</option><option value="4">聲音小花園：4 對（8 張）</option></select><p class="note">一張聲音卡、一張圖片卡才是一對。可以先看所有圖片，配錯後自己蓋回；沒有語音時可展開目前聲音卡的大人讀題。</p>
   <label for="packSize">聲音小背包的清單</label><select id="packSize"><option value="2">小小背包：2 張圖片卡</option><option value="3">多帶一位：3 張圖片卡</option></select><p class="note">先聽兩個詞，再嘗試三個。可重聽，也可請大人讀出清單。</p>
   <label for="mailHouses">聲音郵差的路線</label><select id="mailHouses"><option value="2">短短路線：2 個家、4 封信</option><option value="3">多走一點：3 個家、6 封信</option></select><p class="note">拿起圖片信，再點開頭一樣的家。每個家有另一個例詞可以聽，先試試兩個家。</p>
   <label for="workshopSize">詞語拼拼樂的長度</label><select id="workshopSize"><option value="2">先拼兩個聲音</option><option value="3">兩到三個聲音</option><option value="4">兩到四個聲音</option></select><p class="note">進階親子玩法：一塊積木是一個字的完整注音。適合已對拼音感到好奇的孩子，先和大人拼兩字詞。</p>
@@ -44,6 +45,6 @@
   <a href="RESEARCH.md" target="_blank" rel="noopener">閱讀學習設計與研究來源 ↗</a>
   <button id="reset-progress" class="quiet">清除這台裝置的花園與紀錄</button><p id="storage-note" class="note"></p>
 </dialog>
-<script src="data.js?v=15"></script><script src="play.js?v=15"></script><script src="challenges.js?v=15"></script><script src="discovery.js?v=15"></script><script src="audio.js?v=15"></script><script src="art.js?v=15"></script><script src="offline.js?v=15"></script><script src="extensions.js?v=15"></script><script src="extensions-ui.js?v=15"></script><script src="app.js?v=15"></script>
+<script src="data.js?v=19"></script><script src="play.js?v=19"></script><script src="challenges.js?v=19"></script><script src="discovery.js?v=19"></script><script src="audio.js?v=19"></script><script src="art.js?v=19"></script><script src="offline.js?v=19"></script><script src="extensions.js?v=19"></script><script src="extensions-ui.js?v=19"></script><script src="sound-memory.js?v=19"></script><script src="sound-memory-ui.js?v=19"></script><script src="app.js?v=19"></script>
 </body>
 </html>

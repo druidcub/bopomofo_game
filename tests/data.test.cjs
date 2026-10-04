@@ -51,8 +51,8 @@ test('all themes and levels produce five unique solvable questions', () => {
     }
   }
 });
-test('442 phrase entries have unique names and one valid pronunciation per syllable', () => {
-  assert.equal(D.phrases.length,442); assert.equal(new Set(D.phrases.map(p=>p.word)).size,442);
+test('542 phrase entries have unique names and one valid pronunciation per syllable', () => {
+  assert.equal(D.phrases.length,542); assert.equal(new Set(D.phrases.map(p=>p.word)).size,542);
   D.phrases.forEach(p=>{
     assert.equal([...p.word].length,p.count); assert.ok(p.count>=2 && p.count<=4);
     p.syllables.forEach(s=>assert.match(s,/^[ㄅ-ㄩ]+[ˊˇˋ]?$/));
@@ -60,6 +60,7 @@ test('442 phrase entries have unique names and one valid pronunciation per sylla
   });
   const r=D.makeRound('syllables'); assert.deepEqual([...new Set(r.map(q=>q.count))].sort(),[1,2,3,4]);
   assert.equal(D.phrases.find(p=>p.word==='烏龜').zhuyin,'ㄨ ㄍㄨㄟ');
+  for(const [word,zhuyin] of [['糙米','ㄘㄠ ㄇㄧˇ'],['量杯','ㄌㄧㄤˊ ㄅㄟ'],['芝麻','ㄓ ㄇㄚˊ'],['豆干','ㄉㄡˋ ㄍㄢ'],['擲球','ㄓˊ ㄑㄧㄡˊ'],['揉麵團','ㄖㄡˊ ㄇㄧㄢˋ ㄊㄨㄢˊ']])assert.equal(D.phrases.find(p=>p.word===word).zhuyin,zhuyin,word);
   assert.equal(D.phrases.find(p=>p.word==='螃蟹').zhuyin,'ㄆㄤˊ ㄒㄧㄝˋ');
   assert.equal(D.phrases.find(p=>p.word==='鸚鵡').zhuyin,'ㄧㄥ ㄨˇ');
   assert.equal(D.phrases.find(p=>p.word==='披薩').zhuyin,'ㄆㄧ ㄙㄚˋ');

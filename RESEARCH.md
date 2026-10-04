@@ -146,3 +146,11 @@
 三詞比較新增「誰的尾音不一樣」變化，可由家長設定切換。取完整韻部（保留介符、去除聲調），兩個詞押韻、另一個不押韻；不使用韻部為空的詞。提示只說第一個選項的尾音，不直接揭露三詞比較結果，答對再完整說明。這與找目標押韻朋友不同：孩子需要自己在三詞中找出相似的兩個，再排除另一個。
 
 新增詞語的抽查來源為《國語辭典簡編本》的 [菠菜](https://dict.concised.moe.edu.tw/dictView.jsp?ID=130&la=0&powerMode=0)、[豆腐](https://dict.concised.moe.edu.tw/dictView.jsp?ID=7811&la=0&powerMode=0)、[鞦韆](https://dict.concised.moe.edu.tw/dictView.jsp?ID=24972&la=0&powerMode=0) 與 [盪](https://dict.concised.moe.edu.tw/dictView.jsp?ID=8137&la=0&powerMode=0)。取字典本調，說話時的變讀仍由裝置語音與成人陪讀補充。
+## 聽音翻卡與 700 筆字詞（2026-10）
+新增 68 個生活詞，總計 190 字、510 詞語與短語。交通、食材與自然詞適合先由成人在生活中指認，再玩聽詞與圖片配對。海馬、螢火蟲、獨角仙、方向盤、斑馬線、量杯、豆干與三輪車補上原創 SVG。
+
+第 18 種玩法「聽音翻翻卡」用一張完整詞語的聲音卡配一張圖片卡，讓孩子練習重聽、記住位置與配對。預設只有兩對；可先看所有圖片，再自行蓋回。配錯不自動翻回，避免孩子來不及觀察；提示只聽一張，不公布配對位置。沒有裝置語音時成人讀目前翻開的聲音卡。這是親子聽詞活動，不是記憶能力評量。
+
+本輪易混讀音查核教育部《國語辭典簡編本》：[糙米](https://dict.concised.moe.edu.tw/dictView.jsp?ID=38055&la=0&powerMode=1) ㄘㄠ ㄇㄧˇ、[量杯](https://dict.concised.moe.edu.tw/dictView.jsp?ID=14984&la=0&powerMode=0) ㄌㄧㄤˊ ㄅㄟ、[豆干](https://dict.concised.moe.edu.tw/dictView.jsp?ID=7812&la=0&powerMode=0) ㄉㄡˋ ㄍㄢ、[芝麻](https://dict.concised.moe.edu.tw/dictView.jsp?ID=28883&la=0&powerMode=0) ㄓ ㄇㄚˊ。[菇](https://dict.concised.moe.edu.tw/dictView.jsp?ID=16635&la=0&powerMode=0) 基本讀法 ㄍㄨ；蘑菇採 ㄇㄛˊ ㄍㄨ，另有輕聲變讀。新題暫不加入只收輕聲讀法的茄子、饅頭。
+第二批再加入 32 個生活動作短語，達 732 筆（190 字、542 詞語／短語）：穿鞋、綁鞋帶、擦手、澆水、剪紙、聽故事等。成人可先示範或實際指認；抽象動作的圖片只提供情境，不視為完整定義。螳螂、羚羊、飛蛾另畫原創圖，避免用蟋蟀、鹿、蝴蝶圖混淆；澆水、拖地、撕紙與扣鈕扣也補圖。第 18 種玩法加入完成回合後的小兔邀請。
+易混字音：[擲](https://dict.mini.moe.edu.tw/SearchIndex/searchResult?dictSearchField=%E6%93%B2&searchType=one)採臺灣讀法 ㄓˊ；[揉](https://dict.concised.moe.edu.tw/dictView.jsp?ID=36004&la=0&powerMode=0) ㄖㄡˊ。摺衣服、故事等沿用字典本調，裝置語流可能讀輕聲。

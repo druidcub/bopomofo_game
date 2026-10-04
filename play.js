@@ -68,7 +68,8 @@
       {mode:'pack',emoji:'🎒',text:'小兔要出門：聽清單，依序裝好小背包。'},
       {mode:'mail',emoji:'✉️',text:'小兔想送信：把圖片信送到開頭一樣的家。'},
       {mode:'odd',emoji:'🔎',text:'小兔想聽仔細：三個詞，誰的開頭不一樣？'},
-      {mode:'balance',emoji:'⚖️',text:'小兔想比一比：兩個詞的聲音有一樣多嗎？'}
+      {mode:'balance',emoji:'⚖️',text:'小兔想比一比：兩個詞的聲音有一樣多嗎？'},
+      {mode:'soundMemory',emoji:'🃏',text:'小兔想找朋友：翻聲音卡，配它的圖片。'}
     ];
     return invitations[progress.rounds%invitations.length];
   }

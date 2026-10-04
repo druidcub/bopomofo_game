@@ -5,11 +5,12 @@
   function wordSet(values){
     return new Set(Array.isArray(values) || values instanceof Set ? values : []);
   }
-  function groups(){
+  function groups(field='initial'){
     const result = new Map();
     D.words.forEach(word => {
-      if(!result.has(word.initial)) result.set(word.initial, []);
-      result.get(word.initial).push(word);
+      if(!word[field])return;
+      if(!result.has(word[field])) result.set(word[field], []);
+      result.get(word[field]).push(word);
     });
     return [...result].map(([symbol, words]) => ({symbol, words}));
   }
@@ -52,22 +53,24 @@
   }
 
   // Two words begin alike; the third is the one to discover by listening.
-  function makeOddRound(recent=[], preferred=[]){
+  function makeOddRound(recent=[], preferred=[], comparison='initial'){
+    const field=comparison==='rhyme'?'rhyme':'initial';
     const history = wordSet(recent), favorites = wordSet(preferred), usedAnswers = new Set();
-    const bankGroups = groups();
+    const bankGroups = groups(field);
     const questions = [];
     for(let index=0; index<5; index++) {
       let question;
-      const answerCandidates = ordered(D.words.filter(word=>!usedAnswers.has(word.word)),history,favorites);
+      const answerCandidates = ordered(D.words.filter(word=>word[field]&&!usedAnswers.has(word.word)),history,favorites);
       for(const answer of answerCandidates) {
-        const commonCandidates = bankGroups.filter(group=>group.symbol!==answer.initial).flatMap(group=>
+        const commonCandidates = bankGroups.filter(group=>group.symbol!==answer[field]).flatMap(group=>
           pairs(group.words,new Set([answer.emoji])).map(pair=>({group,pair,
             score:pair.reduce((sum,word)=>sum+priority(word,history,favorites),0)}))
         );
         const chosen = D.shuffle(commonCandidates).sort((a,b)=>b.score-a.score)[0];
         if(!chosen) continue;
         question = {options:D.shuffle([...chosen.pair,answer]),answer:answer.word,
-          commonInitial:chosen.group.symbol,oddInitial:answer.initial,
+          comparison:field,commonSound:chosen.group.symbol,oddSound:answer[field],
+          ...(field==='initial'?{commonInitial:chosen.group.symbol,oddInitial:answer.initial}:{}),
           word:answer.word,zhuyin:answer.zhuyin,category:answer.category};
         usedAnswers.add(answer.word);
         history.add(answer.word);

@@ -141,3 +141,8 @@
 - 食物：[便當](https://dict.concised.moe.edu.tw/dictView.jsp?ID=1621&la=0&powerMode=0) 採飯盒義的 ㄅㄧㄢˋ ㄉㄤ，避免混用其他詞義的輕聲讀法。
 
 格式與出題測試驗證可操作性；教學適切性、圖詞理解與裝置朗讀仍需要成人陪玩確認。
+後續再加入 32 個可在日常生活指認的詞語，例如口罩、牙膏、浴帽、泳池、菠菜、豆腐、盪鞦韆，共 632 筆（190 字、442 詞語／短語）。牙膏、浴帽、浴巾、浴室、泳池、鞦韆、盪鞦韆、珊瑚、豆腐與蹲下以原創 SVG 補充圖像。圖像仍是線索，成人可對照實物和實際動作。
+
+三詞比較新增「誰的尾音不一樣」變化，可由家長設定切換。取完整韻部（保留介符、去除聲調），兩個詞押韻、另一個不押韻；不使用韻部為空的詞。提示只說第一個選項的尾音，不直接揭露三詞比較結果，答對再完整說明。這與找目標押韻朋友不同：孩子需要自己在三詞中找出相似的兩個，再排除另一個。
+
+新增詞語的抽查來源為《國語辭典簡編本》的 [菠菜](https://dict.concised.moe.edu.tw/dictView.jsp?ID=130&la=0&powerMode=0)、[豆腐](https://dict.concised.moe.edu.tw/dictView.jsp?ID=7811&la=0&powerMode=0)、[鞦韆](https://dict.concised.moe.edu.tw/dictView.jsp?ID=24972&la=0&powerMode=0) 與 [盪](https://dict.concised.moe.edu.tw/dictView.jsp?ID=8137&la=0&powerMode=0)。取字典本調，說話時的變讀仍由裝置語音與成人陪讀補充。

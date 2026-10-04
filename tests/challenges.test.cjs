@@ -99,3 +99,36 @@ test('browser script exposes the same challenge API without CommonJS',()=>{
   assert.equal(typeof context.window.GardenChallenges.makeMailRound,'function');
   assert.equal(context.window.GardenChallenges.makeOddRound().length,5);
 });
+
+test('rhyme comparisons have exactly one non-rhyming word, ignore tone and never use an empty rhyme',()=>{
+  for(let n=0;n<100;n++){
+    const round=C.makeOddRound([],[],'rhyme');
+    assert.equal(round.length,5);
+    assert.equal(new Set(round.map(q=>q.answer)).size,5);
+    for(const q of round){
+      assert.equal(q.comparison,'rhyme');
+      assert.ok(q.commonSound && q.oddSound);
+      assert.notEqual(q.commonSound,q.oddSound);
+      assert.equal(new Set(q.options.map(w=>w.emoji)).size,3);
+      assert.equal(q.options.filter(w=>w.rhyme===q.commonSound).length,2);
+      assert.equal(q.options.filter(w=>w.rhyme===q.oddSound).length,1);
+      assert.equal(q.options.find(w=>w.word===q.answer).rhyme,q.oddSound);
+      assert.ok(!/[ˊˇˋ˙]/u.test(q.commonSound+q.oddSound));
+      assert.ok(q.options.every(w=>w.rhyme));
+    }
+  }
+});
+
+test('rhyme comparisons avoid recent answers, prioritize eligible favorites and preserve input',()=>{
+  const recent=Object.freeze(['貓','桃','牛']),favorites=Object.freeze(['貓']);
+  const snapshot=JSON.stringify(D.words);
+  for(let n=0;n<20;n++){
+    assert.equal(C.makeOddRound(recent,favorites,'rhyme')[0].answer,'貓');
+    assert.ok(C.makeOddRound(recent,[],'rhyme').every(q=>!recent.includes(q.answer)));
+    assert.equal(C.makeOddRound([],['指'],'rhyme').some(q=>q.answer==='指'),false);
+  }
+  assert.equal(JSON.stringify(D.words),snapshot);
+  assert.deepEqual(recent,['貓','桃','牛']);
+  assert.deepEqual(favorites,['貓']);
+  assert.ok(C.makeOddRound([],[],'unknown').every(q=>q.comparison==='initial'&&q.commonSound===q.commonInitial&&q.oddSound===q.oddInitial));
+});

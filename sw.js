@@ -1,8 +1,8 @@
 'use strict';
 const scopeURL=new URL(self.registration.scope);
 const prefix='bopomofo:'+scopeURL.pathname+':';
-const cacheName=prefix+'13';
-const files=['./','./index.html','./style.css?v=13','./data.js?v=13','./play.js?v=13','./challenges.js?v=13','./discovery.js?v=13','./audio.js?v=13','./art.js?v=13','./app.js?v=13','./extensions.js?v=13','./extensions-ui.js?v=13','./offline.js?v=13','./manifest.webmanifest','./icon.svg','./RESEARCH.md'];
+const cacheName=prefix+'15';
+const files=['./','./index.html','./style.css?v=15','./data.js?v=15','./play.js?v=15','./challenges.js?v=15','./discovery.js?v=15','./audio.js?v=15','./art.js?v=15','./app.js?v=15','./extensions.js?v=15','./extensions-ui.js?v=15','./offline.js?v=15','./manifest.webmanifest','./icon.svg','./RESEARCH.md'];
 const paths=new Set(files.map(file=>new URL(file,scopeURL).pathname));
 
 self.addEventListener('install',event=>{

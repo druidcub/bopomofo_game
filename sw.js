@@ -1,8 +1,8 @@
 'use strict';
 const scopeURL=new URL(self.registration.scope);
 const prefix='bopomofo:'+scopeURL.pathname+':';
-const cacheName=prefix+'26';
-const files=['./','./index.html','./style.css?v=26','./data.js?v=26','./garden.js?v=26','./garden-ui.js?v=26','./garden.css?v=26','./play.js?v=26','./challenges.js?v=26','./discovery.js?v=26','./audio.js?v=26','./art.js?v=26','./sound-beds.js?v=26','./sound-beds-ui.js?v=26','./sound-memory.js?v=26','./sound-memory-ui.js?v=26','./app.js?v=26','./extensions.js?v=26','./extensions-ui.js?v=26','./offline.js?v=26','./manifest.webmanifest','./icon.svg','./RESEARCH.md'];
+const cacheName=prefix+'28';
+const files=['./','./index.html','./style.css?v=28','./data.js?v=28','./garden.js?v=28','./garden-ui.js?v=28','./garden.css?v=28','./garden-phase3.css?v=28','./music/happy.mp3','./music/happy-loop.mp3','./music/happy-adventure.mp3','./CREDITS.md','./play.js?v=28','./challenges.js?v=28','./discovery.js?v=28','./audio.js?v=28','./art.js?v=28','./sound-beds.js?v=28','./sound-beds-ui.js?v=28','./sound-memory.js?v=28','./sound-memory-ui.js?v=28','./app.js?v=28','./extensions.js?v=28','./extensions-ui.js?v=28','./offline.js?v=28','./manifest.webmanifest','./icon.svg','./RESEARCH.md'];
 const paths=new Set(files.map(file=>new URL(file,scopeURL).pathname));
 
 self.addEventListener('install',event=>{

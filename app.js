@@ -6,7 +6,7 @@ const modeIDs=['match','listen','build','picture','rhyme','memory','initial','sy
 const vocabulary=[...words,...phrases];
 const playGroups={all:{name:'全部玩法',note:'想玩什麼就選什麼，也可以先看圖、先聽聲音。'},shapes:{name:'看字形',note:'從找相同符號開始，不需要先會讀注音。',ids:['match','memory','bingo']},sounds:{name:'看圖與聽音',note:'重聽整個生活詞，找圖片、比開頭，或拍拍聲音。',ids:['picture','rhyme','initial','syllables','odd','balance','soundMemory']},phonics:{name:'和大人拼音',note:'成人陪同認識聲音與符號；拼詞是進階活動，可以慢慢來。',ids:['listen','build','repair','tone','workshop']},tasks:{name:'聽音小任務',note:'送信、裝背包、走五站。可以重聽，不用趕時間。',ids:['adventure','pack','mail','soundBeds']}};
 let playGroup='all';
-const defaults = { scope: 'starter', customSymbols:'ㄅㄆㄇㄚㄧ', category: 'all', practice:'fresh', oddSound:'initial', buildLevel: 'easy', memoryPairs: 3, packSize:2, mailHouses:2, workshopSize:2, balanceSize:2, soundPairs:2, soundWordSize:3, bedGroups:2, sound: true, voice: '', effects: true, music: false, track: 'garden', musicVolume: 18, effectsVolume: 40 };
+const defaults = { scope: 'starter', customSymbols:'ㄅㄆㄇㄚㄧ', category: 'all', practice:'fresh', oddSound:'initial', buildLevel: 'easy', memoryPairs: 3, packSize:2, mailHouses:2, workshopSize:2, balanceSize:2, soundPairs:2, soundWordSize:3, bedGroups:2, sound: true, voice: '', effects: true, music: false, track: 'mix', musicVolume: 18, effectsVolume: 40 };
 let prefs = { ...defaults }, progress = emptyProgress(), storageOK = true;
 try {
   const saved = JSON.parse(localStorage.getItem('garden-prefs') || '{}');
@@ -391,7 +391,7 @@ function finish(flowers,newBadges=[],newDecor=[]) {
 }
 function renderGarden(selected=null) {
   stopSpeech(); game=null;
-  GardenScene.open({progress,save,speak,effect,home,start,storageOK:()=>storageOK,heading},selected);
+  GardenScene.open({progress,save,speak,effect,home,start,storageOK:()=>storageOK,heading,music:{track:()=>prefs.track,choose:id=>{prefs.track=id;gardenAudio.configure(prefs);save();soundLabels();},toggle:toggleMusic,next:()=>gardenAudio.nextTrack(),refresh:soundLabels}},selected);
 }
 function renderAlbum(page=0, selection=null, onlyRecent=false, onlyFavorites=false, query='', keepPosition=false) {
   const position=window.scrollY;
@@ -429,13 +429,17 @@ function renderAlbum(page=0, selection=null, onlyRecent=false, onlyFavorites=fal
 
 function musicStatus() {
   if (!('AudioContext' in window || 'webkitAudioContext' in window)) return '這個瀏覽器無法播放音效與配樂，遊戲仍可操作。';
-  if (!prefs.music) return `${Object.keys(GardenSongs).length} 首原創輕柔配樂，點一下才會開始播放。`;
-  return gardenAudio.context?.state === 'running' ? `正在播放：${GardenSongs[prefs.track].name} · 朗讀時自動放輕音量` : `已選擇：${GardenSongs[prefs.track].name} · 點一下播放以啟動聲音`;
+  if (!prefs.music) return '3 首 CC0 開放授權音樂、5 首原創配樂，可選單曲或花園電台輪播。點一下才播放。';
+  if(gardenAudio.musicError)return '錄音暫時無法載入，正在播放原創花園散步。';
+  if(gardenAudio.loading)return '正在準備：'+GardenSongs[gardenAudio.currentTrack].name;
+  const name=GardenSongs[gardenAudio.currentTrack||prefs.track].name;
+  return gardenAudio.context?.state === 'running' ? '正在播放：'+name+' · 朗讀時自動放輕音量' : '已選擇：'+GardenSongs[prefs.track].name+' · 點一下播放以啟動聲音';
 }
 function soundLabels() {
   for (const [id, value, on, off] of [['sound', prefs.sound, '朗讀開', '朗讀關'], ['effects', prefs.effects, '音效開', '音效關'], ['music', prefs.music, '音樂開', '音樂關']]) {
     $('#' + id).textContent = (id === 'sound' ? '♫ ' : id === 'effects' ? '✦ ' : '♪ ') + (value ? on : off); $('#' + id).setAttribute('aria-pressed', String(value));
   }
+  if($('#garden-track')){$('#garden-track').value=prefs.track;$('#garden-music-status').textContent=musicStatus();$('#garden-music-toggle').textContent=prefs.music?'關閉音樂':'播放音樂';$('#garden-music-next').hidden=prefs.track!=='mix';$('#garden-music-next').disabled=!prefs.music;}
   if ($('#music-status')) $('#music-status').textContent = musicStatus();
   if ($('#home-music-status')) $('#home-music-status').textContent = musicStatus();
   if ($('#home-music')) $('#home-music').textContent = (prefs.music ? '關閉音樂' : '播放背景音樂') + ' →';

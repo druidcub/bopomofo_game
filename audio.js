@@ -7,12 +7,19 @@
     raindrops: { name: '雨滴小圓舞', beat: .54, notes: [76,79,0,74,77,0,72,76,0,67,72,0,74,77,0,76,79,0,77,81,0,76,79,0,74,77,0,72,76,0,72,0], bass: [48,53,55,48] },
     rainbow: { name: '彩虹慢慢走', beat: .5, notes: [72,0,74,76,79,0,81,0,79,76,74,0,72,0,67,0,76,0,79,81,84,0,81,0,79,76,74,0,76,74,72,0], bass: [48,55,57,53] }
   };
+  Object.assign(songs,{
+    happy:{name:'輕鬆小花園 · Happy',file:'music/happy.mp3',author:'Alex McCulloch (Pro Sensory)',source:'https://opengameart.org/content/happy',license:'CC0'},
+    happyLoop:{name:'歡樂散步 · Happy Loop',file:'music/happy-loop.mp3',author:'wipics',source:'https://opengameart.org/content/happy-loop',license:'CC0'},
+    happyAdventure:{name:'像素小冒險 · Happy Adventure',file:'music/happy-adventure.mp3',author:'TinyWorlds',source:'https://opengameart.org/content/happy-adventure-loop',license:'CC0'},
+    mix:{name:'花園電台 · 三首輪播',playlist:['happy','happyLoop','happyAdventure']}
+  });
   class GardenAudio {
     constructor() {
       this.context = null; this.musicBus = null; this.effectsBus = null;
       this.options = { music: false, effects: true, track: 'garden', musicVolume: 18, effectsVolume: 40 };
       this.timer = null; this.nodes = new Set(); this.step = 0; this.nextNote = 0;
       this.ducked = false; this.unlocked = false; this.onState = () => {};
+      this.buffers=new Map();this.fileSource=null;this.loading=false;this.loadVersion=0;this.playlistIndex=0;this.currentTrack=null;this.musicError=false;
     }
     async unlock() {
       try {
@@ -37,7 +44,7 @@
       this.options.effectsVolume = Math.max(0, Math.min(70, Number(this.options.effectsVolume) || 0));
       if (!songs[this.options.track]) this.options.track = 'garden';
       this.applyVolumes();
-      if (oldTrack !== this.options.track) this.stopMusic();
+      if (oldTrack !== this.options.track) {this.stopMusic();this.playlistIndex=0;this.musicError=false;}
       this.syncMusic(); this.onState();
     }
     applyVolumes() {
@@ -71,11 +78,14 @@
     }
     syncMusic() {
       if (!this.context || !this.unlocked || !this.options.music || (root.document && root.document.hidden)) { this.stopMusic(); return; }
-      if (this.timer) return;
+      if (this.timer||this.fileSource||this.loading) return;
+      const chosen=songs[this.options.track];
+      if(chosen.file||chosen.playlist){this.playFile();return;}
+      this.currentTrack=this.options.track;
       this.step = 0; this.nextNote = this.context.currentTime + .08;
       const schedule = () => {
         if (this.context.state !== 'running') return;
-        const song = songs[this.options.track];
+        const song = songs[this.currentTrack];
         if (this.nextNote < this.context.currentTime) this.nextNote = this.context.currentTime + .04;
         while (this.nextNote < this.context.currentTime + .35) {
           const n = song.notes[this.step % song.notes.length];
@@ -86,7 +96,38 @@
       };
       schedule(); this.timer = root.setInterval(schedule, 120);
     }
+    async playFile(){
+      const version=++this.loadVersion,chosen=songs[this.options.track],track=chosen.playlist?chosen.playlist[this.playlistIndex%chosen.playlist.length]:this.options.track;
+      this.loading=true;this.currentTrack=track;this.onState();
+      try{
+        if(!this.buffers.has(track)){
+          const response=await root.fetch(songs[track].file);if(!response.ok)throw new Error('Music unavailable');
+          const buffer=await this.context.decodeAudioData(await response.arrayBuffer());this.buffers.set(track,buffer);
+        }
+        if(version!==this.loadVersion)return;
+        this.loading=false;
+        if(!this.options.music||this.context.state!=='running'||root.document?.hidden)return;
+        const buffer=this.buffers.get(track),source=this.context.createBufferSource(),envelope=this.context.createGain(),now=this.context.currentTime;
+        source.buffer=buffer;source.connect(envelope);envelope.connect(this.musicBus);
+        // Brief fades soften track boundaries; voice ducking still happens on the shared bus.
+        const fade=Math.min(.6,buffer.duration/4);envelope.gain.setValueAtTime(0,now);envelope.gain.linearRampToValueAtTime(.7,now+fade);envelope.gain.setValueAtTime(.7,now+buffer.duration-fade);envelope.gain.linearRampToValueAtTime(0,now+buffer.duration);
+        this.fileSource=source;this.musicError=false;
+        source.onended=()=>{source.disconnect();envelope.disconnect();if(this.fileSource!==source)return;this.fileSource=null;if(chosen.playlist)this.playlistIndex++;this.syncMusic();this.onState();};
+        source.start();this.onState();
+      }catch{
+        if(version!==this.loadVersion)return;
+        this.loading=false;this.musicError=true;this.currentTrack='garden';
+        // A missing recording falls back to the local original tune, without changing saved preferences.
+        const wanted=this.options.track;this.options.track='garden';this.syncMusic();this.options.track=wanted;this.onState();
+      }
+    }
+    nextTrack(){
+      if(!songs[this.options.track]?.playlist)return false;
+      this.stopMusic();this.playlistIndex++;this.syncMusic();this.onState();return true;
+    }
     stopMusic() {
+      this.loadVersion++;this.loading=false;
+      if(this.fileSource){const source=this.fileSource;this.fileSource=null;try{source.stop();}catch{}}
       if (this.timer) root.clearInterval(this.timer);
       this.timer = null;
       for (const r of [...this.nodes]) if (r.music) { try { r.osc.stop(); } catch {} this.nodes.delete(r); }

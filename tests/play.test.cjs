@@ -18,7 +18,7 @@ test('a requested hint only points to one first unresolved position',()=>{
 test('garden rewards depend on participation and are available without a streak',()=>{
   assert.equal(P.earnedBadges({rounds:0,flowers:0}).length,0);
   assert.ok(P.earnedBadges({rounds:2,flowers:10,modes:{build:2}}).some(b=>b.id==='train'));
-  assert.deepEqual(P.availableDecorations(0).map(d=>d.id),['tulip']);
+  assert.deepEqual(P.availableDecorations(0).map(d=>d.id),['tulip','bunny']);
   assert.equal(P.availableDecorations(10).length,8);
 });
 test('legacy progress migrates safely and untrusted stored values cannot become markup',()=>{

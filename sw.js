@@ -1,8 +1,8 @@
 'use strict';
 const scopeURL=new URL(self.registration.scope);
 const prefix='bopomofo:'+scopeURL.pathname+':';
-const cacheName=prefix+'23';
-const files=['./','./index.html','./style.css?v=23','./data.js?v=23','./play.js?v=23','./challenges.js?v=23','./discovery.js?v=23','./audio.js?v=23','./art.js?v=23','./sound-beds.js?v=23','./sound-beds-ui.js?v=23','./sound-memory.js?v=23','./sound-memory-ui.js?v=23','./app.js?v=23','./extensions.js?v=23','./extensions-ui.js?v=23','./offline.js?v=23','./manifest.webmanifest','./icon.svg','./RESEARCH.md'];
+const cacheName=prefix+'26';
+const files=['./','./index.html','./style.css?v=26','./data.js?v=26','./garden.js?v=26','./garden-ui.js?v=26','./garden.css?v=26','./play.js?v=26','./challenges.js?v=26','./discovery.js?v=26','./audio.js?v=26','./art.js?v=26','./sound-beds.js?v=26','./sound-beds-ui.js?v=26','./sound-memory.js?v=26','./sound-memory-ui.js?v=26','./app.js?v=26','./extensions.js?v=26','./extensions-ui.js?v=26','./offline.js?v=26','./manifest.webmanifest','./icon.svg','./RESEARCH.md'];
 const paths=new Set(files.map(file=>new URL(file,scopeURL).pathname));
 
 self.addEventListener('install',event=>{

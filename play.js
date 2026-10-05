@@ -25,9 +25,10 @@
   const decorations=[
     {id:'tulip',emoji:'🌷',name:'小花',at:0}, {id:'sunflower',emoji:'🌻',name:'向日葵',at:1},
     {id:'mushroom',emoji:'🍄',name:'小蘑菇',at:2}, {id:'butterfly',emoji:'🦋',name:'蝴蝶',at:3},
-    {id:'bunny',emoji:'🐰',name:'小兔',at:4}, {id:'tree',emoji:'🌳',name:'大樹',at:5},
+    {id:'bunny',emoji:'🐰',name:'小兔',at:0}, {id:'tree',emoji:'🌳',name:'大樹',at:5},
     {id:'pond',emoji:'🐸',name:'青蛙',at:7}, {id:'rainbow',emoji:'🌈',name:'彩虹',at:10}
   ];
+  const layout=root.GardenLayout||(typeof require==='function'?require('./garden.js'):null);
   const scenes=[
     {id:'sunny',name:'晴天',emoji:'☀️',prompt:'晴天的花園，哪個朋友想曬太陽？指一指、說一說。'},
     {id:'sunset',name:'夕陽',emoji:'🌅',prompt:'夕陽慢慢來了，和花園朋友說聲晚安吧。'},
@@ -35,7 +36,7 @@
   ];
   function earnedBadges(progress){return badges.filter(b=>b.rule(progress));}
   function availableDecorations(rounds){return decorations.filter(d=>d.at<=rounds);}
-  function emptyProgress(){return {flowers:0,rounds:0,modes:{},recent:[],journal:[],favorites:[],weather:'sunny',plots:['tulip','','tulip','','tulip','']};}
+  function emptyProgress(){return {flowers:0,rounds:0,modes:{},recent:[],journal:[],favorites:[],weather:'sunny',plots:['tulip','','tulip','','tulip',''],garden:null,gardenMemories:[]};}
   function restoreProgress(recorded, validModes, vocabulary){
     const p=emptyProgress(), allowed=new Set(vocabulary);
     for(const key of ['flowers','rounds'])if(Number.isSafeInteger(recorded?.[key])&&recorded[key]>=0)p[key]=recorded[key];
@@ -45,6 +46,8 @@
     if(Array.isArray(recorded?.favorites))p.favorites=[...new Set(recorded.favorites.filter(w=>allowed.has(w)))].slice(0,50);
     if(scenes.some(scene=>scene.id===recorded?.weather))p.weather=recorded.weather;
     if(Array.isArray(recorded?.plots))p.plots=Array.from({length:6},(_,i)=>availableDecorations(p.rounds).some(d=>d.id===recorded.plots[i])?recorded.plots[i]:'');
+    p.garden=layout.restore({...recorded,plots:p.plots},p.rounds);
+    p.gardenMemories=layout.milestones([],recorded?.gardenMemories);
     return p;
   }
   function rememberWord(progress, word){

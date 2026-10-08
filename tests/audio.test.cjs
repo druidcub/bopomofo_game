@@ -30,9 +30,9 @@ test('audio requires unlock; controls, speech ducking and page suspension are in
   } finally { audio.stopMusic(); delete globalThis.AudioContext; }
 });
 test('unsupported audio never prevents the game from running', async () => { const audio = new GardenAudio(); assert.equal(await audio.unlock(), false); audio.effect('correct'); audio.configure({music: true}); assert.equal(audio.timer, null); });
-test('three local CC0 recordings have credits, valid MP3 payloads and a varied playlist',()=>{
+test('five local CC0 recordings have credits, valid MP3 payloads and a varied playlist',()=>{
   const fs=require('node:fs'),path=require('node:path'),credits=fs.readFileSync(path.join(__dirname,'../CREDITS.md'),'utf8');
-  const recordings=Object.values(songs).filter(s=>s.file);assert.equal(recordings.length,3);assert.equal(new Set(songs.mix.playlist).size,3);
+  const recordings=Object.values(songs).filter(s=>s.file);assert.equal(recordings.length,5);assert.equal(new Set(songs.mix.playlist).size,5);
   recordings.forEach(s=>{assert.equal(s.license,'CC0');assert.ok(credits.includes(s.source));assert.ok(credits.includes(s.file));const bytes=fs.readFileSync(path.join(__dirname,'../'+s.file));assert.ok(bytes.length>400000);assert.ok(bytes.subarray(0,3).toString()==='ID3'||bytes[0]===255&&bytes[1]>=224);});
 });
 test('recording playback needs unlock, rotates tracks, ducks and stops independently from effects',async()=>{
@@ -43,7 +43,9 @@ test('recording playback needs unlock, rotates tracks, ducks and stops independe
     const initial=a.fileSource;a.duck(true);assert.ok(a.musicBus.gain.value<.18);a.duck(false);assert.equal(fetched.length,1);
     assert.equal(a.nextTrack(),true);await settle();assert.equal(initial.stopped,true);assert.equal(a.currentTrack,'happyLoop');
     a.fileSource.onended();await settle();assert.equal(a.currentTrack,'happyAdventure');
-    a.fileSource.onended();await settle();assert.equal(a.currentTrack,'happy');assert.equal(fetched.length,3);
+    a.fileSource.onended();await settle();assert.equal(a.currentTrack,'classicalPop');
+    a.fileSource.onended();await settle();assert.equal(a.currentTrack,'growingVillage');
+    a.fileSource.onended();await settle();assert.equal(a.currentTrack,'happy');assert.equal(fetched.length,5);
     a.configure({music:false});assert.equal(a.fileSource,null);const count=a.context.started.length;a.effect('place');assert.ok(a.context.started.length>count);
     a.configure({music:true,track:'happy'});await settle();await a.visibility(true);assert.equal(a.fileSource,null);assert.equal(a.context.state,'suspended');await a.visibility(false);await settle();assert.ok(a.fileSource);
   }finally{a.stopMusic();globalThis.fetch=oldFetch;delete globalThis.AudioContext;}

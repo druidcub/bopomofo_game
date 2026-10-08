@@ -1,8 +1,8 @@
 'use strict';
 const scopeURL=new URL(self.registration.scope);
 const prefix='bopomofo:'+scopeURL.pathname+':';
-const cacheName=prefix+'29';
-const files=['./','./index.html','./style.css?v=29','./data.js?v=29','./garden.js?v=29','./garden-ui.js?v=29','./garden.css?v=29','./garden-phase3.css?v=29','./music/happy.mp3','./music/happy-loop.mp3','./music/happy-adventure.mp3','./CREDITS.md','./echo.js?v=29','./echo-ui.js?v=29','./echo.css?v=29','./play.js?v=29','./challenges.js?v=29','./discovery.js?v=29','./audio.js?v=29','./art.js?v=29','./sound-beds.js?v=29','./sound-beds-ui.js?v=29','./sound-memory.js?v=29','./sound-memory-ui.js?v=29','./app.js?v=29','./extensions.js?v=29','./extensions-ui.js?v=29','./offline.js?v=29','./manifest.webmanifest','./icon.svg','./RESEARCH.md'];
+const cacheName=prefix+'31';
+const files=['./','./index.html','./style.css?v=31','./data.js?v=31','./garden.js?v=31','./garden-ui.js?v=31','./garden.css?v=31','./garden-phase3.css?v=31','./music/happy.mp3','./music/happy-loop.mp3','./music/happy-adventure.mp3','./CREDITS.md','./music/classical-pop.mp3','./music/growing-village.mp3','./echo.js?v=31','./echo-ui.js?v=31','./echo.css?v=31','./play.js?v=31','./challenges.js?v=31','./discovery.js?v=31','./audio.js?v=31','./art.js?v=31','./sound-beds.js?v=31','./sound-beds-ui.js?v=31','./sound-memory.js?v=31','./sound-memory-ui.js?v=31','./app.js?v=31','./extensions.js?v=31','./extensions-ui.js?v=31','./offline.js?v=31','./manifest.webmanifest','./icon.svg','./RESEARCH.md'];
 const paths=new Set(files.map(file=>new URL(file,scopeURL).pathname));
 
 self.addEventListener('install',event=>{

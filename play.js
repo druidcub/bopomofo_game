@@ -31,7 +31,7 @@
   ];
   function earnedBadges(progress){return badges.filter(b=>b.rule(progress));}
   function availableDecorations(rounds){return decorations.filter(d=>d.at<=rounds);}
-  function emptyProgress(){return {flowers:0,rounds:0,modes:{},recent:[],journal:[],favorites:[],weather:'sunny',plots:['tulip','','tulip','','tulip',''],garden:null,gardenMemories:[],gardenZones:{pond:[],picnic:[]},gardenArea:'meadow',gardenAlbum:[]};}
+  function emptyProgress(){return {flowers:0,rounds:0,modes:{},recent:[],journal:[],favorites:[],weather:'sunny',plots:['tulip','','tulip','','tulip',''],garden:null,gardenMemories:[],gardenZones:{pond:[],picnic:[],orchard:[],coast:[]},gardenArea:'meadow',gardenAlbum:[]};}
   function restoreProgress(recorded, validModes, vocabulary){
     const p=emptyProgress(), allowed=new Set(vocabulary);
     for(const key of ['flowers','rounds'])if(Number.isSafeInteger(recorded?.[key])&&recorded[key]>=0)p[key]=recorded[key];
@@ -43,7 +43,7 @@
     if(Array.isArray(recorded?.plots))p.plots=Array.from({length:6},(_,i)=>availableDecorations(p.rounds).some(d=>d.id===recorded.plots[i])?recorded.plots[i]:'');
     p.garden=layout.restore({...recorded,plots:p.plots},p.rounds);
     p.gardenMemories=layout.milestones([],recorded?.gardenMemories);
-    for(const area of ['pond','picnic'])p.gardenZones[area]=layout.restore({garden:Array.isArray(recorded?.gardenZones?.[area])?recorded.gardenZones[area]:[]},p.rounds,area);
+    for(const area of Object.keys(layout.areas).filter(id=>id!=='meadow'))p.gardenZones[area]=layout.restore({garden:Array.isArray(recorded?.gardenZones?.[area])?recorded.gardenZones[area]:[]},p.rounds,area);
     if(Object.hasOwn(layout.areas,recorded?.gardenArea))p.gardenArea=recorded.gardenArea;
     p.gardenAlbum=layout.restoreAlbum(recorded?.gardenAlbum,p.rounds);
     return p;
@@ -72,7 +72,8 @@
       {mode:'balance',emoji:'⚖️',text:'小兔想比一比：兩個詞的聲音有一樣多嗎？'},
       {mode:'soundMemory',emoji:'🃏',text:'小兔想找朋友：翻聲音卡，配它的圖片。'},
       {mode:'soundBeds',emoji:'🌱',text:'小兔想種聲音：一字拍一下，種進合適的花圃。'},
-      {mode:'echo',emoji:'🔎',text:'小兔想聽仔細：誰在一串聲音裡來了兩次？'}
+      {mode:'echo',emoji:'🔎',text:'小兔想聽仔細：誰在一串聲音裡來了兩次？'},
+      {mode:'rollcall',emoji:'👂',text:'小兔想幫朋友點名：誰的名字還沒聽到？'}
     ];
     return invitations[progress.rounds%invitations.length];
   }

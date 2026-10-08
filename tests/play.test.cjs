@@ -18,8 +18,8 @@ test('a requested hint only points to one first unresolved position',()=>{
 test('garden rewards depend on participation and are available without a streak',()=>{
   assert.equal(P.earnedBadges({rounds:0,flowers:0}).length,0);
   assert.ok(P.earnedBadges({rounds:2,flowers:10,modes:{build:2}}).some(b=>b.id==='train'));
-  assert.deepEqual(P.availableDecorations(0).map(d=>d.id),['tulip','bunny','daisy','lily','duck','bench','basket']);
-  assert.equal(P.availableDecorations(10).length,21);
+  assert.deepEqual(P.availableDecorations(0).map(d=>d.id),['tulip','bunny','daisy','lily','duck','bench','basket','appleTree','shell','crab']);
+  assert.equal(P.availableDecorations(10).length,26);
 });
 test('legacy progress migrates safely and untrusted stored values cannot become markup',()=>{
   const legacy=P.restoreProgress({flowers:15,rounds:3},['build'],['貓']);

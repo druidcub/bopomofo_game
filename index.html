@@ -2,8 +2,8 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f8f5ec"><meta name="description" content="190 個生活字、638 個詞語與短語、20 種親子注音小遊戲。陪孩子聽聲音、找符號、玩拼音。">
-  <title>注音小花園 · 一起玩聲音</title><link rel="stylesheet" href="style.css?v=29"><link rel="stylesheet" href="garden.css?v=29"><link rel="stylesheet" href="garden-phase3.css?v=29"><link rel="stylesheet" href="echo.css?v=29"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#f8f5ec"><meta name="description" content="190 個生活字、674 個詞語與短語、21 種親子注音小遊戲。陪孩子聽聲音、找符號、玩拼音。">
+  <title>注音小花園 · 一起玩聲音</title><link rel="stylesheet" href="style.css?v=31"><link rel="stylesheet" href="garden.css?v=31"><link rel="stylesheet" href="garden-phase3.css?v=31"><link rel="stylesheet" href="echo.css?v=31"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
 </head>
 <body>
 <header class="topbar">
@@ -27,9 +27,9 @@
   <label for="oddSound">三個朋友，比較哪裡？</label><select id="oddSound"><option value="initial">先聽開頭：誰的開頭不一樣</option><option value="rhyme">再聽尾巴：誰和另外兩個不押韻</option></select><p class="note">比較玩法可切換開頭或尾音，設定用於下一回合。尾音玩法比較完整韻部，忽略聲調；成人可慢慢念三個詞，找兩個押韻的朋友。</p>
   <p class="note">主題在首頁選擇。部分主題的兩符號詞較少時，拼音會加入其他主題的朋友，畫面會標示。</p>
   <label for="practice">詞語題的玩法</label><select id="practice"><option value="fresh">認識新朋友：避開最近玩過的詞</option><option value="favorite">多玩喜歡的朋友：優先圖鑑收藏</option></select><p id="favorites-note" class="note"></p>
-  <h3>聲音小天地</h3><p class="note">上方的朗讀、音效、音樂開關可分別控制。背景音樂預設關閉，點選後開始；離開分頁會暫停。</p>
-  <label for="track">背景音樂</label><select id="track"><option value="mix">🎶 花園電台 · 三首輪播</option><option value="happy">🌷 輕鬆小花園 · Happy</option><option value="happyLoop">🌻 歡樂散步 · Happy Loop</option><option value="happyAdventure">🎮 像素小冒險 · Happy Adventure</option><option value="garden">🌷 花園散步</option><option value="stars">⭐ 星星搖籃</option><option value="picnic">🌳 森林野餐</option><option value="raindrops">🌧️ 雨滴小圓舞</option><option value="rainbow">🌈 彩虹慢慢走</option></select>
-  <p class="note">三首外部音樂採 CC0 開放授權；單曲可重播，花園電台會輪流播放。<a href="CREDITS.md" target="_blank" rel="noopener">作者與來源 ↗</a></p><label for="musicVolume">配樂音量 <output id="musicVolume-value">18%</output></label><input id="musicVolume" type="range" min="0" max="50" step="1">
+  <p class="note">聲音點點名：聽兩位朋友，再從三張圖片找出還沒被叫到的一位。可逐個重聽，答對後才揭開叫到的名字。</p><h3>聲音小天地</h3><p class="note">上方的朗讀、音效、音樂開關可分別控制。背景音樂預設關閉，點選後開始；離開分頁會暫停。</p>
+  <label for="track">背景音樂</label><select id="track"><option value="mix">🎶 花園電台 · 五首輪播</option><option value="happy">🌷 輕鬆小花園 · Happy</option><option value="happyLoop">🌻 歡樂散步 · Happy Loop</option><option value="happyAdventure">🎮 像素小冒險 · Happy Adventure</option><option value="classicalPop">🎷 輕爵士散步 · Classical Pop</option><option value="growingVillage">🎹 鋼琴小村莊 · Growing Village</option><option value="garden">🌷 花園散步</option><option value="stars">⭐ 星星搖籃</option><option value="picnic">🌳 森林野餐</option><option value="raindrops">🌧️ 雨滴小圓舞</option><option value="rainbow">🌈 彩虹慢慢走</option></select>
+  <p class="note">五首外部音樂採 CC0 開放授權；單曲可重播，花園電台會輪流播放。<a href="CREDITS.md" target="_blank" rel="noopener">作者與來源 ↗</a></p><label for="musicVolume">配樂音量 <output id="musicVolume-value">18%</output></label><input id="musicVolume" type="range" min="0" max="50" step="1">
   <label for="effectsVolume">音效音量 <output id="effectsVolume-value">40%</output></label><input id="effectsVolume" type="range" min="0" max="70" step="1">
   <div class="sound-previews"><button id="preview-effects" class="replay">✦ 試聽成功音效</button><button id="preview-music" class="replay">♪ 播放所選音樂</button></div><p id="music-status" class="note" role="status"></p>
   <label for="voice">中文朗讀聲音</label><select id="voice"></select>
@@ -45,6 +45,6 @@
   <a href="RESEARCH.md" target="_blank" rel="noopener">閱讀學習設計與研究來源 ↗</a>
   <button id="reset-progress" class="quiet">清除這台裝置的花園與紀錄</button><p id="storage-note" class="note"></p>
 </dialog>
-<script src="data.js?v=29"></script><script src="garden.js?v=29"></script><script src="garden-ui.js?v=29"></script><script src="play.js?v=29"></script><script src="challenges.js?v=29"></script><script src="discovery.js?v=29"></script><script src="audio.js?v=29"></script><script src="art.js?v=29"></script><script src="offline.js?v=29"></script><script src="extensions.js?v=29"></script><script src="extensions-ui.js?v=29"></script><script src="sound-memory.js?v=29"></script><script src="sound-memory-ui.js?v=29"></script><script src="sound-beds.js?v=29"></script><script src="sound-beds-ui.js?v=29"></script><script src="echo.js?v=29"></script><script src="echo-ui.js?v=29"></script><script src="app.js?v=29"></script>
+<script src="data.js?v=31"></script><script src="garden.js?v=31"></script><script src="garden-ui.js?v=31"></script><script src="play.js?v=31"></script><script src="challenges.js?v=31"></script><script src="discovery.js?v=31"></script><script src="audio.js?v=31"></script><script src="art.js?v=31"></script><script src="offline.js?v=31"></script><script src="extensions.js?v=31"></script><script src="extensions-ui.js?v=31"></script><script src="sound-memory.js?v=31"></script><script src="sound-memory-ui.js?v=31"></script><script src="sound-beds.js?v=31"></script><script src="sound-beds-ui.js?v=31"></script><script src="echo.js?v=31"></script><script src="echo-ui.js?v=31"></script><script src="app.js?v=31"></script>
 </body>
 </html>

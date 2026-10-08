@@ -11,7 +11,9 @@
     happy:{name:'輕鬆小花園 · Happy',file:'music/happy.mp3',author:'Alex McCulloch (Pro Sensory)',source:'https://opengameart.org/content/happy',license:'CC0'},
     happyLoop:{name:'歡樂散步 · Happy Loop',file:'music/happy-loop.mp3',author:'wipics',source:'https://opengameart.org/content/happy-loop',license:'CC0'},
     happyAdventure:{name:'像素小冒險 · Happy Adventure',file:'music/happy-adventure.mp3',author:'TinyWorlds',source:'https://opengameart.org/content/happy-adventure-loop',license:'CC0'},
-    mix:{name:'花園電台 · 三首輪播',playlist:['happy','happyLoop','happyAdventure']}
+    classicalPop:{name:'輕爵士散步 · Classical Pop',file:'music/classical-pop.mp3',author:'Alex McCulloch (Pro Sensory)',source:'https://opengameart.org/content/classical-pop-instrumental',license:'CC0'},
+    growingVillage:{name:'鋼琴小村莊 · Growing Village',file:'music/growing-village.mp3',author:'Earl Beat',source:'https://opengameart.org/content/growing-village',license:'CC0'},
+    mix:{name:'花園電台 · 五首輪播',playlist:['happy','happyLoop','happyAdventure','classicalPop','growingVillage']}
   });
   class GardenAudio {
     constructor() {

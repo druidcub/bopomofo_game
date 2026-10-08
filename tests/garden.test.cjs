@@ -28,7 +28,7 @@ test('repeated unlocked objects require no flower currency; counts reflect the c
   for(let slot=0;slot<G.anchors.length;slot++){const r=G.place(items,slot%2?'bunny':'tulip',slot,0);assert.equal(r.ok,true);items=r.items;}
   assert.deepEqual(G.stats(items),{plants:4,animals:4,types:2});
   assert.deepEqual(G.stats(items.filter(p=>p.slot!==0)),{plants:3,animals:4,types:2});
-  assert.deepEqual(P.availableDecorations(0).map(d=>d.id),['tulip','bunny','daisy','lily','duck','bench','basket']);
+  assert.deepEqual(P.availableDecorations(0).map(d=>d.id),['tulip','bunny','daisy','lily','duck','bench','basket','appleTree','shell','crab']);
   P.decorations.forEach(d=>assert.equal(G.kinds[d.id].at,d.at));
 });
 test('participation memories persist independently of the current layout and ignore invalid storage',()=>{
@@ -70,4 +70,29 @@ test('album snapshots remain independent of later edits, never overwrite a full 
   assert.equal(restored.length,1);assert.deepEqual(restored[0].items,[{kind:'duck',slot:1}]);
   assert.ok(G.picture(restored[0]).startsWith('<svg xmlns="http://www.w3.org/2000/svg"'));assert.ok(!G.picture(restored[0]).includes('<script'));
   const p=P.restoreProgress({gardenAlbum:album,gardenMemories:['photo','pondvisit'],gardenArea:'evil'},[],[]);assert.equal(p.gardenAlbum.length,12);assert.equal(p.gardenArea,'meadow');assert.deepEqual(p.gardenMemories,['photo','pondvisit']);
+});
+
+test('dragging an existing object outside removes only that object and leaves the source immutable',()=>{
+  const items=[{kind:'tulip',slot:0},{kind:'bunny',slot:1}];
+  for(const [x,y] of [[-1,64],[101,64],[22,-1],[22,101]]){
+    const result=G.dropResult(items,'tulip',x,y,0,'meadow',0);
+    assert.equal(result.action,'remove');assert.deepEqual(result.items,[{kind:'bunny',slot:1}]);assert.equal(items.length,2);
+  }
+  assert.equal(G.dropResult(items,'tulip',-1,64,0,'meadow',null).action,'return');
+  assert.equal(G.dropResult(items,'tulip',-1,64,0,'meadow',0,true).action,'return');
+  assert.equal(G.dropResult(items,'tulip',NaN,64,0,'meadow',0).action,'return');
+  assert.equal(G.dropResult(items,'tulip',50,10,0,'meadow',0).action,'return');
+  const moved=G.dropResult(items,'tulip',78,64,0,'meadow',0);assert.equal(moved.action,'place');assert.equal(moved.slot,2);assert.equal(moved.items.length,2);
+});
+test('new areas preserve old zones and independent photo snapshots across restoration',()=>{
+  const P=require('../play.js');
+  const old=P.restoreProgress({rounds:3,garden:[],gardenZones:{pond:[{kind:'duck',slot:1}],picnic:[{kind:'basket',slot:2}],orchard:[{kind:'appleTree',slot:0}],coast:[{kind:'crab',slot:6}]},gardenArea:'coast'},[],[]);
+  assert.deepEqual(old.garden,[]);assert.equal(old.gardenArea,'coast');
+  assert.equal(old.gardenZones.pond[0].kind,'duck');assert.equal(old.gardenZones.picnic[0].kind,'basket');
+  for(const area of ['orchard','coast']){assert.equal(old.gardenZones[area].length,1);const shot=G.takePhoto([],old.gardenZones[area],area,'sunset',123);assert.equal(shot.ok,true);assert.equal(G.restoreAlbum(shot.album,3)[0].area,area);}
+  assert.equal(G.place([], 'crab',0,0,null,'orchard').ok,false);assert.equal(G.place([], 'appleTree',0,0,null,'coast').ok,false);
+});
+test('sunset sky is vector art shared by live scene and exported photo',()=>{
+  const sky=G.sky('sunset');assert.ok(sky.includes('radialGradient'));assert.ok(sky.includes('cy="177"'));assert.ok(!sky.includes('🌅'));
+  for(const area of ['orchard','coast']){const picture=G.picture({area,weather:'sunset',items:[],at:1});assert.ok(picture.includes('halo-sunset'));assert.ok(picture.includes('viewBox="0 0 800 500"'));assert.ok(!picture.includes('undefined'));}
 });

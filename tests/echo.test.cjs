@@ -42,5 +42,12 @@ test('duplicate positions vary between neighboring sounds and separated sounds',
 test('garden and daily-life additions carry complete pronunciations',()=>{
   const samples={'野餐墊':'ㄧㄝˇ ㄘㄢ ㄉㄧㄢˋ','睡蓮':'ㄕㄨㄟˋ ㄌㄧㄢˊ','蘆葦':'ㄌㄨˊ ㄨㄟˇ','雛菊':'ㄔㄨˊ ㄐㄩˊ','餵小鴨':'ㄨㄟˋ ㄒㄧㄠˇ ㄧㄚ','種小花':'ㄓㄨㄥˋ ㄒㄧㄠˇ ㄏㄨㄚ','剝香蕉':'ㄅㄛ ㄒㄧㄤ ㄐㄧㄠ','水果沙拉':'ㄕㄨㄟˇ ㄍㄨㄛˇ ㄕㄚ ㄌㄚ'};
   for(const [word,zhuyin] of Object.entries(samples))assert.equal(D.phrases.find(w=>w.word===word).zhuyin,zhuyin);
-  assert.equal(D.words.length+D.phrases.length,828);
+  assert.equal(D.words.length+D.phrases.length,864);
+});
+
+test('rollcall gives exactly one uncalled friend with two distinct heard names for every theme',()=>{
+  for(const category of Object.keys(D.categories))for(let run=0;run<15;run++){
+    const round=E.makeRound(category,4,[],[],'missing');assert.equal(new Set(round.map(q=>q.answer)).size,5);
+    for(const q of round){assert.equal(q.sequence.length,2);assert.equal(new Set(q.sequence.map(w=>w.word)).size,2);assert.equal(q.options.length,3);assert.equal(new Set(q.options.map(w=>w.emoji)).size,3);assert.ok(!q.sequence.some(w=>w.word===q.answer));assert.equal(q.options.filter(w=>!q.sequence.some(s=>s.word===w.word)).length,1);}
+  }
 });

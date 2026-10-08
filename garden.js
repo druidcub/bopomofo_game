@@ -4,7 +4,7 @@
   const anchors=[{x:22,y:64},{x:50,y:64},{x:78,y:64},{x:22,y:89},{x:50,y:89},{x:78,y:89},{x:35,y:76},{x:65,y:76}];
   const kinds={tulip:{name:'小花',category:'plants',at:0,zhuyin:'ㄒㄧㄠˇ ㄏㄨㄚ'},sunflower:{name:'向日葵',category:'plants',at:1,zhuyin:'ㄒㄧㄤˋ ㄖˋ ㄎㄨㄟˊ'},mushroom:{name:'小蘑菇',category:'plants',at:2,zhuyin:'ㄒㄧㄠˇ ㄇㄛˊ ㄍㄨ'},butterfly:{name:'蝴蝶',category:'animals',at:3,zhuyin:'ㄏㄨˊ ㄉㄧㄝˊ'},bunny:{name:'小兔',category:'animals',at:0,zhuyin:'ㄒㄧㄠˇ ㄊㄨˋ'},tree:{name:'大樹',category:'plants',at:5,zhuyin:'ㄉㄚˋ ㄕㄨˋ'},pond:{name:'青蛙',category:'animals',at:7,zhuyin:'ㄑㄧㄥ ㄨㄚ'},rainbow:{name:'彩虹',category:'decor',at:10,zhuyin:'ㄘㄞˇ ㄏㄨㄥˊ'}};
   const starter=['tulip','','tulip','','tulip',''];
-  const areas={meadow:{name:'小花園',emoji:'🌷'},pond:{name:'池塘',emoji:'🦆'},picnic:{name:'野餐角落',emoji:'🧺'}};
+  const areas={meadow:{name:'小花園',emoji:'🌷'},pond:{name:'池塘',emoji:'🦆'},picnic:{name:'野餐角落',emoji:'🧺'},orchard:{name:'小果園',emoji:'🍎'},coast:{name:'海邊沙灘',emoji:'🐚'}};
   Object.entries({tulip:'🌷',sunflower:'🌻',mushroom:'🍄',butterfly:'🦋',bunny:'🐰',tree:'🌳',pond:'🐸',rainbow:'🌈'}).forEach(([id,emoji])=>kinds[id].emoji=emoji);
   Object.assign(kinds,{
     daisy:{name:'小雛菊',emoji:'🌼',category:'plants',at:0,zhuyin:'ㄒㄧㄠˇ ㄔㄨˊ ㄐㄩˊ'},
@@ -15,10 +15,15 @@
     fish:{name:'小魚',emoji:'🐟',category:'animals',at:4,areas:['pond'],water:true,zhuyin:'ㄒㄧㄠˇ ㄩˊ'},
     snail:{name:'蝸牛',emoji:'🐌',category:'animals',at:1,zhuyin:'ㄍㄨㄚ ㄋㄧㄡˊ'},
     ladybug:{name:'瓢蟲',emoji:'🐞',category:'animals',at:2,zhuyin:'ㄆㄧㄠˊ ㄔㄨㄥˊ'},
-    bench:{name:'長椅',emoji:'🪑',category:'decor',at:0,areas:['meadow','picnic'],zhuyin:'ㄔㄤˊ ㄧˇ'},
+    bench:{name:'長椅',emoji:'🪑',category:'decor',at:0,areas:['meadow','picnic','orchard','coast'],zhuyin:'ㄔㄤˊ ㄧˇ'},
     lantern:{name:'小燈籠',emoji:'🏮',category:'decor',at:3,zhuyin:'ㄒㄧㄠˇ ㄉㄥ ㄌㄨㄥˊ'},
     pinwheel:{name:'風車',emoji:'🎐',category:'decor',at:1,areas:['meadow','picnic'],zhuyin:'ㄈㄥ ㄔㄜ'},
     basket:{name:'野餐籃',emoji:'🧺',category:'decor',at:0,areas:['picnic'],zhuyin:'ㄧㄝˇ ㄘㄢ ㄌㄢˊ'},
+    appleTree:{name:'蘋果樹',emoji:'🍎',category:'plants',at:0,areas:['orchard'],zhuyin:'ㄆㄧㄥˊ ㄍㄨㄛˇ ㄕㄨˋ'},
+    hedgehog:{name:'刺蝟',emoji:'🦔',category:'animals',at:2,areas:['orchard'],zhuyin:'ㄘˋ ㄨㄟˋ'},
+    shell:{name:'貝殼',emoji:'🐚',category:'decor',at:0,areas:['coast'],zhuyin:'ㄅㄟˋ ㄎㄜˊ'},
+    crab:{name:'螃蟹',emoji:'🦀',category:'animals',at:0,areas:['coast'],zhuyin:'ㄆㄤˊ ㄒㄧㄝˋ'},
+    sandcastle:{name:'沙堡',emoji:'🏰',category:'decor',at:1,areas:['coast'],zhuyin:'ㄕㄚ ㄅㄠˇ'},
     tent:{name:'小帳篷',emoji:'⛺',category:'decor',at:6,areas:['picnic'],zhuyin:'ㄒㄧㄠˇ ㄓㄤˋ ㄆㄥˊ'}
   });
   function slotAllowed(kind,slot,area='meadow'){
@@ -43,6 +48,15 @@
     if(!Number.isFinite(x)||!Number.isFinite(y)||x<0||x>100||y<0||y>100)return null;
     const candidates=anchors.map((a,slot)=>({slot,distance:Math.hypot(a.x-x,a.y-y)})).filter(a=>place(items,kind,a.slot,rounds,moving,area).ok).sort((a,b)=>a.distance-b.distance);
     return candidates[0]?.distance<=24?candidates[0].slot:null;
+  }
+  function dropResult(items,kind,x,y,rounds,area='meadow',moving=null,cancelled=false){
+    if(cancelled||!Number.isFinite(x)||!Number.isFinite(y))return {action:'return',items};
+    if(x<0||x>100||y<0||y>100){
+      if(moving!==null&&items.some(p=>p.slot===moving&&p.kind===kind))return {action:'remove',items:items.filter(p=>p.slot!==moving)};
+      return {action:'return',items};
+    }
+    const slot=nearestSlot(items,kind,x,y,rounds,area,moving);
+    return slot===null?{action:'return',items}:{action:'place',slot,items:place(items,kind,slot,rounds,moving,area).items};
   }
   function restoreAlbum(album,rounds){
     if(!Array.isArray(album))return [];
@@ -86,17 +100,30 @@
   });
   function sprite(kind){return '<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false" class="garden-sprite">'+(art[kind]||'')+'</svg>';}
   function landscape(){return '<svg class="garden-landscape" viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true"><g fill="#fff9e8" opacity=".8"><ellipse cx="156" cy="83" rx="62" ry="17"/><ellipse cx="138" cy="70" rx="29" ry="22"/><ellipse cx="574" cy="121" rx="60" ry="17"/><ellipse cx="594" cy="106" rx="28" ry="22"/></g><path class="garden-hills" d="M0 242Q140 165 320 243Q557 142 800 220V500H0Z" fill="#c4d8a9"/><path class="garden-lawn" d="M0 299Q390 239 800 286V500H0Z" fill="#a9c78c"/><path d="M432 273Q452 323 403 361Q365 401 410 500H514Q439 414 465 379Q529 310 480 274Z" fill="#e8d6ae" opacity=".7"/><g stroke="#f5e8c8" stroke-width="7" fill="none" stroke-linecap="round"><path d="M0 261L800 248M0 282L800 269"/><path d="M28 244V290M98 242V288M168 240V286M238 238V284M308 236V282M378 234V280M448 232V278M518 230V276M588 228V274M658 226V272M728 224V270M798 222V268"/></g><g stroke="#82a567" stroke-width="3" fill="none" opacity=".6"><path d="M30 480l-4-12m4 12l7-13M185 371l-4-12m4 12l7-13M650 455l-4-12m4 12l7-13M733 355l-4-12m4 12l7-13"/></g><g fill="#f9e6ae"><circle cx="99" cy="423" r="3"/><circle cx="699" cy="405" r="3"/><circle cx="287" cy="468" r="3"/></g></svg>';}
+  Object.assign(art,{
+    appleTree:art.tree+'<g fill="#dc8d78"><circle cx="32" cy="47" r="9"/><circle cx="75" cy="32" r="9"/><circle cx="87" cy="65" r="9"/><circle cx="55" cy="70" r="9"/></g>',
+    hedgehog:'<path d="M19 87L14 62L27 63L23 42L37 49L40 25L52 37L66 18L71 38L92 31L91 52L109 50L105 82Z" fill="#a18164"/><ellipse cx="65" cy="77" rx="41" ry="26" fill="#ba9878"/><path d="M35 69Q9 65 9 88Q31 106 51 91Z" fill="#e9cfac"/><circle cx="22" cy="80" r="3" fill="#53483d"/><circle cx="8" cy="88" r="4" fill="#665046"/><ellipse cx="46" cy="102" rx="11" ry="5" fill="#8c7359"/><ellipse cx="89" cy="102" rx="11" ry="5" fill="#8c7359"/>',
+    shell:'<path d="M60 98Q12 98 11 54Q16 25 38 26Q51 5 65 25Q89 16 103 42Q118 74 80 99Z" fill="#efc4b4" stroke="#c99989" stroke-width="3"/><g stroke="#dba899" stroke-width="4" fill="none"><path d="M59 95L30 40M63 96L50 29M67 96L70 28M73 95L90 43"/></g><path d="M46 101H81" stroke="#bc9782" stroke-width="7" stroke-linecap="round"/>',
+    crab:'<g stroke="#bf856d" stroke-width="5" fill="none"><path d="M37 79L12 77L5 91M38 91L16 100L6 98M82 79L108 77L115 91M81 91L103 100L114 98M39 61L24 46M80 61L95 46"/></g><ellipse cx="60" cy="78" rx="35" ry="26" fill="#dca087"/><path d="M24 52Q5 38 14 18L24 36L32 19Q45 42 24 52M95 52Q76 40 86 19L95 36L105 19Q119 41 95 52" fill="#dfaa91"/><g fill="#fff5df"><circle cx="46" cy="52" r="9"/><circle cx="74" cy="52" r="9"/></g><g fill="#5c5347"><circle cx="46" cy="52" r="3"/><circle cx="74" cy="52" r="3"/></g><path d="M50 80Q60 89 70 80" stroke="#996f5d" stroke-width="3" fill="none"/>',
+    sandcastle:'<path d="M18 101V49H38V101M83 101V49H103V101M38 101V65H83V101" fill="#ddc28e" stroke="#c6ac7c" stroke-width="3"/><path d="M15 49V34H23V42H29V34H37V49M80 49V34H88V42H94V34H103V49M38 65V52H47V60H54V52H65V60H73V52H83V65" fill="#e8d5aa"/><path d="M54 101V86Q60 74 68 86V101" fill="#b5986f"/><path d="M26 33V10L49 15L26 25" fill="#bd9983" stroke="#947e65" stroke-width="2"/>'
+  });
+  function sky(weather='sunny'){
+    const colors=weather==='sunset'?['#e6b7ad','#f6d5b6','#fae7c1']:weather==='night'?['#293d59','#50677f','#839698']:['#dcebe4','#eaf1db','#f4efd1'];
+    const celestial=weather==='sunset'?'<circle cx="642" cy="177" r="126" fill="url(#halo-sunset)"/><circle cx="642" cy="177" r="48" fill="#ffdea0" opacity=".94"/><path d="M531 211H752M558 225H721" stroke="#ffdfae" stroke-width="8" opacity=".28"/>':weather==='night'?'<path d="M694 43A30 30 0 1 1 660 87A26 26 0 0 0 694 43Z" fill="#eee0b6"/><g fill="#eee4c4"><circle cx="108" cy="64" r="2"/><circle cx="278" cy="98" r="3"/><circle cx="454" cy="42" r="2"/><circle cx="570" cy="114" r="2"/></g>':'<circle cx="681" cy="79" r="88" fill="url(#halo-sunny)"/><circle cx="681" cy="79" r="30" fill="#f2d799"/>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" class="garden-sky" viewBox="0 0 800 500" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><defs><linearGradient id="sky-'+weather+'" x2="0" y2="1"><stop stop-color="'+colors[0]+'"/><stop offset=".55" stop-color="'+colors[1]+'"/><stop offset="1" stop-color="'+colors[2]+'"/></linearGradient><radialGradient id="halo-'+weather+'"><stop stop-color="#ffe3ab" stop-opacity=".6"/><stop offset="1" stop-color="#ffe3ab" stop-opacity="0"/></radialGradient></defs><rect width="800" height="500" fill="url(#sky-'+weather+')"/>'+celestial+'</svg>';
+  }
   const baseLandscape=landscape;
   function regionLandscape(area){
+    if(area==='coast')return '<svg class="garden-landscape" viewBox="0 0 800 500" preserveAspectRatio="none" aria-hidden="true"><g fill="#fff2d8" opacity=".7"><ellipse cx="138" cy="102" rx="56" ry="16"/><ellipse cx="580" cy="77" rx="48" ry="14"/></g><path d="M0 215H800V500H0Z" fill="#8fbec6"/><path class="sea-wave" d="M0 254Q168 235 329 257T800 254M0 292Q185 274 411 295T800 290" stroke="#d5e8de" stroke-width="5" fill="none"/><path d="M0 324Q174 285 390 339T800 322V500H0Z" fill="#eddbad"/><path d="M0 324Q174 285 390 339T800 322" stroke="#fff2d4" stroke-width="12" fill="none"/><g fill="#d8c293"><circle cx="109" cy="411" r="3"/><circle cx="574" cy="462" r="3"/><circle cx="711" cy="397" r="4"/></g><path d="M46 366Q67 351 87 366M655 426Q676 411 695 426" fill="none" stroke="#d3b989" stroke-width="3"/></svg>';
+    if(area==='orchard')return baseLandscape().replace('</svg>','<g fill="#9d7957"><path d="M99 153H122L127 292H90Z"/><path d="M680 140H703L710 290H671Z"/></g><g fill="#86a871"><circle cx="106" cy="156" r="63"/><circle cx="64" cy="186" r="42"/><circle cx="152" cy="184" r="45"/><circle cx="690" cy="141" r="70"/><circle cx="641" cy="175" r="42"/><circle cx="743" cy="174" r="47"/></g><g class="orchard-fruit" fill="#dc947d"><circle cx="74" cy="158" r="13"/><circle cx="136" cy="173" r="13"/><circle cx="105" cy="211" r="12"/><circle cx="661" cy="153" r="13"/><circle cx="708" cy="124" r="12"/><circle cx="725" cy="193" r="13"/></g><path d="M145 385Q344 344 635 381" stroke="#dac8a2" stroke-width="29" fill="none" opacity=".7"/></svg>');
     const extra=area==='pond'?'<ellipse class="pond-water" cx="400" cy="364" rx="207" ry="108" fill="#91bbc1"/><ellipse cx="400" cy="364" rx="182" ry="89" fill="#a6ccd0"/><g fill="none" stroke="#d5e5d5" stroke-width="4" opacity=".7"><ellipse cx="399" cy="372" rx="126" ry="44"/><path d="M251 342Q272 336 294 342M481 401Q509 394 535 401"/></g><g fill="#91a78c"><ellipse cx="192" cy="343" rx="15" ry="9"/><ellipse cx="603" cy="383" rx="18" ry="10"/><ellipse cx="489" cy="467" rx="16" ry="8"/></g>':area==='picnic'?'<path d="M182 330L570 322L639 463L159 466Z" fill="#e6c3a9"/><g stroke="#faf0d4" stroke-width="8" opacity=".65"><path d="M209 347L583 339M197 379L598 372M182 415L617 410M168 449L632 444M252 330L233 465M333 328L333 465M415 326L430 464M495 324L528 464M560 323L610 463"/></g>':'';
     return baseLandscape().replace('</svg>',extra+'</svg>');
   }
   function picture(photo){
-    const sky={sunny:'#e5eedd',sunset:'#efd1bb',night:'#3a4b63'}[photo.weather]||'#e5eedd';
+    const skyMarkup=sky(photo.weather).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
     const scene=regionLandscape(photo.area).replace(/^<svg[^>]*>/,'').replace(/<\/svg>$/,'');
-    const items=[...photo.items].sort((a,b)=>anchors[a.slot].y-anchors[b.slot].y).map(p=>{const a=anchors[p.slot],size=['tree','rainbow','tent'].includes(p.kind)?165:['mushroom','butterfly','fish','lily'].includes(p.kind)?95:115;const floating=p.kind==='rainbow'?1.2:p.kind==='butterfly'?1.55:.93;return `<g transform="translate(${a.x*8-size/2} ${a.y*5-size*floating})"><ellipse cx="${size/2}" cy="${size*.92}" rx="${size*.3}" ry="${size*.05}" fill="#47683a" opacity=".18"/><svg width="${size}" height="${size}" viewBox="0 0 120 120">${art[p.kind]}</svg></g>`;}).join('');
-    const sun=photo.weather==='night'?'<path d="M710 40A25 25 0 1 1 677 70A22 22 0 0 0 710 40Z" fill="#f0d495"/>':'<circle cx="704" cy="68" r="25" fill="#efcc7e"/>';
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500"><rect width="800" height="500" fill="${sky}"/><g ${photo.weather==='night'?'opacity=".72"':''}>${scene}${items}</g>${sun}</svg>`;
+    const items=[...photo.items].sort((a,b)=>anchors[a.slot].y-anchors[b.slot].y).map(p=>{const a=anchors[p.slot],size=['tree','rainbow','tent','appleTree'].includes(p.kind)?165:['mushroom','butterfly','fish','lily'].includes(p.kind)?95:115;const floating=p.kind==='rainbow'?1.2:p.kind==='butterfly'?1.55:.93;return `<g transform="translate(${a.x*8-size/2} ${a.y*5-size*floating})"><ellipse cx="${size/2}" cy="${size*.92}" rx="${size*.3}" ry="${size*.05}" fill="#47683a" opacity=".18"/><svg width="${size}" height="${size}" viewBox="0 0 120 120">${art[p.kind]}</svg></g>`;}).join('');
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">${skyMarkup}<g ${photo.weather==='night'?'opacity=".72"':''}>${scene}${items}</g></svg>`;
   }
-  const api={anchors,kinds,areas,slotAllowed,nearestSlot,restoreAlbum,takePhoto,picture,restore,place,stats,milestones,sprite,landscape:regionLandscape};root.GardenLayout=api;if(typeof module!=='undefined')module.exports=api;
+  const api={anchors,kinds,areas,sky,dropResult,slotAllowed,nearestSlot,restoreAlbum,takePhoto,picture,restore,place,stats,milestones,sprite,landscape:regionLandscape};root.GardenLayout=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

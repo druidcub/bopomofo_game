@@ -96,3 +96,16 @@ test('sunset sky is vector art shared by live scene and exported photo',()=>{
   const sky=G.sky('sunset');assert.ok(sky.includes('radialGradient'));assert.ok(sky.includes('cy="177"'));assert.ok(!sky.includes('🌅'));
   for(const area of ['orchard','coast']){const picture=G.picture({area,weather:'sunset',items:[],at:1});assert.ok(picture.includes('halo-sunset'));assert.ok(picture.includes('viewBox="0 0 800 500"'));assert.ok(!picture.includes('undefined'));}
 });
+
+test('new friends respect unlocks and regions and survive saved layouts and photos',()=>{
+  const additions={cat:'meadow',sparrow:'pond',bee:'picnic',squirrel:'orchard',starfish:'coast',wateringCan:'meadow',birdhouse:'orchard',parasol:'coast',steppingStones:'picnic'};
+  for(const [kind,area] of Object.entries(additions)){
+    assert.equal(G.place([],kind,0,0,null,area).reason,'locked');
+    const items=G.place([],kind,0,2,null,area);assert.equal(items.ok,true,kind);
+    assert.deepEqual(G.restore({garden:items.items},2,area),items.items);
+    const photo=G.takePhoto([],items.items,area,'sunset',1).album[0];
+    assert.ok(!G.picture(photo).includes('undefined'));assert.ok(G.sprite(kind).length>100);
+  }
+  assert.equal(G.place([],'starfish',0,2,null,'meadow').reason,'area');
+  assert.equal(G.place([],'birdhouse',0,2,null,'coast').reason,'area');
+});

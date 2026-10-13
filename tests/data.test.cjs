@@ -51,8 +51,8 @@ test('all themes and levels produce five unique solvable questions', () => {
     }
   }
 });
-test('674 phrase entries have unique names and one valid pronunciation per syllable', () => {
-  assert.equal(D.phrases.length,674); assert.equal(new Set(D.phrases.map(p=>p.word)).size,674);
+test('711 phrase entries have unique names and one valid pronunciation per syllable', () => {
+  assert.equal(D.phrases.length,711); assert.equal(new Set(D.phrases.map(p=>p.word)).size,711);
   D.phrases.forEach(p=>{
     assert.equal([...p.word].length,p.count); assert.ok(p.count>=2 && p.count<=4);
     p.syllables.forEach(s=>assert.match(s,/^[ㄅ-ㄩ]+[ˊˇˋ]?$/));

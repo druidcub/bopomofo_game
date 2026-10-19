@@ -17,7 +17,7 @@
   const badges=[
     {id:'first',emoji:'🌱',name:'第一朵花',rule:p=>p.rounds>=1},
     {id:'explorer',emoji:'🧭',name:'花園探險家',rule:p=>Object.keys(p.modes||{}).length>=4},
-    {id:'train',emoji:'🚂',name:'小小列車長',rule:p=>(p.modes?.build||0)>=2},
+    {id:'train',emoji:'🧩',name:'注音拼音家',rule:p=>(p.modes?.build||0)>=2},
     {id:'listener',emoji:'👂',name:'聲音收藏家',rule:p=>(p.modes?.syllables||0)+(p.modes?.rhyme||0)+(p.modes?.initial||0)>=3},
     {id:'blooms',emoji:'🌼',name:'花園好朋友',rule:p=>p.flowers>=30},
     {id:'all',emoji:'🌈',name:'彩虹探險家',rule:p=>Object.keys(p.modes||{}).length>=8}
@@ -61,17 +61,15 @@
   function nextInvitation(progress){
     const invitations=[
       {mode:'picture',emoji:'🔍',text:'小兔想認識新朋友：聽聲音，找圖片。'},
-      {mode:'syllables',emoji:'👏',text:'小兔想組小樂隊：說詞語，一起拍手。'},
-      {mode:'build',emoji:'🚂',text:'小兔要去旅行：讓注音朋友坐上火車。'},
+      {mode:'fusion',emoji:'🧩',text:'小兔想拼聲音：兩個注音由上到下，連起來讀。'},
+      {mode:'build',emoji:'🧩',text:'小兔想認識字音：由上到下放好注音。'},
       {mode:'initial',emoji:'🐱',text:'小兔要交朋友：找出開頭一樣的聲音。'},
       {mode:'memory',emoji:'🃏',text:'小兔想捉迷藏：翻卡片，找到注音朋友。'},
       {mode:'rhyme',emoji:'♫',text:'小兔想唱歌：找找押韻的聲音朋友。'},
       {mode:'pack',emoji:'🎒',text:'小兔要出門：聽清單，依序裝好小背包。'},
       {mode:'mail',emoji:'✉️',text:'小兔想送信：把圖片信送到開頭一樣的家。'},
       {mode:'odd',emoji:'🔎',text:'小兔想聽仔細：三個詞，誰的開頭不一樣？'},
-      {mode:'balance',emoji:'⚖️',text:'小兔想比一比：兩個詞的聲音有一樣多嗎？'},
       {mode:'soundMemory',emoji:'🃏',text:'小兔想找朋友：翻聲音卡，配它的圖片。'},
-      {mode:'soundBeds',emoji:'🌱',text:'小兔想種聲音：一字拍一下，種進合適的花圃。'},
       {mode:'echo',emoji:'🔎',text:'小兔想聽仔細：誰在一串聲音裡來了兩次？'},
       {mode:'rollcall',emoji:'👂',text:'小兔想幫朋友點名：誰的名字還沒聽到？'}
     ];

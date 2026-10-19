@@ -13,7 +13,7 @@ function withSeed(seed, run) {
 
 function checkAdventure(round, level, symbols) {
   assert.equal(round.length, 5);
-  assert.deepEqual(new Set(round.map(q => q.mode)), new Set(['match', 'picture', 'syllables', 'listen', level === 'grow' ? 'repair' : 'build']));
+  assert.deepEqual(new Set(round.map(q => q.mode)), new Set(['match', 'picture', 'tone', 'listen', level === 'grow' ? 'repair' : 'build']));
   const targetWords = round.filter(q => q.word).map(q => q.word);
   assert.equal(targetWords.length, 4);
   assert.equal(new Set(targetWords).size, 4, 'word targets must differ even when all candidates were played before');
@@ -23,8 +23,8 @@ function checkAdventure(round, level, symbols) {
       assert.ok(q.options.includes(q.answer));
     } else if (q.mode === 'picture') {
       assert.equal(q.options.filter(w => w.word === q.answer).length, 1);
-    } else if (q.mode === 'syllables') {
-      assert.ok(q.options.includes(q.count));
+    } else if (q.mode === 'tone') {
+      assert.ok(q.options.some(t=>t.value===q.answer));
     } else if (q.mode === 'listen' || q.mode === 'repair') {
       assert.ok(q.options.includes(q.answer));
     } else {

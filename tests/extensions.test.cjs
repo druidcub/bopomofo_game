@@ -18,11 +18,11 @@ test('word workshops have enough copies of repeated syllables and two genuine di
   }
 });
 test('repeated sound blocks can be removed and replayed without treating identical copies as wrong',()=>{
-  const q=E.makeWorkshopRound('all',4,[],['小小火車'])[0];
-  assert.equal(q.word,'小小火車');assert.equal(q.options.filter(s=>s==='ㄒㄧㄠˇ').length,2);
+  const q=E.makeWorkshopRound('all',4,[],['蹦蹦跳跳'])[0];
+  assert.equal(q.word,'蹦蹦跳跳');assert.equal(q.options.filter(s=>s==='ㄅㄥˋ').length,2);
   assert.deepEqual(P.checkTrain(q.syllables,q.syllables),{ready:true,correct:true});
-  assert.deepEqual(P.nextHint(q.syllables,['ㄒㄧㄠˇ']),{position:1,symbol:'ㄒㄧㄠˇ'});
-  assert.deepEqual(P.checkTrain(q.syllables,['ㄒㄧㄠˇ','ㄏㄨㄛˇ','ㄒㄧㄠˇ','ㄔㄜ']),{ready:true,correct:false});
+  assert.deepEqual(P.nextHint(q.syllables,['ㄅㄥˋ']),{position:1,symbol:'ㄅㄥˋ'});
+  assert.deepEqual(P.checkTrain(q.syllables,['ㄅㄥˋ','ㄊㄧㄠˋ','ㄅㄥˋ','ㄊㄧㄠˋ']),{ready:true,correct:false});
 });
 test('workshops honor available themes, recent targets and eligible favorites',()=>{
   for(let n=0;n<20;n++){

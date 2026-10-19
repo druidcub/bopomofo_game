@@ -42,7 +42,7 @@ test('duplicate positions vary between neighboring sounds and separated sounds',
 test('garden and daily-life additions carry complete pronunciations',()=>{
   const samples={'野餐墊':'ㄧㄝˇ ㄘㄢ ㄉㄧㄢˋ','睡蓮':'ㄕㄨㄟˋ ㄌㄧㄢˊ','蘆葦':'ㄌㄨˊ ㄨㄟˇ','雛菊':'ㄔㄨˊ ㄐㄩˊ','餵小鴨':'ㄨㄟˋ ㄒㄧㄠˇ ㄧㄚ','種小花':'ㄓㄨㄥˋ ㄒㄧㄠˇ ㄏㄨㄚ','剝香蕉':'ㄅㄛ ㄒㄧㄤ ㄐㄧㄠ','水果沙拉':'ㄕㄨㄟˇ ㄍㄨㄛˇ ㄕㄚ ㄌㄚ'};
   for(const [word,zhuyin] of Object.entries(samples))assert.equal(D.phrases.find(w=>w.word===word).zhuyin,zhuyin);
-  assert.equal(D.words.length+D.phrases.length,901);
+  assert.equal(D.words.length+D.phrases.length,882);
 });
 
 test('rollcall gives exactly one uncalled friend with two distinct heard names for every theme',()=>{

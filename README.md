@@ -134,3 +134,4 @@ npm test
 - 移除拍手小樂隊、聲音小天平、聲音花圃的入口、設定與邀請；混合冒險以聲調站替換拍手站。現有花朵與花園保留。
 - 清除 68 筆以小／小小修飾的詞語變體，保留小黃瓜、小番茄、小提琴等有獨立意義的詞；新增 49 筆詞語，目前共 882 筆字詞。
 - 直式排列參考教育部《國語注音符號手冊》：https://language.moe.gov.tw/001/Upload/files/site_content/M0001/juyin/html_ch/index.html 。結合韻定義參考教育部《重編國語辭典修訂本》：https://dict.revised.moe.edu.tw/dictView.jsp?ID=90228&la=1&powerMode=0 。
+- 離線更新：新快取保存完成後自動接手，保留目前遊戲畫面；新模組尚在保存時不提前顯示已保存。

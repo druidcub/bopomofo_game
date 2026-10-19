@@ -17,16 +17,22 @@
     if(!supported){refresh();return;}
     try{
       registration=await navigator.serviceWorker.register('./sw.js');
-      const watch=worker=>worker?.addEventListener('statechange',refresh);
-      watch(registration.installing);registration.addEventListener('updatefound',()=>watch(registration.installing));
-      await navigator.serviceWorker.ready;ready=true;refresh();
+      // The new page may introduce files the previous worker does not know.
+      // Claim its complete cache once installed, without reloading an active game.
+      const activate=worker=>{if(worker?.state==='installed')worker.postMessage({type:'ACTIVATE_UPDATE'});};
+      const watch=worker=>worker?.addEventListener('statechange',()=>{activate(worker);refresh();});
+      watch(registration.installing);
+      registration.addEventListener('updatefound',()=>{ready=false;watch(registration.installing);refresh();});
+      activate(registration.waiting);
+      await navigator.serviceWorker.ready;
+      ready=!registration.installing&&!registration.waiting;refresh();
     }catch{failed=true;refresh();}
   }
   function update(){
     if(!registration?.waiting)return;
     reloadRequested=true;registration.waiting.postMessage({type:'ACTIVATE_UPDATE'});
   }
-  if(supported)navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloadRequested)location.reload();else refresh();});
+  if(supported)navigator.serviceWorker.addEventListener('controllerchange',()=>{ready=!!registration&&!registration.installing&&!registration.waiting;if(reloadRequested)location.reload();else refresh();});
   root.GardenOffline={status,refresh,update};
   root.addEventListener('online',refresh);root.addEventListener('offline',refresh);root.addEventListener('load',init);
 })(window);

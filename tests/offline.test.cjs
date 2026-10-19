@@ -4,6 +4,27 @@ const fs=require('node:fs');
 const path=require('node:path');
 const vm=require('node:vm');
 const scope='https://test.example/bopomofo_game/';
+function offlinePage(waiting=null){
+  const listeners={},swEvents={},workerEvents={},messages=[];let reloads=0;
+  const pending={state:'installing',addEventListener(name,fn){workerEvents[name]=fn;},postMessage(m){messages.push(m);}};
+  const registration={waiting,installing:waiting?null:pending,addEventListener(){}};
+  const window={addEventListener(name,fn){listeners[name]=fn;}};
+  const navigator={onLine:true,serviceWorker:{register:async()=>registration,ready:Promise.resolve(registration),addEventListener(name,fn){swEvents[name]=fn;}}};
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../offline.js'),'utf8'),{window,navigator,location:{protocol:'https:',reload(){reloads++;}},document:{querySelector(){return null;}}});
+  return {window,listeners,swEvents,workerEvents,pending,registration,messages,get reloads(){return reloads;}};
+}
+test('a completed new cache activates without reloading a game or claiming it is saved too early',async()=>{
+  const page=offlinePage();await page.listeners.load();
+  assert.ok(page.window.GardenOffline.status().includes('第一次連線'));
+  page.pending.state='installed';page.workerEvents.statechange();
+  assert.equal(page.messages[0].type,'ACTIVATE_UPDATE');assert.equal(page.reloads,0);
+  page.registration.installing=null;page.swEvents.controllerchange();assert.ok(page.window.GardenOffline.status().includes('遊戲已保存'));assert.equal(page.reloads,0);
+});
+test('a worker already waiting at page load also activates its new module cache',async()=>{
+  const messages=[],waiting={state:'installed',postMessage:m=>messages.push(m)};
+  const page=offlinePage(waiting);await page.listeners.load();
+  assert.equal(messages[0].type,'ACTIVATE_UPDATE');assert.equal(page.reloads,0);
+});
 function worker(){
   const events=new Map(),stores=new Map();
   const state={online:true,skips:0,claims:0,requests:0,added:[]};
@@ -66,11 +87,11 @@ test('other projects and non-GET requests are untouched; activation only removes
 test('offline support never reloads an active game unless an update was requested',async()=>{
   const listeners=new Map(),workerListeners=new Map();let reloads=0,messages=0;
   const location={protocol:'https:',reload(){reloads++;}};
-  const registration={waiting:{postMessage(){messages++;}},addEventListener(){}};
+  const registration={waiting:{state:'installed',postMessage(){messages++;}},addEventListener(){}};
   const navigator={onLine:true,serviceWorker:{async register(){return registration;},ready:Promise.resolve(),addEventListener(name,fn){workerListeners.set(name,fn);}}};
   const window={addEventListener(name,fn){listeners.set(name,fn);}};
   vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../offline.js'),'utf8'),{window,location,navigator,document:{querySelector(){return null;}}});
-  await listeners.get('load')();assert.match(window.GardenOffline.status(),/已保存/);
-  workerListeners.get('controllerchange')();assert.equal(reloads,0);
-  window.GardenOffline.update();assert.equal(messages,1);workerListeners.get('controllerchange')();assert.equal(reloads,1);
+  await listeners.get('load')();assert.match(window.GardenOffline.status(),/第一次連線/);
+  registration.waiting=null;workerListeners.get('controllerchange')();assert.equal(reloads,0);assert.match(window.GardenOffline.status(),/已保存/);
+  registration.waiting={postMessage(){messages++;}};window.GardenOffline.update();assert.equal(messages,2);workerListeners.get('controllerchange')();assert.equal(reloads,1);
 });

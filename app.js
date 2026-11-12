@@ -35,6 +35,31 @@ prefs.musicVolume = Math.max(0, Math.min(50, prefs.musicVolume));
 prefs.effectsVolume = Math.max(0, Math.min(70, prefs.effectsVolume));
 if(!['basic','all','apply'].includes(prefs.fusionLevel))prefs.fusionLevel='basic';
 let game = null, voices = [], speechVersion = 0, speechTimer = null;
+const tracker=(typeof GardenTracker!=='undefined')?GardenTracker.create({app:'bopomofo'}):{track(){},flush(){},test:async()=>({ok:false}),configure(){return {};},status:()=>({enabled:false,pending:0,lastError:'',settings:{}}),settings:()=>({}),onChange(){}};
+const modeName=id=>modes.find(m=>m.id===id)?.name||id;
+const ERROR_TYPES={match:'字形辨認',memory:'字形辨認',bingo:'字形辨認',listen:'開頭聲母辨聽',initial:'開頭聲母辨聽',mail:'開頭聲母辨聽',build:'拼音組合',fusion:'結合韻',repair:'拼音組合',workshop:'拼音組合',rhyme:'韻母辨聽',tone:'聲調',picture:'聽詞找圖',pack:'聽詞找圖',echo:'聽詞找圖',rollcall:'聽詞找圖',soundMemory:'聽詞找圖'};
+function currentTarget(){
+  if(!game)return null;
+  const q=Array.isArray(game.questions)?game.questions[game.index]:null;
+  const word=q?.word||(typeof q?.answer==='string'?q.answer:'')||q?.symbol||(game.mailSelected||'');
+  const entry=vocabulary.find(w=>w.word===word);
+  const zhuyin=entry?.zhuyin||(Array.isArray(q?.parts)?q.parts.join(''):'')||(typeof q?.answer==='string'?q.answer:'');
+  const mode=game.mode||game.session;
+  return {word,zhuyin,mode,errType:mode==='odd'?(prefs.oddSound==='rhyme'?'韻母辨聽':'開頭聲母辨聽'):(ERROR_TYPES[mode]||'遊戲練習')};
+}
+function noteMiss(){
+  const t=currentTarget();if(!t||!t.word)return;
+  game.misses=game.misses||[];game.misses.push(t.word);
+  const key=`${game.index}:${t.word}`;game.missKeys=game.missKeys||new Set();
+  if(game.missKeys.has(key))return;game.missKeys.add(key);   // 同一題多次重試只回報一次
+  tracker.track('miss',{word:t.word,zhuyin:t.zhuyin,unit:modeName(game.session),mode:t.mode,errType:t.errType,source:'retry'});
+}
+function trackRound(flowers){
+  if(!game)return;
+  const words=[...new Set((game.questions||[]).map(q=>q.word).filter(Boolean))];
+  const wrong=[...new Set(game.misses||[])].filter(Boolean);
+  tracker.track('round_done',{mode:game.session,unit:modeName(game.session),questions:(game.questions||[]).length,flowers,hints:game.hints||0,misses:(game.misses||[]).length,wrong,words,seconds:Math.round((Date.now()-(game.started||Date.now()))/1000)});
+}
 const gardenAudio = new GardenAudio();
 gardenAudio.configure(prefs);
 function save() {
@@ -146,7 +171,7 @@ function start(mode, invited=null, options={}) {
     rollcall:()=>GardenEcho.makeRound(prefs.category,3,progress.recent,preferred,'missing')
   };
   const questions=generators[mode]?generators[mode]():makeRound(mode,prefs.scope,prefs.category,prefs.buildLevel,progress.recent,prefs.memoryPairs,[...prefs.customSymbols],preferred);
-  game = { session:mode, mode:mode==='adventure'?questions[0].mode:mode, questions, index: 0, done: false, selected: [], used: [], matched: [], flipped: [], preview: false, locked: false, claps: 0, hints: 0 };
+  game = { session:mode, mode:mode==='adventure'?questions[0].mode:mode, questions, index: 0, done: false, selected: [], used: [], matched: [], flipped: [], preview: false, locked: false, claps: 0, hints: 0, started: Date.now(), misses: [] };
   if (mode === 'memory') { renderMemory(); window.scrollTo(0, 0); }
   else if(mode==='mail'){game.delivered=[];game.mailSelected='';renderMail();}
   else if(mode==='odd')renderOdd();
@@ -223,7 +248,7 @@ function solved(q) {
   if (['build','fusion'].includes(game.mode)) speak(q.word);
   if (['rhyme','initial'].includes(game.mode)) speak(`${q.word}。${q.answer}。`);
 }
-function retry(button, message) { effect('retry'); button.classList.remove('wiggle'); void button.offsetWidth; button.classList.add('wiggle'); $('#feedback').textContent = message; }
+function retry(button, message) { noteMiss(); effect('retry'); button.classList.remove('wiggle'); void button.offsetWidth; button.classList.add('wiggle'); $('#feedback').textContent = message; }
 function next() {
   if (!game.done) return; stopSpeech();
   if (game.index === 4) complete(5);
@@ -385,7 +410,7 @@ function complete(flowers) {
   game.rewarded=true;
   const before=earnedBadges(progress).map(b=>b.id), oldDecor=availableDecorations(progress.rounds).map(d=>d.id);
   progress.flowers += flowers; progress.rounds++; progress.modes[game.session]=(progress.modes[game.session]||0)+1;
-  save(); effect('finish'); finish(flowers,earnedBadges(progress).filter(b=>!before.includes(b.id)),availableDecorations(progress.rounds).filter(d=>!oldDecor.includes(d.id)));
+  save(); trackRound(flowers); effect('finish'); finish(flowers,earnedBadges(progress).filter(b=>!before.includes(b.id)),availableDecorations(progress.rounds).filter(d=>!oldDecor.includes(d.id)));
 }
 function finish(flowers,newBadges=[],newDecor=[]) {
   const mode = game.session;
@@ -458,7 +483,7 @@ function openSettings() {
   $('#favorites-note').textContent=`圖鑑收藏了 ${progress.favorites.length} 個朋友。收藏可重複練習；主題或玩法可用的詞不足時，會加入其他朋友。設定用於下一回合。`;
   $('#progress-note').textContent=`已玩 ${progress.rounds} 回合，接觸 ${progress.journal.length} 個詞語；使用提示也會記錄參與，並非學習成績。`;
   $('#recent-words').textContent=progress.recent.length?'最近一起玩過：'+progress.recent.slice(-12).join('、'):'還沒有詞語紀錄，先陪孩子玩一回合吧。';
-  updateVoices(); soundLabels(); GardenOffline.refresh();$('#storage-note').textContent = storageOK ? '設定、花朵與花園只保存在這台裝置，不上傳資料。' : '瀏覽器無法保存紀錄，仍可正常玩遊戲。'; $('#settings').showModal();
+  updateVoices(); soundLabels(); GardenOffline.refresh();$('#storage-note').textContent = storageOK ? '設定、花朵與花園只保存在這台裝置；只有家長在「學習紀錄」開啟上傳時，練習結果才會送到家長自己的試算表。' : '瀏覽器無法保存紀錄，仍可正常玩遊戲。'; renderTrackerSettings(); $('#settings').showModal();
 }
 function renderSymbolPicker(message='至少選 3 個；用於找找注音、翻翻卡、賓果與冒險的字形站。'){
   $('#symbol-picker').innerHTML=GardenData.symbols.map(s=>`<button data-symbol="${s}" aria-label="注音範圍 ${s}" aria-pressed="${prefs.customSymbols.includes(s)}">${s}</button>`).join('');
@@ -492,3 +517,10 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) stopS
 window.addEventListener('pagehide', () => { stopSpeech(); gardenAudio.stopMusic(); }); window.addEventListener('pageshow', () => gardenAudio.syncMusic());
 if ('speechSynthesis' in window) speechSynthesis.addEventListener('voiceschanged', updateVoices);
 updateVoices(); soundLabels(); home();
+
+function trackerForm(){const form=$('#tracker-form');return form&&form.elements?form.elements:null;}
+function trackerValues(f){return {enabled:f.enabled.checked,url:f.url.value,token:f.token.value,learner:f.learner.value};}
+function renderTrackerSettings(){const f=trackerForm();if(!f)return;const sv=tracker.status().settings||{};f.enabled.checked=!!sv.enabled;f.url.value=sv.url||'';f.token.value=sv.token||'';f.learner.value=sv.learner||'';trackerStatusText();}
+function trackerStatusText(){const el=$('#tracker-status');if(!el)return;const st=tracker.status();el.textContent=!st.settings.enabled?'目前關閉：遊戲紀錄只留在這台裝置。':!st.settings.url?'已開啟，但還沒填紀錄網址。':st.pending?`等待送出 ${st.pending} 筆${st.lastError?'（上次失敗：'+st.lastError+'）':''}`:'已連結：練習結果會寫進家長的試算表。';}
+tracker.onChange(trackerStatusText);
+(()=>{const form=$('#tracker-form');if(!form||typeof form.addEventListener!=='function')return;form.addEventListener('submit',e=>e.preventDefault());form.addEventListener('change',()=>{tracker.configure(trackerValues(form.elements));trackerStatusText();});const testButton=$('#tracker-test');if(testButton)testButton.onclick=async()=>{tracker.configure(trackerValues(form.elements));testButton.disabled=true;const r=await tracker.test();testButton.disabled=false;$('#tracker-status').textContent=r.ok?`✅ 已連上「${r.sheet||'試算表'}」`:`❌ ${r.error||'連線失敗'}`;};})();

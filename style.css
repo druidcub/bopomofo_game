@@ -34,3 +34,6 @@
 /* Keep touch gestures at the game scale, while retaining page scrolling. */
 html{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 @media(max-width:760px){input:not([type=range]),select,textarea,.garden-music select{font-size:16px}}
+
+/* 家長設定：學習紀錄上傳 */
+.tracker-form{border-top:1px solid rgba(0,0,0,.08);margin-top:18px;padding-top:12px}.tracker-form input[type=text],.tracker-form input[type=url]{width:100%;box-sizing:border-box;margin:6px 0 10px;padding:10px 12px;border:1px solid rgba(0,0,0,.15);border-radius:10px;font:inherit;background:#fff}.tracker-toggle{display:flex;align-items:center;gap:8px;margin:10px 0}.tracker-toggle input{width:18px;height:18px}
